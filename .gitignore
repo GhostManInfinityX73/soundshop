@@ -1,0 +1,30 @@
+# --- SOUND SHOP SECURITY SHIELD ---
+
+# 1. CREDENTIALS & SENSITIVE DATA
+.env
+credentials.json
+config.json
+tokens.txt
+*.pem
+*.key
+
+# 2. HEAVY MEDIA & INTELLECTUAL PROPERTY
+# This stops your high-res beats from being public
+*.wav
+*.aif
+*.mp3
+# Exceptions: This allows small demo/preview files
+!*preview.mp3
+!*demo.mp3
+
+# 3. SYSTEM & BUILD FILES
+node_modules/
+*.tgz
+package-lock.json
+.DS_Store
+Thumbs.db
+.bash_history
+.termux/
+
+# 4. ARCHIVE PROTECTION
+sound-shop-archive/
