@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOUND SHOP | Secure Terminal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/node-forge/1.3.1/forge.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        :root { 
+            --teal: #00ffcc; 
+            --dark: #050505; 
+            --gray: #111; 
+            --glow: rgba(0, 255, 204, 0.3);
+        }
+
+        body { 
+            background: var(--dark); 
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center;
+            transform: perspective(500px) rotateX(45deg);
+            animation: grid-move 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes grid-move {
+            from { background-position: 0 0; }
+            to { background-position: 0 500px; }
+        }
+
+        /* CRT Scanline Overlay */
+        body::after {
+            content: " ";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .terminal-container { 
+            width: 95%; max-width: 480px; 
+            background: rgba(10, 10, 10, 0.95); 
+            border: 1px solid var(--teal); 
+            border-radius: 4px; 
+            overflow: hidden; 
+            box-shadow: 0 0 20px var(--glow), inset 0 0 10px rgba(0,0,0,1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .terminal-header { 
+            background: #000; 
+            padding: 15px; 
+            border-bottom: 2px solid var(--teal); 
+            text-align: left; 
+        }
+        .terminal-header h1 { 
+            font-family: 'Syncopate'; 
+            font-size: 0.7rem; 
+            letter-spacing: 5px; 
+            margin: 0; 
+            color: var(--teal); 
+            text-shadow: 0 0 8px var(--teal);
+        }
+
+        .price-section { 
+            padding: 30px; 
+            text-align: right; 
+            background: linear-gradient(to bottom, #080808, #000); 
+            border-bottom: 1px solid #222; 
+        }
+        .total-label { font-size: 0.6rem; color: var(--teal); letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; }
+        .total-amount { 
+            font-size: 3.8rem; 
+            font-weight: 900; 
+            color: #fff; 
+            margin: 0; 
+            font-family: 'Inter'; 
+            text-shadow: 0 0 20px var(--teal);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 10px var(--teal); }
+            to { text-shadow: 0 0 25px var(--teal), 0 0 40px var(--teal); }
+        }
+
+        .form-body { padding: 30px; background: #0f0f0f; }
+        label { display: block; font-size: 0.6rem; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        
+        input { 
+            width: 100%; background: #000; border: 1px solid #333; padding: 15px; 
+            color: var(--teal); border-radius: 2px; margin-bottom: 20px; 
+            font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; 
+            outline: none; transition: 0.3s; box-sizing: border-box;
+        }
+        input:focus { border-color: var(--teal); box-shadow: 0 0 10px var(--glow); }
+
+        .card-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 15px; }
+
+        #sig-canvas { background: #111; width: 100%; height: 100px; border: 1px solid #222; border-radius: 2px; margin-bottom: 20px; cursor: crosshair; }
+
+        .auth-btn { 
+            width: 100%; padding: 22px; background: #111; color: #444; border: 1px solid #222; 
+            border-radius: 2px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; 
+            cursor: not-allowed; transition: 0.3s; font-family: 'Syncopate';
+        }
+        .active-btn { 
+            background: var(--teal) !important; 
+            color: #000 !important; 
+            cursor: pointer !important; 
+            border-color: var(--teal);
+            box-shadow: 0 0 15px var(--teal);
+        }
+        .active-btn:hover { transform: scale(1.02); }
+
+        footer { padding: 15px; text-align: center; font-size: 0.6rem; color: var(--teal); opacity: 0.4; letter-spacing: 3px; background: #000; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="terminal-container">
+    <div class="terminal-header"><h1>PRIVATE NODE GATEWAY v4.0</h1></div>
+    
+    <div class="price-section">
+        <div class="total-label">Ready for Extraction</div>
+        <div class="total-amount" id="total-price">$0.00</div>
+    </div>
+
+    <form class="form-body" id="paymentForm">
+        <label>Identity (Email)</label>
+        <input type="email" id="customerEmail" placeholder="USER@NODE.LOCAL" required>
+
+        <label>Encrypted Card String</label>
+        <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
+
+        <div class="card-row">
+            <div>
+                <label>Exp</label>
+                <input type="text" id="cardExp" placeholder="MM/YY" maxlength="5">
+            </div>
+            <div>
+                <label>CVC</label>
+                <input type="text" id="cardCvv" placeholder="***" maxlength="4">
+            </div>
+        </div>
+
+        <label>Handwritten Verification</label>
+        <canvas id="sig-canvas"></canvas>
+
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 25px;">
+            <input type="checkbox" id="policyCheck" style="width:auto; margin:0; accent-color:var(--teal);">
+            <span style="font-size: 0.65rem; color: var(--teal); opacity: 0.7; letter-spacing: 1px;">BYPASS MIDDLEMEN. CONFIRM DIRECT TRANSACTION.</span>
+        </div>
+
+        <button type="submit" class="auth-btn" id="submitBtn" disabled>Process Direct Transaction</button>
+    </form>
+
+    <footer>RSA-4096 ENCRYPTED // BYPASSING TRADITIONAL GATEWAYS</footer>
+</div>
+
+<script>
+    const BUNKER_URL = 'http://localhost:3000';
+    const cart = JSON.parse(localStorage.getItem('soundshop_cart')) || [];
+    
+    let total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+    document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
+
+    const canvas = document.getElementById('sig-canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    // Set signature line color to teal to match theme
+    ctx.strokeStyle = "#00ffcc";
+
+    canvas.onmousedown = () => drawing = true;
+    canvas.onmouseup = () => { drawing = false; ctx.beginPath(); };
+    canvas.onmousemove = (e) => {
+        if (!drawing) return;
+        ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke();
+    };
+
+    document.getElementById('policyCheck').onchange = function() {
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = !this.checked;
+        this.checked ? btn.classList.add('active-btn') : btn.classList.remove('active-btn');
+    };
+
+    document.getElementById('paymentForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "BYPASSING...";
+
+        try {
+            const res = await fetch(`${BUNKER_URL}/checkout`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    email: document.getElementById('customerEmail').value,
+                    cart: cart
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert("DIRECT AUTH COMPLETE: " + data.orderId);
+                localStorage.removeItem('soundshop_cart');
+                window.location.href = "index.html";
+            } else {
+                alert("NODE ERROR: Check your local server logs.");
+            }
+        } catch (err) {
+            alert("BUNKER TIMEOUT: Check Port 3000 in Termux.");
+        } finally {
+            btn.innerText = "Process Direct Transaction";
+        }
+    };
+</script>
+</body>
+</html>

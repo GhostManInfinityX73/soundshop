@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vault | Sound Shop Gear</title>
+    <style>
+        /* 1. Global Studio Theme */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            background-image: linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .shop-header {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo { font-weight: 300; font-size: 1.2rem; cursor: pointer; }
+        .logo span { color: #00e5ff; font-weight: 800; }
+
+        .bag-icon {
+            border: 1px solid #00e5ff;
+            padding: 10px 15px;
+            border-radius: 50px;
+            color: #00e5ff;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .bag-icon:hover { background: #00e5ff; color: #000; }
+
+        .vault-title { text-align: center; margin: 60px 0; }
+        .vault-title h1 { font-size: 4rem; letter-spacing: 15px; margin: 0; font-weight: 200; }
+        .subtitle { color: #00e5ff; letter-spacing: 5px; font-size: 0.9rem; margin-top: 10px; }
+        
+        #typing-text { min-height: 1.2em; color: #888; font-size: 0.9rem; max-width: 600px; margin: 20px auto; line-height: 1.6; }
+
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            margin-bottom: 100px;
+        }
+
+        .pricing-card {
+            background-color: #121212;
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 20px;
+            width: 320px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+        .pricing-card:hover { transform: translateY(-10px); border-color: #00e5ff; }
+        .pricing-card img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
+
+        .price { font-size: 1.8rem; font-weight: 800; color: #ffd700; margin-bottom: 15px; }
+
+        .buy-btn {
+            background-color: transparent;
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+            padding: 15px 30px;
+            width: 100%;
+            border-radius: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .buy-btn:hover { background-color: #00e5ff; color: #000; }
+
+        @media (max-width: 600px) { .vault-title h1 { font-size: 2.5rem; } }
+    </style>
+</head>
+<body>
+
+    <header class="shop-header">
+        <div class="logo" onclick="location.href='index.html'">
+            SOUND<span>SHOP</span>
+        </div>
+        <div id="bag-count" class="bag-icon" onclick="location.href='checkout.html'">
+            BAG [0]
+        </div>
+    </header>
+
+    <div class="vault-title">
+        <h1>THE VAULT</h1>
+        <div class="subtitle">STREET MENTALITY RECORDS 2026 DROP</div>
+        <div id="typing-text"></div>
+    </div>
+
+    <div class="pricing-container">
+        <div class="pricing-card">
+            <img src="images/blkh.jpg" alt="A Good High Hoodie">
+            <h3>The High Mental</h3>
+            <div class="price">$55</div>
+            <button class="buy-btn" onclick="addToBag('The High Mental', 55)">Add to Bag</button>
+        </div>
+
+        <div class="pricing-card">
+            <img src="images/njjc.jpg" alt="NJJC Hoodie">
+            <h3>NJJC Heritage</h3>
+            <div class="price">$65</div>
+            <button class="buy-btn" onclick="addToBag('NJJC Heritage', 65)">Add to Bag</button>
+        </div>
+    </div>
+
+    <div id="product-container" class="pricing-container"></div>
+
+    <script>
+        // 1. DATA & INITIALIZATION
+        const introText = "With at least 25 years of industry experience, I specialize in crafting high-impact instrumental soundtracks. Explore the drop.";
+        let charIndex = 0;
+        let bag = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // 2. TYPEWRITER EFFECT
+        function typeWriter() {
+            const el = document.getElementById("typing-text");
+            if (el && charIndex < introText.length) {
+                el.innerHTML += introText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 40);
+            }
+        }
+
+        // 3. SHOPPING BAG LOGIC
+        function addToBag(itemName, price) {
+            bag.push({ name: itemName, price: price });
+            localStorage.setItem('cart', JSON.stringify(bag));
+            updateBagUI();
+            
+            if (confirm(`${itemName} added to your bag. Ready to checkout?`)) {
+                window.location.href = 'checkout.html';
+            }
+        }
+
+        function updateBagUI() {
+            const bagEl = document.getElementById('bag-count');
+            if (bagEl) bagEl.innerText = `BAG [${bag.length}]`;
+        }
+
+        // 4. INITIALIZE ON LOAD
+        window.onload = () => {
+            typeWriter();
+            updateBagUI();
+        };
+    </script>
+</body>
+</html>

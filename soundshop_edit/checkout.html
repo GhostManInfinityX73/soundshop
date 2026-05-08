@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | Sound Shop Vault</title>
+    
+    <script src="https://web.squarecdn.com/v1/square.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Inter', sans-serif; background: #000; color: #fff; overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 40%);
+        }
+        /* Test Mode Banner */
+        .test-banner { background: #ff4444; color: #fff; text-align: center; padding: 10px; font-weight: 900; letter-spacing: 2px; position: sticky; top: 0; z-index: 9999; }
+        
+        .checkout-header { 
+            height: 250px; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
+            url('https://images.unsplash.com/photo-1514525253361-bee8a48790c7?q=80&w=2000'); 
+            background-size: cover; background-position: center; display: flex; 
+            flex-direction: column; align-items: center; justify-content: center; border-bottom: 1px solid #00ffcc;
+        }
+        .checkout-header h1 { font-size: 3rem; letter-spacing: 15px; text-transform: uppercase; font-weight: 100; text-shadow: 0 0 30px rgba(0, 255, 204, 0.6); }
+        .checkout-header p { color: #00ffcc; letter-spacing: 5px; font-size: 0.7rem; margin-top: 10px; text-transform: uppercase; }
+        .checkout-container { max-width: 1100px; margin: -50px auto 100px; padding: 0 20px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; }
+        .panel { background: rgba(18, 18, 18, 0.8); border: 1px solid rgba(0, 255, 204, 0.2); backdrop-filter: blur(20px); border-radius: 20px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .trend-arrow { color: #00ffcc; font-size: 1.2rem; margin-left: 5px; vertical-align: middle; }
+        .total-row { display: flex; justify-content: space-between; font-size: 2rem; font-weight: 700; margin-top: 30px; color: #00ffcc; border-top: 2px solid #00ffcc; padding-top: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 0.65rem; color: #00ffcc; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        input { width: 100%; padding: 18px; margin-bottom: 25px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; }
+        #card-container { min-height: 80px; margin-bottom: 25px; border: 1px solid #333; padding: 15px; border-radius: 8px; background: #000; }
+        #sig-canvas { background: #fff; border-radius: 4px; width: 100%; height: 150px; touch-action: none; cursor: crosshair; }
+        .pay-btn { width: 100%; padding: 22px; background: #333; color: #777; border: none; border-radius: 4px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; cursor: not-allowed; transition: 0.4s; }
+        @media (max-width: 900px) { .checkout-container { grid-template-columns: 1fr; margin-top: 20px; } }
+    </style>
+</head>
+<body>
+
+<div class="test-banner">SYSTEM TEST: ALL TRANSACTIONS FORCED TO $1.00</div>
+
+<div class="checkout-header">
+    <h1>SECURE VAULT</h1>
+    <p>Sound Shop Licensing & Apparel</p>
+</div>
+
+<div class="checkout-container">
+    <div class="order-summary panel">
+        <h2 style="font-weight: 100; margin-bottom: 30px; letter-spacing: 3px;">YOUR SELECTION</h2>
+        <div id="cart-list"></div>
+        <div class="total-row">
+            <span style="font-weight: 100;">TOTAL</span>
+            <span><span id="final-price">$1.00</span><span id="price-arrow" class="trend-arrow">▼</span></span>
+        </div>
+    </div>
+
+    <div class="payment-details panel">
+        <h2 style="font-weight: 100; margin-bottom: 30px; letter-spacing: 3px;">PAYMENT TERMINAL</h2>
+        <form id="paymentForm">
+            <label>Delivery Email</label>
+            <input type="email" id="customerEmail" placeholder="STREET@MENTALITY.COM" required>
+
+            <label>Card Details</label>
+            <div id="card-container"></div>
+
+            <div id="rim-signature-area" style="display:none; margin-bottom: 25px;">
+                <h3 style="font-size: 0.8rem; color: #00ffcc; text-transform: uppercase; margin-bottom: 10px;">Custom Rim Agreement</h3>
+                <canvas id="sig-canvas"></canvas>
+                <button type="button" id="sig-clearBtn" style="background:none; border:1px solid #ff4444; color:#ff4444; padding:5px; margin-top:10px; cursor:pointer; font-size:0.6rem;">CLEAR SIGNATURE</button>
+            </div>
+
+            <div style="margin-bottom:25px; display:flex; align-items:center; gap:10px;">
+                <input type="checkbox" id="policy-check" style="width:20px; height:20px; margin:0;">
+                <label for="policy-check" style="text-transform:none; font-size:0.75rem; color:#fff;">I agree to the <a href="refund.html" style="color:#00ffcc;" target="_blank">Refund Policy</a>.</label>
+            </div>
+
+            <button type="button" class="pay-btn" id="submitBtn" onclick="handlePayment(event)" disabled>Authorize Transaction</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const appId = 'sq0idp-65zuXXwmtAkENq9dLUBdiw'; 
+    const locId = 'LMPQXX1'; 
+    const API_URL = 'https://sound-shop-api.john78208.workers.dev/checkout'; 
+    
+    const policyCheck = document.getElementById('policy-check');
+    const submitBtn = document.getElementById('submitBtn');
+    const canvas = document.getElementById('sig-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let isSigning = false, hasSigned = false, rimsInCart = false, baseTotal = 1.00, card;
+
+    async function initializeSquare() {
+        try {
+            const payments = window.Square.payments(appId, locId);
+            card = await payments.card();
+            await card.attach('#card-container');
+        } catch (e) { console.error(e); }
+    }
+
+    window.onload = function() {
+        initializeSquare();
+        const cartData = JSON.parse(localStorage.getItem('cart')) || [];
+        const listDiv = document.getElementById('cart-list');
+        
+        cartData.forEach(item => {
+            if (item.name.toLowerCase().includes('rim')) rimsInCart = true;
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item';
+            itemDiv.innerHTML = `<span>${item.name.toUpperCase()}</span><span style="color:#00ffcc;">$${parseFloat(item.price).toFixed(2)}</span>`;
+            listDiv.appendChild(itemDiv);
+        });
+
+        // OVERRIDE FOR TEST
+        baseTotal = 1.00; 
+        document.getElementById('final-price').innerText = "$1.00";
+        
+        if (rimsInCart) {
+            document.getElementById('rim-signature-area').style.display = 'block';
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 2;
+        }
+    };
+
+    // Signature Logic
+    function getPointerPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return (e.touches && e.touches[0]) ? { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top } : { x: e.offsetX, y: e.offsetY };
+    }
+    function startPosition(e) { isSigning = true; ctx.beginPath(); const pos = getPointerPos(e); ctx.moveTo(pos.x, pos.y); }
+    function draw(e) {
+        if (!isSigning) return;
+        if (e.cancelable) e.preventDefault();
+        const pos = getPointerPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+        hasSigned = true;
+        validateForm();
+    }
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', () => isSigning = false);
+    canvas.addEventListener('touchstart', (e) => { if (e.cancelable) e.preventDefault(); startPosition(e); }, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+
+    document.getElementById('sig-clearBtn').onclick = () => { ctx.clearRect(0,0,canvas.width,canvas.height); hasSigned = false; validateForm(); };
+
+    function validateForm() {
+        const emailValid = document.getElementById('customerEmail').checkValidity();
+        const canSubmit = policyCheck.checked && emailValid && (!rimsInCart || hasSigned);
+        submitBtn.disabled = !canSubmit;
+        submitBtn.style.background = canSubmit ? "#00ffcc" : "#333";
+        submitBtn.style.color = canSubmit ? "#000" : "#777";
+        submitBtn.style.cursor = canSubmit ? "pointer" : "not-allowed";
+    }
+
+    policyCheck.addEventListener('change', validateForm);
+    document.getElementById('customerEmail').addEventListener('input', validateForm);
+
+    async function handlePayment(event) {
+        event.preventDefault();
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = "TESTING CONNECTION...";
+        submitBtn.disabled = true;
+
+        try {
+            const result = await card.tokenize();
+            if (result.status === 'OK') {
+                const paymentData = {
+                    sourceId: result.token,
+                    amount: "1.00", // HARDCODED FOR SAFETY
+                    customerEmail: document.getElementById('customerEmail').value,
+                    signature: rimsInCart ? canvas.toDataURL() : null,
+                    cart: JSON.parse(localStorage.getItem('cart')) || []
+                };
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(paymentData)
+                });
+
+                const data = await response.json();
+                if (data.success) { 
+                    alert("TEST SUCCESS: Connection verified!");
+                    localStorage.removeItem('cart'); 
+                    window.location.href = 'success.html'; 
+                } else { 
+                    alert('DECLINED: ' + (data.error || "Transaction failed.")); 
+                    resetButton(originalBtnText);
+                }
+            } else {
+                alert('CARD ERROR: ' + result.errors[0].message);
+                resetButton(originalBtnText);
+            }
+        } catch (e) {
+            alert("Connection error. Check Worker logs.");
+            resetButton(originalBtnText);
+        }
+    }
+
+    function resetButton(text) { submitBtn.innerText = text; validateForm(); }
+</script>
+</body>
+</html>

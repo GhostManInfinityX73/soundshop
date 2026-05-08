@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sound Shop | Digital Workstation</title>
+    <style>
+        :root {
+            --bg-main: #1a1a1a;
+            --bg-sidebar: #2b2b2b;
+            --bg-toolbar: #252525;
+            --accent-gold: #fdbb2d;
+            --accent-cyan: #00f2ff;
+            --track-bg: #2a2a2a;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-main); 
+            color: #d1d1d1;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #toolbar {
+            height: 70px;
+            background: var(--bg-toolbar);
+            border-bottom: 2px solid #111;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            justify-content: space-between;
+        }
+
+        .transport { display: flex; gap: 8px; align-items: center; }
+        .btn-transport {
+            background: #333;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 60px;
+        }
+        .btn-record { border-color: #ff4444; color: #ff4444; }
+        .btn-record.active { background: red !important; color: white !important; }
+
+        #main-view { display: flex; flex: 1; overflow: hidden; }
+
+        #sidebar {
+            width: 180px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid #333;
+            font-size: 0.8rem;
+        }
+
+        .folder-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #333;
+        }
+        .folder-item:hover { background: #383838; }
+
+        #timeline {
+            flex: 1;
+            background: #1e1e1e;
+            padding: 15px;
+            background-image: linear-gradient(#252525 1px, transparent 1px),
+                              linear-gradient(90deg, #252525 1px, transparent 1px);
+            background-size: 50px 50px;
+            overflow-y: auto;
+        }
+
+        .track {
+            height: 85px;
+            background: var(--track-bg);
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-gold);
+            display: flex;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .track-header {
+            width: 150px;
+            background: #333;
+            padding: 10px;
+            border-right: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .track-name { font-size: 0.75rem; font-weight: bold; color: var(--accent-gold); }
+        .loaded-file { font-size: 0.55rem; color: #888; overflow: hidden; white-space: nowrap; }
+        
+        .track-btns { display: flex; gap: 5px; }
+        .ms-btn {
+            background: #222;
+            border: 1px solid #444;
+            color: #888;
+            font-size: 0.6rem;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .ms-btn.active-m { color: #ffbb00; border-color: #ffbb00; }
+        .ms-btn.active-s { color: var(--accent-cyan); border-color: var(--accent-cyan); }
+
+        #mixer {
+            height: 110px;
+            background: #111;
+            border-top: 2px solid #333;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 20px;
+        }
+
+        .vu-meter {
+            width: 40px;
+            height: 70px;
+            background: #000;
+            border: 1px solid #444;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 2px;
+        }
+        .vu-bar {
+            width: 100%;
+            background: var(--accent-gold);
+            height: 0%;
+            transition: height 0.05s ease;
+        }
+
+        #fileView { padding: 15px; }
+        .sample-item {
+            padding: 8px 0;
+            font-size: 0.7rem;
+            color: #ccc;
+            cursor: pointer;
+            border-bottom: 1px solid #222;
+        }
+        .sample-item:hover { color: var(--accent-cyan); }
+    </style>
+</head>
+<body>
+
+    <header id="toolbar">
+        <div style="line-height: 1.2;">
+            <strong style="color: var(--accent-gold); font-size: 1.2rem;">SOUND SHOP</strong><br>
+            <span style="color: var(--accent-cyan); font-size: 0.6rem; letter-spacing: 2px;">// STUDIO</span>
+        </div>
+        
+        <div class="transport">
+            <button class="btn-transport" id="resetBtn">◀◀</button>
+            <button class="btn-transport" id="playBtn">PLAY</button>
+            <button class="btn-transport btn-record" id="recBtn">● REC</button>
+            <div style="font-family: monospace; background: #000; padding: 8px; border-radius: 4px; border: 1px solid #333;">
+                <span id="display" style="color: var(--accent-cyan);">00:00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <div id="main-view">
+        <aside id="sidebar">
+            <p style="padding: 12px; background: #111; margin: 0; font-weight: bold; font-size: 0.7rem; letter-spacing: 1px;">EXPLORER</p>
+            
+            <div id="folderList">
+                <div class="folder-item" onclick="openFolder('Drum Kits')">📂 Drum Kits</div>
+                <div class="folder-item" onclick="openFolder('Synths')">📂 Synths</div>
+                <div class="folder-item" onclick="openFolder('910 Roots')">📂 910 Roots Samples</div>
+            </div>
+
+            <div id="fileView" style="display: none;">
+                <p id="currentFolderName" style="color: var(--accent-gold); font-size: 0.6rem; margin-top: 0;">FOLDER_NAME</p>
+                <div id="sampleList"></div>
+                <button onclick="closeFolder()" style="margin-top: 15px; background: none; border: 1px solid #444; color: var(--accent-cyan); font-size: 0.6rem; padding: 5px 10px; cursor: pointer; width: 100%;">BACK</button>
+            </div>
+        </aside>
+        
+        <main id="timeline">
+            <div class="track" id="track1">
+                <div class="track-header">
+                    <div>
+                        <div class="track-name">01 Vocal Mic</div>
+                        <div class="loaded-file" id="t1-file">Empty</div>
+                    </div>
+                    <div class="track-btns">
+                        <button class="ms-btn" id="mute1" onclick="toggleMute(1)">M</button>
+                        <button class="ms-btn" onclick="this.classList.toggle('active-s')">S</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="track" id="track2" style="border-left-color: var(--accent-cyan);">
+                <div class="track-header">
+                    <div>
+                        <div class="track-name" style="color: var(--accent-cyan);">02 Sample Pad</div>
+                        <div class="loaded-file" id="t2-file">Empty</div>
+                    </div>
+                    <div class="track-btns">
+                        <button class="ms-btn" id="mute2" onclick="toggleMute(2)">M</button>
+                        <button class="ms-btn" onclick="this.classList.toggle('active-s')">S</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer id="mixer">
+        <div class="vu-meter">
+            <div class="vu-bar" id="masterVU"></div>
+        </div>
+        <div>
+            <p style="font-size: 0.6rem; margin: 0; letter-spacing: 1px;">MASTER VOL</p>
+            <input type="range" id="volSlider" min="0" max="1" step="0.1" value="0.7" style="width: 100px; accent-color: var(--accent-gold);">
+        </div>
+    </footer>
+
+    <audio id="audio1"></audio>
+    <audio id="audio2"></audio>
+
+    <script>
+        // --- 1. CORE STUDIO ENGINE ---
+        let startTime, timerInterval;
+        let running = false;
+        let elapsedTime = 0;
+
+        const display = document.getElementById('display');
+        const playBtn = document.getElementById('playBtn');
+        const recBtn = document.getElementById('recBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const volSlider = document.getElementById('volSlider');
+        const vu = document.getElementById('masterVU');
+        
+        const audio1 = document.getElementById('audio1');
+        const audio2 = document.getElementById('audio2');
+
+        function timeToString(time) {
+            let mm = Math.floor(time / 60000);
+            let ss = Math.floor((time % 60000) / 1000);
+            let ms = Math.floor((time % 1000) / 10);
+            return `${mm.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')}:${ms.toString().padStart(2, '0')}`;
+        }
+
+        function startStudio() {
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(() => {
+                elapsedTime = Date.now() - startTime;
+                display.innerText = timeToString(elapsedTime);
+            }, 10);
+            
+            // Play loaded audio
+            if(audio1.src) audio1.play();
+            if(audio2.src) audio2.play();
+            
+            playBtn.innerText = "STOP";
+            running = true;
+        }
+
+        function stopStudio() {
+            clearInterval(timerInterval);
+            audio1.pause();
+            audio2.pause();
+            playBtn.innerText = "PLAY";
+            running = false;
+        }
+
+        playBtn.onclick = () => { if (!running) startStudio(); else stopStudio(); };
+
+        resetBtn.onclick = () => {
+            stopStudio();
+            elapsedTime = 0;
+            audio1.currentTime = 0;
+            audio2.currentTime = 0;
+            display.innerText = "00:00:00";
+        };
+
+        // VU Meter animation
+        setInterval(() => {
+            if (running) {
+                const level = (volSlider.value) * (Math.random() * 40 + 60); 
+                vu.style.height = level + '%';
+            } else { vu.style.height = '0%'; }
+        }, 100);
+
+        // --- 2. EXPLORER & LOADING LOGIC ---
+        const library = {
+            "Drum Kits": ["808_Kick.wav", "Snare_Classic.wav"],
+            "Synths": ["Poly_Pad.mp3", "Square_Lead.mp3"],
+            "910 Roots": ["ijdgaf.m4a", "Roots_Vocal.m4a", "Roots_Bass.m4a"]
+        };
+
+        function openFolder(folder) {
+            document.getElementById('folderList').style.display = 'none';
+            document.getElementById('fileView').style.display = 'block';
+            document.getElementById('currentFolderName').innerText = folder.toUpperCase();
+            
+            const list = document.getElementById('sampleList');
+            list.innerHTML = '';
+            library[folder].forEach(sample => {
+                const div = document.createElement('div');
+                div.className = 'sample-item';
+                div.innerText = "🎵 " + sample;
+                div.onclick = () => loadToTrack(sample);
+                list.appendChild(div);
+            });
+        }
+
+        function closeFolder() {
+            document.getElementById('folderList').style.display = 'block';
+            document.getElementById('fileView').style.display = 'none';
+        }
+
+        function loadToTrack(sampleName) {
+            const t1 = document.getElementById('t1-file');
+            const t2 = document.getElementById('t2-file');
+
+            if (t1.innerText === "Empty") {
+                t1.innerText = sampleName;
+                audio1.src = sampleName; // Sets the actual file path
+                t1.style.color = "var(--accent-gold)";
+            } else {
+                t2.innerText = sampleName;
+                audio2.src = sampleName; // Sets the actual file path
+                t2.style.color = "var(--accent-cyan)";
+            }
+        }
+
+        function toggleMute(trackNum) {
+            const btn = document.getElementById(`mute${trackNum}`);
+            const audio = document.getElementById(`audio${trackNum}`);
+            btn.classList.toggle('active-m');
+            audio.muted = !audio.muted;
+        }
+
+        // Link volume slider to master output
+        volSlider.oninput = () => {
+            audio1.volume = volSlider.value;
+            audio2.volume = volSlider.value;
+        };
+    </script>
+</body>
+</html>
