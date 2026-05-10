@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sound Shop | Professional Audio Services</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CQ81083J1M');
+    </script>
+
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -18,11 +27,47 @@
             color: white;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px 10px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+        }
+
+        /* NEW CONTACT BAR FOR SERVICES PAGE */
+        .service-contact-bar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px 10px;
+            background: #111;
+            border-bottom: 2px solid var(--neon-blue);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .contact-unit { text-align: center; }
+        .unit-label { font-size: 0.6rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .service-call-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+        .service-call-btn:hover { background: var(--neon-blue); color: #000; }
+        .order-btn { border-color: var(--brand-yellow); color: var(--brand-yellow); animation: pulse-yellow 2s infinite; }
+        .order-btn:hover { background: var(--brand-yellow); color: #000; }
+
+        @keyframes pulse-yellow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 204, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); }
         }
 
         h1 {
@@ -31,12 +76,11 @@
             letter-spacing: 4px;
             font-size: 2.2rem;
             text-align: center;
-            margin: 50px 0;
+            margin: 40px 0;
             text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
             line-height: 1.2;
         }
 
-        /* Container for cards */
         .services-grid {
             display: flex;
             flex-wrap: wrap;
@@ -44,9 +88,9 @@
             gap: 25px;
             max-width: 1200px;
             width: 100%;
+            padding: 0 20px;
         }
 
-        /* The Service Card */
         .card {
             background-color: var(--card-bg);
             border: 1px solid #333;
@@ -61,61 +105,15 @@
             flex-direction: column;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-blue);
-        }
+        .card:hover { transform: translateY(-5px); border-color: var(--neon-blue); }
+        .card-title { text-transform: uppercase; font-weight: bold; letter-spacing: 2px; font-size: 1.1rem; margin-bottom: 15px; min-height: 30px; }
+        .price { color: var(--brand-yellow); font-size: 3.2rem; font-weight: 900; margin: 5px 0; text-shadow: 0 0 10px rgba(255, 204, 0, 0.2); }
+        .sub-price { color: var(--text-gray); font-size: 0.85rem; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .card-title {
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 2px;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            min-height: 30px;
-        }
+        .features { list-style: none; padding: 0; margin: 0 0 40px 0; text-align: left; flex-grow: 1; }
+        .features li { padding: 12px 0; border-bottom: 1px solid #222; font-size: 0.95rem; display: flex; align-items: center; }
+        .features li::before { content: '✓'; color: var(--neon-blue); margin-right: 12px; font-weight: bold; }
 
-        .price {
-            color: var(--brand-yellow);
-            font-size: 3.2rem;
-            font-weight: 900;
-            margin: 5px 0;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
-        }
-
-        .sub-price {
-            color: var(--text-gray);
-            font-size: 0.85rem;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Checklist Items */
-        .features {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 40px 0;
-            text-align: left;
-            flex-grow: 1; /* Keeps buttons aligned at bottom */
-        }
-
-        .features li {
-            padding: 12px 0;
-            border-bottom: 1px solid #222;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .features li::before {
-            content: '✓';
-            color: var(--neon-blue);
-            margin-right: 12px;
-            font-weight: bold;
-        }
-
-        /* Action Button */
         .btn-book {
             background-color: var(--brand-yellow);
             color: black;
@@ -132,53 +130,38 @@
             cursor: pointer;
         }
 
-        .btn-book:hover {
-            background-color: #e6b800;
-        }
+        .btn-book:hover { background-color: #e6b800; }
+        .btn-book:active { transform: scale(0.96); }
 
-        .btn-book:active {
-            transform: scale(0.96);
-        }
-
-        /* Hype Section */
-        .hype-section {
-            text-align: center;
-            margin: 80px 0 60px 0;
-            max-width: 800px;
-            padding: 0 20px;
-        }
-
-        .hype-section h2 {
-            color: var(--brand-yellow);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .hype-section p {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .brand-accent {
-            color: var(--neon-blue);
-            font-weight: bold;
-        }
+        .hype-section { text-align: center; margin: 60px 0 60px 0; max-width: 800px; padding: 0 20px; }
+        .hype-section h2 { color: var(--brand-yellow); text-transform: uppercase; letter-spacing: 2px; font-size: 1.5rem; margin-bottom: 20px; }
+        .hype-section p { color: var(--text-gray); font-size: 1.1rem; line-height: 1.8; }
+        .brand-accent { color: var(--neon-blue); font-weight: bold; }
 
         @media (max-width: 600px) {
             h1 { font-size: 1.6rem; }
             .card { max-width: 100%; }
+            .service-contact-bar { flex-direction: row; font-size: 0.7rem; }
+            .service-call-btn { padding: 8px 10px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="service-contact-bar">
+        <div class="contact-unit">
+            <div class="unit-label">Inquiries</div>
+            <a href="tel:19105499227" class="service-call-btn" onclick="trackServiceCall('General')">CALL OFFICE</a>
+        </div>
+        <div class="contact-unit">
+            <div class="unit-label">Instant Booking</div>
+            <a href="tel:19108796800" class="service-call-btn order-btn" onclick="trackServiceCall('Booking')">PLACE ORDER</a>
+        </div>
+    </div>
+
     <h1>Professional<br>Audio Services</h1>
 
     <div class="services-grid">
-        
         <div class="card">
             <div class="card-title">Mix & Master</div>
             <div class="price">$75</div>
@@ -214,32 +197,30 @@
             </ul>
             <button class="btn-book" onclick="handleBooking('digital-media')">Book Now</button>
         </div>
-
     </div>
 
     <div class="hype-section">
         <h2>25 Years of Sonic Excellence</h2>
         <p>
-            From the streets to the silver screen, <span class="brand-accent">Sound Shop</span> delivers the weight your music deserves. We don't just "fix" audio—we craft atmospheres. Whether you need a heavy-hitting beat or a radio-ready polish, we bring decades of industry experience to every decibel. 
+            From the streets to the silver screen, <span class="brand-accent">Sound Shop</span> delivers the weight your music deserves. We don't just "fix" audio—we craft atmospheres. 
             <br><br>
             <em>Because at the end of the day, that shi⚖️ don't hold no weight if it doesn't sound professional.</em>
         </p>
     </div>
 
     <script>
-        /**
-         * Handle service selection and redirect to checkout
-         * @param {string} serviceType - The unique ID of the service selected
-         */
+        function trackServiceCall(label) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'service_page_call', {
+                    'event_category': 'Leads',
+                    'event_label': label
+                });
+            }
+        }
+
         function handleBooking(serviceType) {
-            // Optional: Log the selection for analytics
             console.log("Service Selected: " + serviceType);
-            
-            // Show alert (for UX feedback)
             alert("Redirecting to secure payment for " + serviceType.replace('-', ' ') + "...");
-            
-            // Redirect to your payment gateway logic
-            // You can pass the service type as a URL parameter if your checkout.html is dynamic
             window.location.href = "checkout.html?service=" + serviceType; 
         }
     </script>

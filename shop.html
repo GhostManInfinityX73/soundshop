@@ -96,7 +96,7 @@
 
     <header class="shop-header">
         <div class="logo" onclick="location.href='index.html'">
-            SOUND<span>SHOP</span> BACK
+            SOUND<span>SHOP</span>
         </div>
         <div id="bag-count" class="bag-icon" onclick="location.href='checkout.html'">
             BAG [0]
@@ -105,7 +105,7 @@
 
     <div class="vault-title">
         <h1>THE VAULT</h1>
-        <div class="subtitle">STREET MENTALITY RECORDS  2026 DROP</div>
+        <div class="subtitle">STREET MENTALITY RECORDS 2026 DROP</div>
         <div id="typing-text"></div>
     </div>
 
@@ -127,15 +127,13 @@
 
     <div id="product-container" class="pricing-container"></div>
 
-    <script src="https://js.authorize.net/v1/Accept.js" charset="utf-8"></script>
-
     <script>
         // 1. DATA & INITIALIZATION
         const introText = "With at least 25 years of industry experience, I specialize in crafting high-impact instrumental soundtracks. Explore the drop.";
         let charIndex = 0;
         let bag = JSON.parse(localStorage.getItem('cart')) || [];
 
-        // 2. TYPEWRITER
+        // 2. TYPEWRITER EFFECT
         function typeWriter() {
             const el = document.getElementById("typing-text");
             if (el && charIndex < introText.length) {
@@ -145,13 +143,13 @@
             }
         }
 
-        // 3. BAG LOGIC
+        // 3. SHOPPING BAG LOGIC
         function addToBag(itemName, price) {
             bag.push({ name: itemName, price: price });
             localStorage.setItem('cart', JSON.stringify(bag));
             updateBagUI();
             
-            if (confirm(`${itemName} added to your vault. Check out now?`)) {
+            if (confirm(`${itemName} added to your bag. Ready to checkout?`)) {
                 window.location.href = 'checkout.html';
             }
         }
@@ -161,7 +159,7 @@
             if (bagEl) bagEl.innerText = `BAG [${bag.length}]`;
         }
 
-        // 4. LOAD EVERYTHING
+        // 4. INITIALIZE ON LOAD
         window.onload = () => {
             typeWriter();
             updateBagUI();

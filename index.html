@@ -3,322 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOUND SHOP | Premium Audio Infrastructure</title>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-CQ81083J1M');
-    </script>
-    
-    <script type="text/javascript" src="https://js.authorize.net/v1/Accept.js" charset="utf-8"></script>
-
+    <title>SOUND SHOP | Infrastructure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap');
-        
-        :root { 
-            --teal: #00ffcc; 
-            --dark: #020202; 
-            --glass: rgba(255, 255, 255, 0.05); 
-        }
-
+        :root { --teal: #00ffcc; --dark: #050505; --glass: rgba(255, 255, 255, 0.05); }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--dark); color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         
-        body { 
-            background: var(--dark); 
-            color: #ffffff; 
-            font-family: 'Inter', sans-serif; 
-            line-height: 1.6; 
-            overflow-x: hidden; 
-            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2000');
-            background-size: cover; 
-            background-attachment: fixed; 
-            background-position: center;
+        body::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9998; background-size: 100% 4px, 3px 100%; pointer-events: none;
         }
 
-        nav { 
-            padding: 15px 20px; 
-            background: rgba(0, 0, 0, 0.95); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-            backdrop-filter: blur(20px); 
-            border-bottom: 1px solid rgba(0, 255, 204, 0.2); 
-        }
+        .ticker { background: var(--teal); color: #000; padding: 6px 0; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; overflow: hidden; }
+        .ticker-content { display: inline-block; animation: marquee 30s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        .logo { font-weight: 900; letter-spacing: 3px; font-size: 1rem; text-transform: uppercase; font-style: italic; }
-        .logo span { color: var(--teal); }
+        nav { padding: 20px; background: rgba(0, 0, 0, 0.9); display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
+        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 8px; font-size: 1.2rem; text-transform: uppercase; text-align: center; background: linear-gradient(to right, #fff 20%, var(--teal) 50%, #fff 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 4s linear infinite; }
+        @keyframes shine { to { background-position: 200% center; } }
 
-        .nav-links { 
-            display: flex; 
-            overflow-x: auto; 
-            white-space: nowrap; 
-            gap: 15px;
-            padding-left: 20px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .nav-links::-webkit-scrollbar { display: none; }
+        .nav-links { display: flex; justify-content: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: #fff; font-size: 0.6rem; letter-spacing: 2px; font-weight: 700; opacity: 0.5; }
 
-        .nav-links a { 
-            text-decoration: none; 
-            color: #fff; 
-            font-size: 0.65rem; 
-            letter-spacing: 1px; 
-            font-weight: 700; 
-            opacity: 0.6; 
-        }
-        
-        .hero { height: 35vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
-        .hero h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; line-height: 0.9; margin:0; }
-        .hero p { color: var(--teal); letter-spacing: 5px; font-size: 0.7rem; text-transform: uppercase; margin-top: 10px; }
+        .contact-bar { display: flex; justify-content: center; gap: 10px; padding: 15px; background: rgba(0, 255, 204, 0.05); }
+        .call-btn { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 5px; font-weight: 800; font-size: 0.7rem; letter-spacing: 1px; }
+        .btn-order { background: var(--teal); color: #000; }
 
-        /* NEXUS SPOTLIGHT STYLE */
-        .nexus-promo { 
-            background: rgba(0, 255, 204, 0.05); 
-            border-top: 1px solid rgba(0, 255, 204, 0.2);
-            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
-            padding: 40px 20px; 
-            text-align: center; 
-            margin: 20px 0;
-        }
-        .nexus-promo h2 { font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
-        .nexus-promo p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 20px; }
+        .hero { height: 35vh; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .hero-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translateX(-50%) translateY(-50%); z-index: 1; filter: brightness(0.25); }
+        .hero-overlay { position: absolute; z-index: 2; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, transparent 20%, var(--dark) 90%); }
+        .hero h1 { position: relative; z-index: 3; font-family: 'Syncopate', sans-serif; font-size: 2.2rem; font-weight: 700; text-align: center; }
 
-        .video-wrapper { width: 95%; max-width: 800px; margin: 20px auto; border: 1px solid rgba(0, 255, 204, 0.3); border-radius: 15px; overflow: hidden; background: #000; }
+        .video-wrapper { width: 90%; max-width: 800px; margin: 30px auto; border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 15px; overflow: hidden; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        .media-hub { padding: 20px; max-width: 1000px; margin: 0 auto; }
+        .featured-container { padding: 20px; max-width: 900px; margin: 0 auto 40px; }
+        .section-header { font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 5px; text-align: center; margin-bottom: 25px; color: var(--teal); }
+
+        .track-card { background: var(--glass); border: 1px solid rgba(0, 255, 204, 0.15); border-radius: 20px; padding: 25px; margin-bottom: 30px; backdrop-filter: blur(15px); border-left: 5px solid var(--teal); display: flex; flex-direction: column; gap: 15px; }
+        .track-title { font-family: 'Syncopate'; font-size: 0.85rem; letter-spacing: 2px; }
+        .track-controls { display: flex; gap: 10px; }
         
-        .track-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 25px; border-radius: 24px; backdrop-filter: blur(20px); margin-bottom: 25px; border-left: 4px solid var(--teal); }
-        
-        .visualizer-container { width: 100%; height: 100px; margin: 15px 0; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px solid rgba(0, 255, 204, 0.1); }
+        .play-btn { flex: 1; background: transparent; color: var(--teal); border: 1px solid var(--teal); padding: 15px; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
+        .license-btn { flex: 2; background: var(--teal); color: #000; border: none; padding: 15px; border-radius: 10px; font-weight: 900; font-size: 0.7rem; cursor: pointer; text-transform: uppercase; }
 
-        .buy-btn { background: linear-gradient(90deg, #00ffcc, #00c6ff); color: #000; border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; text-align: center; text-decoration: none; display: block; }
+        #payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; justify-content: center; align-items: center; }
+        .modal-content { background: #111; border: 1px solid var(--teal); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; }
+        .modal-header { font-family: 'Syncopate'; font-size: 0.8rem; color: var(--teal); margin-bottom: 20px; }
+        .modal-input { width: 100%; background: #000; border: 1px solid #333; padding: 15px; color: #fff; margin-bottom: 10px; border-radius: 5px; font-family: 'Inter'; }
 
-        #paymentModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); z-index:2000; justify-content:center; align-items:center; }
-        .modal-content { background:#111; border:2px solid var(--teal); padding:25px; border-radius:28px; width:90%; max-width:400px; }
-        input { width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #333; background:#1a1a1a; color:#fff; }
-
-        #toast { visibility: hidden; min-width: 200px; background-color: var(--teal); color: #000; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 3000; bottom: 30px; left: 50%; transform: translateX(-50%); font-weight: bold; }
+        #chat-bubble { position: fixed; bottom: 25px; right: 25px; background: var(--teal); width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 9999; box-shadow: 0 0 20px rgba(0, 255, 204, 0.4); }
+        #toast { visibility: hidden; min-width: 200px; background-color: var(--teal); color: #000; text-align: center; border-radius: 5px; padding: 15px; position: fixed; z-index: 10000; bottom: 100px; left: 50%; transform: translateX(-50%); font-weight: bold; font-size: 0.7rem; }
         #toast.show { visibility: visible; }
-        
-        .payment-trust-badges { margin: 20px 0; padding: 10px; }
-        .payment-trust-badges p { font-size: 0.6rem; letter-spacing: 2px; margin-bottom: 10px; color: #888; }
-        .icon-row { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; align-items: center; }
-        .icon-row img { height: 22px; width: auto; opacity: 0.9; }
-
-        footer { margin-top: 50px; padding: 40px 20px; text-align: center; border-top: 1px solid #444; color: #888; text-transform: uppercase; }
-        footer a { color: var(--teal); text-decoration: none; font-weight: 700; margin: 0 10px; font-size: 0.7rem; letter-spacing: 1px; }
-        .footer-credits { font-size: 0.5rem; letter-spacing: 3px; font-weight: 900; margin-top: 20px; color: #444; }
+        footer { padding: 40px; text-align: center; color: #444; font-size: 0.5rem; letter-spacing: 4px; border-top: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
+<div class="ticker">
+    <div class="ticker-content">AUTHENTIC INFRASTRUCTURE // ESTABLISHED 2026 // VAULT CORE ARMED // PORT 3000 ACTIVE //</div>
+</div>
+
 <nav>
-    <div class="logo">SOUND<span>SHOP</span></div>
+    <div class="logo">SOUND SHOP</div>
     <div class="nav-links">
         <a href="index.html" style="color: var(--teal); opacity: 1;">HOME</a>
-        <a href="nexus.html">NEXUS</a>
         <a href="catalog.html">CATALOG</a>
         <a href="shop.html">GEAR</a>
-        <a href="portal.html">LOUNGE</a>
-        <a href="lab.html">THE LAB</a>
-        <a href="about.html">ABOUT</a>
-        <a href="signup-free.html">SIGNUP</a>
-        <a href="services.html">SERVICES</a>
+        <a href="lab.html">LAB</a>
     </div>
 </nav>
 
+<div class="contact-bar">
+    <a href="tel:19105499227" class="call-btn" onclick="showToast('Connecting to Office...')">OFFICE</a>
+    <a href="tel:19108796800" class="call-btn btn-order" onclick="showToast('Direct Ordering Line...')">PLACE ORDER</a>
+</div>
+
 <div class="hero">
-    <p>PREMIUM AUDIO INFRASTRUCTURE</p>
-    <h1>SOUND<br>SHOP.</h1>
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-vj-loop-with-blue-and-green-lights-42588-large.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <h1>SOUND<br>SHOP</h1>
 </div>
 
-<section class="nexus-promo">
-    <h2>Step Into The Nexus</h2>
-    <p>Explore our latest <strong>Blogs</strong> & <strong>Podcast Episodes</strong> all in one place.</p>
-    <a href="nexus.html" class="buy-btn" style="max-width: 250px; margin: 0 auto; text-decoration: none;">Launch Nexus Hub</a>
-</section>
-
-<section class="video-wrapper">
+<div class="video-wrapper">
     <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/GjZ_59hCrx0" title="Studio Vision" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/b4EX0kljru8" allowfullscreen></iframe>
     </div>
-</section>
-
-<div class="media-hub">
-    <div id="product-container"></div>
 </div>
 
-<div id="paymentModal">
+<div class="featured-container">
+    <div class="section-header">CORE ASSETS</div>
+
+    <div class="track-card">
+        <div class="track-title">GRUDGE GOBBLER</div>
+        <audio id="audio-grudge"><source src="audio/tgg.m4a" type="audio/mp4"></audio>
+        <div class="track-controls">
+            <button class="play-btn" onclick="togglePlay('audio-grudge', this)">Play Preview</button>
+            <button class="license-btn" onclick="openPaymentModal('GRUDGE GOBBLER', 19.99)">LICENSE - $19.99</button>
+        </div>
+    </div>
+
+    <div class="track-card">
+        <div class="track-title">ELECTRO VISE</div>
+        <audio id="audio-electro"><source src="audio/electro.m4a" type="audio/mp4"></audio>
+        <div class="track-controls">
+            <button class="play-btn" onclick="togglePlay('audio-electro', this)">Play Preview</button>
+            <button class="license-btn" onclick="openPaymentModal('ELECTRO VISE', 24.99)">LICENSE - $24.99</button>
+        </div>
+    </div>
+
+    <div class="track-card">
+        <div class="track-title">THIS POPPIN</div>
+        <audio id="audio-poppin"><source src="audio/thispoppin.m4a" type="audio/mp4"></audio>
+        <div class="track-controls">
+            <button class="play-btn" onclick="togglePlay('audio-poppin', this)">Play Preview</button>
+            <button class="license-btn" onclick="openPaymentModal('THIS POPPIN', 24.99)">LICENSE - $24.99</button>
+        </div>
+    </div>
+</div>
+
+<div id="payment-modal">
     <div class="modal-content">
-        <h3 id="modalTrackName" style="color:var(--teal); margin-top:0;">Item Name</h3>
-        <p id="modalPrice" style="font-weight: 900; font-size: 1.2rem;">$0.00</p>
-        <input type="email" id="customerEmail" placeholder="Email for Delivery">
-        <input type="tel" id="cardNumber" placeholder="Card Number">
+        <div class="modal-header" id="modal-title">SECURE GATEWAY</div>
+        <input type="text" id="card-num" class="modal-input" placeholder="CARD NUMBER">
         <div style="display:flex; gap:10px;">
-            <input type="tel" id="expMonth" placeholder="MM" maxlength="2">
-            <input type="tel" id="expYear" placeholder="YY" maxlength="2">
-            <input type="tel" id="cardCode" placeholder="CVV" maxlength="4">
+            <input type="text" id="card-exp" class="modal-input" placeholder="MM/YY">
+            <input type="text" id="card-cvv" class="modal-input" placeholder="CVV">
         </div>
-        <button class="buy-btn" onclick="sendPayment()">Complete Purchase</button>
-        <button onclick="closeModal()" style="background:none; border:none; color:#666; width:100%; margin-top:15px;">Cancel</button>
+        <button class="license-btn" style="width:100%; margin-top:10px;" onclick="initiateVaultHandshake()">AUTHORIZE VAULT</button>
+        <button class="play-btn" style="width:100%; border:none; margin-top:10px;" onclick="closeModal()">CANCEL</button>
     </div>
 </div>
 
-<div id="toast">Action Complete</div>
+<div id="chat-bubble" onclick="showToast('Opening Support...')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+</div>
 
-<footer>
-    <div class="payment-trust-badges">
-        <p>WE SECURELY ACCEPT</p>
-        <div class="icon-row">
-            <img src="https://img.icons8.com/color/48/visa.png" alt="Visa">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" alt="Amex">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay">
-        </div>
-    </div>
+<div id="toast">Action Logged</div>
 
-    <p>&copy; 2026 Sound Shop | Premium Audio Infrastructure</p>
-    <div style="margin: 15px 0;">
-        <a href="privacy.html">Privacy Policy</a> | 
-        <a href="refund.html">Refund Policy</a> |
-        <a href="contact.html">Contact Us</a>
-    </div>
-    <p style="font-size: 0.7rem; color: #666; letter-spacing: 1px;">
-        White Oak, NC | Support: (910).549.9227
-    </p>
-    <div class="footer-credits">SOUND SHOP // MMXXVI</div>
-</footer>
+<footer>&copy; 2026 SOUND SHOP | NORTH CAROLINA | RSA-4096 PROTECTED</footer>
 
 <script>
-    const featuredTracks = [
-        { id: "5", title: "Grudge Gobbler", price: "19.99", file: "audio/grudgegobbler.m4a" },
-        { id: "7", title: "The Rumbler", price: "24.99", file: "audio/rumbler.m4a" },
-        { id: "2", title: "Holding Heavy Weight", price: "29.99", file: "audio/holdenhw.m4a" }
-    ];
+    let currentItem = { title: "", price: 0 };
 
-    function formatTime(seconds) {
-        if (isNaN(seconds)) return "0:00";
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-
-    const container = document.getElementById('product-container');
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-
-    featuredTracks.forEach(track => {
-        const trackDiv = document.createElement('div');
-        trackDiv.className = 'track-card';
-        trackDiv.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div>
-                    <h2 style="color: var(--teal); font-style: italic; font-size: 1.2rem;">${track.title}</h2>
-                    <p style="font-size: 0.6rem; opacity: 0.4; letter-spacing: 2px;">PRODUCT ID: 00${track.id}</p>
-                </div>
-                <div id="clock-${track.id}" style="color: var(--teal); font-family: monospace; font-size: 0.8rem; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 5px;">0:00 / 0:00</div>
-            </div>
-            
-            <canvas id="visualizer-${track.id}" class="visualizer-container"></canvas>
-            
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button class="buy-btn" id="play-${track.id}" style="background: rgba(255,255,255,0.05); color: var(--teal); border: 1px solid var(--teal);">
-                    PLAY PREVIEW
-                </button>
-                <button class="buy-btn" onclick="openModal('${track.title}', '${track.price}', '${track.id}')">
-                    SECURE LICENSE - $${track.price}
-                </button>
-            </div>
-        `;
-        container.appendChild(trackDiv);
-
-        const audio = new Audio(track.file);
-        const clock = document.getElementById(`clock-${track.id}`);
-        const canvas = document.getElementById(`visualizer-${track.id}`);
-        const ctx = canvas.getContext("2d");
-        
-        let source;
-        let analyser;
-
-        audio.onloadedmetadata = () => {
-            clock.innerText = `0:00 / ${formatTime(audio.duration)}`;
-        };
-        audio.ontimeupdate = () => {
-            clock.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-        };
-
-        function draw() {
-            if (audio.paused) return;
-            requestAnimationFrame(draw);
-            analyser.getByteFrequencyData(dataArray);
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const barWidth = (canvas.width / bufferLength) * 2.5;
-            let x = 0;
-
-            for (let i = 0; i < bufferLength; i++) {
-                const barHeight = (dataArray[i] / 255) * canvas.height;
-                ctx.fillStyle = '#00ffcc'; 
-                ctx.fillRect(x, canvas.height - barHeight, barWidth - 4, barHeight);
-                x += barWidth;
-            }
-        }
-
-        const playBtn = document.getElementById(`play-${track.id}`);
-        let bufferLength, dataArray;
-
-        playBtn.onclick = function() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-
-            if (audio.paused) {
-                if (!source) {
-                    source = audioCtx.createMediaElementSource(audio);
-                    analyser = audioCtx.createAnalyser();
-                    source.connect(analyser);
-                    analyser.connect(audioCtx.destination);
-                    analyser.fftSize = 64;
-                    bufferLength = analyser.frequencyBinCount;
-                    dataArray = new Uint8Array(bufferLength);
-                }
-                audio.play();
-                this.innerText = "PAUSE PREVIEW";
-                draw();
-            } else {
-                audio.pause();
-                this.innerText = "PLAY PREVIEW";
-            }
-        };
-
-        audio.onended = () => { playBtn.innerText = "PLAY PREVIEW"; };
-    });
-
-    let currentOrder = {};
-    function openModal(name, price, id) {
-        currentOrder = { name, price, id };
-        document.getElementById('modalTrackName').innerText = name;
-        document.getElementById('modalPrice').innerText = '$' + price;
-        document.getElementById('paymentModal').style.display = 'flex';
-    }
-    function closeModal() { document.getElementById('paymentModal').style.display = 'none'; }
     function showToast(msg) {
         const t = document.getElementById("toast");
         t.innerText = msg; t.className = "show";
         setTimeout(() => t.className = "", 3000);
     }
-    function sendPayment() {
-        showToast("Processing Secure Payment...");
-        setTimeout(() => closeModal(), 2000);
+
+    function togglePlay(id, btn) {
+        const audio = document.getElementById(id);
+        const allAudios = document.querySelectorAll('audio');
+        const allBtns = document.querySelectorAll('.play-btn');
+
+        if (audio.paused) {
+            allAudios.forEach(a => { a.pause(); a.currentTime = 0; });
+            allBtns.forEach(b => b.innerText = "Play Preview");
+            audio.play().catch(e => showToast("Source not detected."));
+            btn.innerText = "Pause Preview";
+        } else {
+            audio.pause();
+            btn.innerText = "Play Preview";
+        }
+    }
+
+    function openPaymentModal(title, price) {
+        currentItem = { title, price };
+        document.getElementById('modal-title').innerText = `LICENSE: ${title}`;
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('payment-modal').style.display = 'none';
+    }
+
+    async function initiateVaultHandshake() {
+        const cardData = {
+            number: document.getElementById('card-num').value,
+            exp: document.getElementById('card-exp').value,
+            cvv: document.getElementById('card-cvv').value,
+            item: currentItem.title,
+            amount: currentItem.price
+        };
+
+        const requestBody = {
+            email: "zander@soundshop.cc",
+            payload: cardData 
+        };
+
+        showToast("VAULT CORE: SECURING SESSION...");
+
+        try {
+            const tokenResponse = await fetch('http://localhost:3000/tokenize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+
+            const tokenResult = await tokenResponse.json();
+
+            if (tokenResult.success) {
+                showToast("SESSION SECURED. PROCESSING...");
+
+                const checkoutResponse = await fetch('http://localhost:3000/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: tokenResult.token,
+                        cart: currentItem
+                    })
+                });
+
+                const checkoutResult = await checkoutResponse.json();
+
+                if (checkoutResult.success) {
+                    showToast(`ORDER SUCCESS: ${checkoutResult.orderId}`);
+                    setTimeout(closeModal, 2000);
+                } else {
+                    showToast("GATEWAY ERROR: " + checkoutResult.message);
+                }
+            } else {
+                showToast("VAULT ERROR: Handshake Denied.");
+            }
+        } catch (err) {
+            console.error(err);
+            showToast("BUNKER OFFLINE: Check Port 3000");
+        }
     }
 </script>
-<script src="//code.tidio.co/usm9g3ojs3tyxgq77hxyrbrfry7xuwgj.js" async></script>
 </body>
 </html>

@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE NEXUS | Culture, Science, and Wellness Hub</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CQ81083J1M');
+    </script>
+
     <style>
         :root {
             --bg-dark: #121212;
@@ -24,6 +33,43 @@
             line-height: 1.7;
         }
 
+        /* INTEGRATED CONTACT BAR */
+        .story-contact-bar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px 0;
+            background: rgba(18, 18, 18, 0.95);
+            border-bottom: 1px solid var(--accent-gold);
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+        .contact-group { text-align: center; }
+        .contact-group span { display: block; font-size: 0.5rem; letter-spacing: 2px; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 3px; }
+        .story-call-link {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.7rem;
+            border: 1px solid rgba(253, 187, 45, 0.3);
+            padding: 8px 16px;
+            border-radius: 50px;
+            transition: 0.3s;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        .story-call-link:hover { border-color: var(--accent-gold); background: rgba(253, 187, 45, 0.1); }
+        .order-glow { border-color: var(--accent-gold); animation: nexus-pulse 2s infinite; }
+
+        @keyframes nexus-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(253, 187, 45, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(253, 187, 45, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(253, 187, 45, 0); }
+        }
+
         header {
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             color: white;
@@ -35,13 +81,8 @@
 
         .container { max-width: 1000px; margin: auto; padding: 20px; }
 
-        .intro {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 30px;
-        }
+        .intro { text-align: center; margin-bottom: 30px; padding-bottom: 30px; }
 
-        /* AV Preview Container */
         .av-preview {
             background: var(--card-dark);
             padding: 30px;
@@ -120,10 +161,20 @@
             border-top: 1px solid #333;
         }
         footer a { color: var(--accent-gold); text-decoration: none; font-weight: bold; }
-        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
+
+<div class="story-contact-bar">
+    <div class="contact-group">
+        <span>Nexus Admin</span>
+        <a href="tel:19105499227" class="story-call-link" onclick="trackCall('Nexus_Logistics')">Call Office</a>
+    </div>
+    <div class="contact-group">
+        <span>Nexus Merchant</span>
+        <a href="tel:19108796800" class="story-call-link order-glow" onclick="trackCall('Nexus_Order')">Place Order</a>
+    </div>
+</div>
 
 <header>
     <h1>THE NEXUS</h1>
@@ -144,8 +195,6 @@
             <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        
-        <p style="font-size: 0.7em; color: #555; margin-top: 10px; text-align: right;">Nexus AV Stream: Verified Sample</p>
     </div>
 
     <div class="grid">
@@ -162,15 +211,12 @@
                         Admin Approval Required
                     </p>
                 </div>
-                <p style="font-size: 0.85em; color: var(--text-muted);">
-                    All broadcasters must be vetted for quality discourse. Submit your application for clearance today.
-                </p>
                 <a href="apply.html" class="btn" style="background-color: var(--accent-gold); color: #000; width: 100%; text-align: center; box-sizing: border-box;">Apply for Broadcast Clearance</a>
             </div>
         </div>
 
         <div class="card">
-            <img src="images/guitar.jpg" alt="The Creative Pulse" class="card-img">
+            <img src="guitar.jpg" alt="The Creative Pulse" class="card-img">
             <div class="card-content">
                 <h3>The Creative Pulse</h3>
                 <p>Essential roadmaps for the independent artist and musician. Bridge professional structure with your creative soul.</p>
@@ -179,22 +225,20 @@
         </div>
 
         <div class="card">
-            <img src="images/ny.jpg" alt="The Analytical Mind" class="card-img">
+            <img src="ny.jpg" alt="Industry Analytics" class="card-img">
             <div class="card-content">
-                <h3>The Analytical Mind</h3>
-                <p>For the "scientifical" and political observer. Complex global shifts simplified for action.</p>
-                <a href="https://kids.frontiersin.org/articles" target="_blank" class="btn">Explore Discoveries</a>
+                <h3>Market Intelligence</h3>
+                <p>Stay ahead of global trends in music tech and design. Professional data for the modern Sound Shop entrepreneur.</p>
+                <a href="https://www.billboard.com/pro/" target="_blank" class="btn">Industry Analysis</a>
             </div>
         </div>
     </div>
-
-    <hr style="border:0; border-top: 1px solid #333; margin: 60px 0;">
 
     <section class="wellness-section">
         <h2 style="text-align: center; margin-bottom: 40px; color: var(--accent-emerald);">Digital Wellness & Informed Living</h2>
         <div class="grid">
             <div class="card wellness-card">
-                <img src="images/stoneglo.jpg" alt="Digital Health" class="card-img wellness-img">
+                <img src="stoneglo.jpg" alt="Digital Health" class="card-img wellness-img">
                 <div class="card-content">
                     <h3>The Digital Detox Guide</h3>
                     <p>Reclaim your focus from the attention economy. Expert strategies to balance tech use.</p>
@@ -211,23 +255,19 @@
             </div>
         </div>
     </section>
-
-    <hr style="border:0; border-top: 1px solid #333; margin: 60px 0;">
-
-    <section class="docs-section">
-        <div class="card" style="max-width: 600px; margin: 40px auto; border-left: 4px solid var(--accent-gold);">
-            <div class="card-content">
-                <h3>FEATURED: The Social Dilemma</h3>
-                <p>Essential viewing for understanding how tech impacts politics and science.</p>
-                <a href="https://www.thesocialdilemma.com" target="_blank" class="btn" style="background-color: var(--accent-gold);">Learn More</a>
-            </div>
-        </div>
-    </section>
 </div>
 
 <footer>
     <p>&copy; 2026 | Built for The Modern Explorer | Resolute Partner | <a href="index.html">Back to Home Page</a></p>
 </footer>
+
+<script>
+    function trackCall(source) {
+        if (typeof gtag === 'function') {
+            gtag('event', 'click', { 'event_category': 'Nexus_Hub_Leads', 'event_label': source });
+        }
+    }
+</script>
 
 </body>
 </html>

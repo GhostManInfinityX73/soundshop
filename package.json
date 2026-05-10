@@ -12,10 +12,15 @@
   "type": "commonjs",
   "dependencies": {
     "authorizenet": "^1.0.10",
+    "axios": "^1.14.0",
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
-    "dotenv": "^17.3.1",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "sql.js": "^1.14.1"
+    "node-forge": "^1.4.0",
+    "nodemailer": "^8.0.3",
+    "sql.js": "^1.14.1",
+    "square": "^44.0.1",
+    "steno": "^4.0.2"
   }
 }
