@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE LEGACY | ZANDER & SOUND SHOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --teal: #00ffcc; --dark: #050505; --glass: rgba(255, 255, 255, 0.05); --brand-yellow: #ffcc00; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--dark); color: #ffffff; font-family: 'Inter', sans-serif; line-height: 1.8; overflow-x: hidden; }
+        
+        /* NAVIGATION: FULL INFRASTRUCTURE */
+        nav { padding: 15px 10px; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid rgba(0, 255, 204, 0.2); position: sticky; top: 0; z-index: 1000; text-align: center; backdrop-filter: blur(15px); }
+        .logo { font-family: 'Syncopate'; letter-spacing: 6px; font-size: 1.1rem; color: var(--teal); text-transform: uppercase; margin-bottom: 15px; }
+        .nav-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .nav-links a { text-decoration: none; color: #fff; font-size: 0.5rem; letter-spacing: 1px; font-weight: 700; opacity: 0.5; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--teal); opacity: 1; text-shadow: 0 0 10px var(--teal); }
+
+        /* HOLOGRAPHIC STATES */
+        .state-hologram { position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 130px; opacity: 0.2; pointer-events: none; z-index: 0; filter: drop-shadow(0 0 10px var(--teal)); }
+        .map-path { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        
+        .story-card { background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; margin: 20px auto; max-width: 800px; position: relative; overflow: hidden; border-left: 4px solid var(--teal); z-index: 1; backdrop-filter: blur(10px); }
+        .section-tag { font-family: 'Syncopate'; font-size: 0.6rem; color: var(--teal); margin-bottom: 15px; letter-spacing: 3px; display: block; }
+        .story-text { font-size: 0.9rem; margin-bottom: 15px; color: #ccc; font-weight: 300; position: relative; z-index: 2; }
+        .highlight { color: #fff; font-weight: 900; }
+
+        /* WORSHIP & FAITH FOOTER */
+        .faith-container { text-align: center; padding: 50px 20px; background: radial-gradient(circle at center, rgba(0, 255, 204, 0.05), transparent); border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 40px; }
+        .prayer-text { font-style: italic; color: #fff; font-size: 1rem; max-width: 600px; margin: 0 auto; line-height: 2; }
+        .worship-sub { font-family: 'Syncopate'; font-size: 0.55rem; color: var(--teal); margin-top: 20px; letter-spacing: 5px; text-transform: uppercase; }
+
+        footer { padding: 40px 20px; background: #000; text-align: center; color: #444; font-size: 0.5rem; letter-spacing: 3px; font-family: 'Syncopate'; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">SOUND SHOP</div>
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="studio.html">STUDIO</a>
+        <a href="lab.html">THE LAB</a>
+        <a href="vault.html">VAULT</a>
+        <a href="portal.html">PORTAL</a>
+        <a href="broadcast.html">BROADCAST</a>
+        <a href="about.html" class="active">ABOUT</a>
+    </div>
+</nav>
+
+<div class="content-section">
+    <div class="story-card">
+        <svg class="state-hologram" viewBox="0 0 100 200">
+            <path class="map-path" style="stroke: var(--teal);" d="M55,10 L75,25 L65,55 L80,85 L70,125 L80,165 L55,190 L25,165 L35,125 L15,85 L45,45 Z" />
+            <circle cx="65" cy="55" r="5" fill="#fff" />
+        </svg>
+        <span class="section-tag">THE FOUNDATION // JC</span>
+        <p class="story-text">
+            Born and raised in <span class="highlight">Jersey City, New Jersey</span>, Zander’s journey began in <span class="highlight">1973</span>. By the age of 13, the East Coast grind was the only teacher. Leaving high school in <span class="highlight">1991</span> as a 9th-grade dropout was the initiation into a masterclass of absolute self-sufficiency.
+        </p>
+    </div>
+
+    <div class="story-card" style="border-left-color: var(--brand-yellow);">
+        <svg class="state-hologram" viewBox="0 0 200 100" style="filter: drop-shadow(0 0 10px var(--brand-yellow));">
+            <path class="map-path" style="stroke: var(--brand-yellow);" d="M5,45 L185,45 L195,65 L175,85 L135,95 L75,90 L5,65 Z" />
+            <circle cx="130" cy="65" r="5" fill="#fff" />
+        </svg>
+        <span class="section-tag" style="color: var(--brand-yellow);">THE NC LEGACY // 910</span>
+        <p class="story-text">
+            For the last <span class="highlight">30 years</span>, the mission has been anchored in <span class="highlight">Fayetteville, North Carolina</span>. This is where the hustle transformed into industry. <span class="highlight">SOUND SHOP STUDIOS</span> is the 25-year culmination of audio expertise built on an independent infrastructure.
+        </p>
+    </div>
+
+    <div class="faith-container">
+        <p class="prayer-text">
+            "Father, I thank You for every valley and every mountain. I thank You for the 53 years of protection, for the strength to survive the streets, and for the vision to build this trillion-dollar industry from nothing but faith. Everything I am, and everything Sound Shop becomes, is for Your glory."
+        </p>
+        <div class="worship-sub">— ALL GLORY TO GOD ALMIGHTY // ZANDER</div>
+    </div>
+</div>
+
+<footer>
+    © 2026 SOUND SHOP | JERSEY CITY TO FAYETTEVILLE | RSA-4096 PROTECTED
+</footer>
+
+</body>
+</html>

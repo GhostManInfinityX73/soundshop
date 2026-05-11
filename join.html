@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JOIN | SOUND SHOP MEMBERSHIP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --teal: #00ffcc; --dark: #050505; --brand-yellow: #fdbb2d; --glass: rgba(255, 255, 255, 0.05); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; }
+        
+        /* HEADER */
+        nav { padding: 15px; background: rgba(0, 0, 0, 0.95); text-align: center; border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
+        .logo { font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 6px; margin-bottom: 10px; }
+        .nav-links { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .nav-links a { color: var(--teal); text-decoration: none; font-size: 0.55rem; font-weight: 900; text-transform: uppercase; opacity: 0.6; }
+        .nav-links a.active { opacity: 1; border-bottom: 2px solid var(--teal); }
+
+        /* HERO SECTION */
+        .membership-header { text-align: center; padding: 40px 20px; text-transform: uppercase; }
+        .membership-header h1 { font-family: 'Syncopate'; font-size: 1.5rem; letter-spacing: 10px; margin-bottom: 10px; }
+
+        /* TIER CARDS */
+        .tier-container { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+        .tier-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; text-align: center; border-bottom: 4px solid var(--teal); }
+        .tier-name { font-size: 0.7rem; letter-spacing: 4px; color: #666; text-transform: uppercase; margin-bottom: 15px; }
+        .tier-price { font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; }
+        .tier-price span { font-size: 0.8rem; color: var(--teal); }
+        
+        .feature-list { text-align: left; margin: 20px 0; }
+        .feature-item { font-size: 0.75rem; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: #ccc; }
+        .feature-item::before { content: '▶'; color: var(--teal); font-size: 0.6rem; }
+
+        button.cta { width: 100%; padding: 15px; border-radius: 10px; border: none; background: #1a1a1a; color: #fff; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
+        .tier-card.premium { border-color: var(--brand-yellow); }
+        .tier-card.premium button.cta { background: var(--brand-yellow); color: #000; }
+
+        /* WESTERN UNION INSTRUCTIONS */
+        .wu-instructions { margin: 20px; padding: 20px; background: rgba(253, 187, 45, 0.1); border: 1px dashed var(--brand-yellow); border-radius: 15px; }
+        .wu-title { color: var(--brand-yellow); font-weight: 900; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
+        .wu-step { font-size: 0.7rem; line-height: 1.6; color: #eee; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">SOUND SHOP</div>
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="studio.html">STUDIO</a>
+        <a href="join.html" class="active">JOIN</a>
+        <a href="services.html">SERVICES</a>
+        <a href="membership.html">MEMBERS</a>
+        <a href="about.html">ABOUT</a>
+    </div>
+</nav>
+
+<div class="membership-header">
+    <h1>MEMBERSHIP</h1>
+</div>
+
+<div class="tier-container">
+    <div class="tier-card">
+        <div class="tier-name">FREE PASS</div>
+        <div class="tier-price">$0<span>/FOREVER</span></div>
+        <div class="feature-list">
+            <div class="feature-item">Weekly Sound Samples</div>
+            <div class="feature-item">Newsletter Updates</div>
+            <div class="feature-item">Basic Gear Access</div>
+            <div class="feature-item">Limited Catalog Preview</div>
+        </div>
+        <button class="cta" onclick="joinFree()">GET STARTED</button>
+    </div>
+
+    <div class="tier-card premium">
+        <div class="tier-name">PRO SOUNDTRACKER</div>
+        <div class="tier-price">$49<span>/MONTH</span></div>
+        <div class="feature-list">
+            <div class="feature-item">Full Commercial Licensing</div>
+            <div class="feature-item">High-Impact Studio Tools</div>
+            <div class="feature-item">Priority Vault Core Access</div>
+            <div class="feature-item">Custom RSA-4096 Protection</div>
+        </div>
+        <button class="cta" onclick="showWU()">JOIN WITH WESTERN UNION</button>
+    </div>
+</div>
+
+<div id="wu-guide" class="wu-instructions">
+    <div class="wu-title">WESTERN UNION TRANSFER PROTOCOL</div>
+    <div class="wu-step">1. Visit any Western Union location or use the app.</div>
+    <div class="wu-step">2. Send payment to: <strong>ZANDER [VERIFY NAME VIA CALL]</strong>.</div>
+    <div class="wu-step">3. Destination: <strong>Fayetteville, NC, USA</strong>.</div>
+    <div class="wu-step">4. Once sent, call <strong>(910) 549-9227</strong> with your MTCN number.</div>
+    <div class="wu-step">5. Your Pro account will be activated in the Security Bunker.</div>
+</div>
+
+<script>
+    // Handles Western Union Section Scroll
+    function showWU() {
+        document.getElementById('wu-guide').scrollIntoView({ behavior: 'smooth' });
+        alert("Follow the Western Union Protocol below to activate Pro status.");
+    }
+
+    // Handles Free Membership & Instant Vault Access
+    function joinFree() {
+        const email = prompt("ENTER EMAIL FOR INSTANT VAULT ACCESS:");
+        if (email) {
+            // Logs to your Termux Server (Port 3001)
+            fetch('http://localhost:3001/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, tier: 'FREE' })
+            }).catch(err => console.log("Vault offline, logging locally..."));
+            
+            // Immediate Redirect to the Reward Page
+            window.location.href = "vault-preview.html";
+        }
+    }
+</script>
+
+</body>
+</html>

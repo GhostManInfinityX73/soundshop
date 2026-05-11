@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOUND SHOP | PORTAL GATEWAY</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-CQ81083J1M');
+    </script>
+
+    <style>
+        :root { 
+            --teal: #00ffcc; 
+            --brand-yellow: #ffd700;
+            --midnight: #0a0b0c; 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            background-color: var(--midnight); 
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            text-align: center; 
+            background-image: linear-gradient(rgba(10,11,12,0.9), rgba(10,11,12,0.95)), 
+                              url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80');
+            background-size: cover; 
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* Navigation: Matches Licensing & Lab Pages */
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 30px; background: rgba(10, 11, 12, 0.98); 
+            backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 6px; color: var(--teal); text-transform: uppercase; font-size: 1rem; cursor: pointer; text-decoration: none; }
+        
+        .nav-links { display: flex; gap: 15px; }
+        .nav-links a { font-size: 0.65rem; color: #888; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; font-weight: 700; }
+        .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+
+        /* Grid Layout */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 25px; 
+            padding: 40px 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        
+        .portal-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            padding: 25px; 
+            border-radius: 25px; 
+            backdrop-filter: blur(15px); 
+            display: flex; 
+            flex-direction: column; 
+            transition: 0.3s;
+        }
+        .portal-card:hover { border-color: var(--teal); }
+
+        h1 { font-family: 'Syncopate'; font-size: 2rem; margin: 40px 0 10px; letter-spacing: 5px; font-weight: 700; }
+        .sub-header { color: var(--teal); font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; }
+
+        /* Arcade Terminal & Emulator */
+        .emulator-container { 
+            width: 100%; 
+            height: 400px; 
+            background-color: #000; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            position: relative; 
+            border: 1px solid var(--teal); 
+            box-shadow: 0 0 20px rgba(0,255,204,0.1);
+            background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800'); 
+            background-size: cover; 
+            background-position: center;
+        }
+
+        #terminal-overlay {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            color: var(--teal); font-family: 'Syncopate'; background: rgba(0, 0, 0, 0.85); 
+            padding: 20px; border: 1px solid var(--teal); z-index: 10; width: 80%;
+            border-radius: 8px; pointer-events: none;
+        }
+
+        #game-frame { width: 100%; height: 100%; border: none; display: none; }
+
+        /* Game Menu */
+        .game-menu { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
+            margin-top: 20px; height: 200px; overflow-y: scroll; padding-right: 5px;
+        }
+        .game-menu::-webkit-scrollbar { width: 4px; }
+        .game-menu::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 10px; }
+
+        .game-btn { 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); 
+            color: #fff; padding: 12px; border-radius: 8px; font-size: 0.6rem; 
+            text-transform: uppercase; cursor: pointer; transition: 0.3s; font-weight: bold;
+        }
+        .game-btn:hover { background: var(--teal); color: #000; }
+        
+        .content-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 15px; border: 1px solid var(--teal); overflow: hidden; margin-bottom: 20px; }
+
+        footer { text-align: center; padding: 60px; color: #444; font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">SOUND SHOP</a>
+        <div class="nav-links">
+            <a href="catalog.html">Catalog</a>
+            <a href="lab.html">Lab</a>
+            <a href="product-details.html">Gear</a>
+            <a href="portal.html" class="active">Lounge</a>
+        </div>
+    </nav>
+
+    <h1>PORTAL GATEWAY</h1>
+    <p class="sub-header">System: Entertainment & Media</p>
+
+    <div class="grid-container">
+        <div class="portal-card">
+            <h3 style="font-family: 'Syncopate'; font-size: 0.8rem; color: var(--teal); margin-bottom: 15px; letter-spacing: 2px;">ARCADE TERMINAL</h3>
+            <div class="emulator-container" id="terminal">
+                <iframe id="game-frame" src="about:blank" allow="autoplay; keyboard; gamepad"></iframe>
+                <div id="terminal-overlay">
+                    <span style="font-size:1rem; font-weight:700;">[ SYSTEM ONLINE ]</span><br>
+                    <small style="opacity:0.7; letter-spacing: 1px; font-size: 0.5rem;">INITIALIZE MODULE BELOW</small>
+                </div>
+            </div>
+            
+            <div class="game-menu" id="roster"></div>
+        </div>
+
+        <div class="portal-card">
+            <h3 style="font-family: 'Syncopate'; font-size: 0.8rem; color: var(--teal); margin-bottom: 15px; letter-spacing: 2px;">CINEMA LOUNGE</h3>
+            <div class="content-box">
+                <iframe id="cinema-player" width="100%" height="100%" src="https://www.youtube.com/embed/GjZ_59hCrx0" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr; gap: 10px;">
+                <button class="game-btn" onclick="switchVideo('GjZ_59hCrx0')">Studio Vision Reel</button>
+                <button class="game-btn" onclick="switchVideo('dQw4w9WgXcQ')">Producer Showcase</button>
+                <a href="catalog.html" class="game-btn" style="text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center;">View Beat Catalog</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 SOUND SHOP // FAYETTEVILLE NC // SECURED BY RSA-2048</footer>
+
+    <script>
+        const games = [
+            { n: "Mario Bros", id: "9676-mario-bros-us-rev-f" }, 
+            { n: "Donkey Kong", id: "9158-donkey-kong-us-set-2" },
+            { n: "Pac-Man", id: "9786-pac-man-midway-embedded" },
+            { n: "Street Fighter II", id: "10362-street-fighter-ii-the-world-warrior" },
+            { n: "Sonic Hedgehog", id: "10287-sonic-the-hedgehog-usa-europe" },
+            { n: "Out Run", id: "9779-out-run-sitdown-upright-rev-b" },
+            { n: "Galaga", id: "9274-galaga-namco-set-1" },
+            { n: "Frogger", id: "9253-frogger" }
+        ];
+
+        function initializeMenu() {
+            const rosterDiv = document.getElementById('roster');
+            rosterDiv.innerHTML = ''; 
+            games.forEach(g => {
+                const btn = document.createElement('button');
+                btn.className = 'game-btn';
+                btn.textContent = g.n;
+                btn.onclick = () => loadGame(g.id);
+                rosterDiv.appendChild(btn);
+            });
+        }
+
+        function loadGame(id) {
+            const gameFrame = document.getElementById('game-frame');
+            const overlay = document.getElementById('terminal-overlay');
+            gameFrame.style.display = 'block'; 
+            overlay.style.display = 'none'; 
+            gameFrame.src = `https://www.retrogames.cc/embed/${id}.html`;
+        }
+
+        function switchVideo(id) {
+            document.getElementById('cinema-player').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        }
+
+        window.onload = initializeMenu;
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOUND SHOP | PRODUCT DETAIL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --teal: #00ffcc;
+            --brand-yellow: #ffd700;
+            --midnight: #0a0b0c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--midnight); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        nav { padding: 20px; background: rgba(10, 11, 12, 0.95); display: flex; flex-direction: column; gap: 15px; border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
+        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 8px; font-size: 1.2rem; text-transform: uppercase; text-align: center; color: var(--teal); }
+
+        .container { padding: 40px 20px; max-width: 900px; margin: 0 auto; }
+        
+        .product-display { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 20px; }
+        
+        .product-image-container { flex: 1; min-width: 300px; }
+        .product-image-container img { width: 100%; border-radius: 20px; border: 1px solid var(--teal); box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); }
+
+        .product-info { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 20px; }
+        .product-title { font-family: 'Syncopate'; font-size: 1.5rem; letter-spacing: 4px; color: var(--teal); text-transform: uppercase; line-height: 1.2; }
+        .product-price { font-size: 1.8rem; font-weight: 900; color: var(--brand-yellow); }
+        .product-desc { color: #888; font-size: 0.9rem; line-height: 1.6; border-left: 2px solid var(--teal); padding-left: 15px; }
+
+        .option-group { margin-top: 10px; }
+        .option-label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: block; color: var(--teal); font-weight: 700; }
+        
+        select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: #fff;
+            border-radius: 8px;
+            font-family: 'Inter';
+            outline: none;
+            appearance: none;
+        }
+
+        .buy-btn {
+            background: var(--teal);
+            color: #000;
+            padding: 22px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-radius: 12px;
+            margin-top: 20px;
+            transition: 0.3s;
+            display: block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .buy-btn:hover { background: var(--brand-yellow); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 255, 204, 0.2); }
+
+        .back-link { color: #666; text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; display: inline-block; transition: 0.3s; }
+        .back-link:hover { color: var(--teal); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">SOUND SHOP</div>
+</nav>
+
+<div class="container">
+    <a href="catalog.html" class="back-link">← BACK TO CATALOG</a>
+    
+    <div class="product-display">
+        <div class="product-image-container">
+            <img id="product-img" src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800&q=80" alt="Product View">
+        </div>
+
+        <div class="product-info">
+            <h1 id="product-name" class="product-title">SOUND SHOP EDITION</h1>
+            <div id="product-price" class="product-price">$ --.--</div>
+            
+            <p class="product-desc" id="product-desc">Authentic Sound Shop merchandise. Hand-crafted for high-impact performance. Built for the culture in Fayetteville, NC.</p>
+            
+            <div class="option-group">
+                <label class="option-label">SELECT SIZE / OPTION</label>
+                <select id="size-select">
+                    <option>STANDARD EDITION</option>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                    <option>XL</option>
+                </select>
+            </div>
+
+            <button onclick="location.href='vault.html'" class="buy-btn">INITIATE CHECKOUT</button>
+            <p style="font-size: 0.55rem; color: #444; text-align: center; margin-top: 15px; letter-spacing: 1px;">SECURE ACH/CARD SETTLEMENT VIA BUNKER PORT 3001</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Expanded database based on your screenshots
+    const products = {
+        // Clothing & Gear
+        "heritage-boot": { name: "Heritage Boot", price: "$185.00", img: "j_zbeach.jpg", type: "shoe" },
+        "black-low": { name: "SMR Black Low", price: "$145.00", img: "blkltps.jpg", type: "shoe" },
+        "black-pullover": { name: "Black Pullover Hoodie", price: "$85.00", img: "blkplhsmr.jpg", type: "apparel" },
+        "optical-zip": { name: "Optical Zip Hoodie", price: "$110.00", img: "blkzhoptcn.jpg", type: "apparel" },
+        
+        // Rims (A-Z)
+        "rim-a": { name: "Initialized Rim: A", price: "$1,500/EA", img: "rimz_a.jpg", type: "rim" },
+        "rim-b": { name: "Initialized Rim: B", price: "$1,500/EA", img: "rimz_b.jpg", type: "rim" },
+        
+        // Audio/SKUs from your Screenshot
+        "SKU-UND": { name: "UNDFTD Soundtrack", price: "$25.00", img: "https://images.unsplash.com/photo-1514525253344-991c0555b002?auto=format&fit=crop&w=800", type: "audio" },
+        "SKU-SPD": { name: "SPACEROIDS Audio", price: "$30.00", img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800", type: "audio" }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    if (productId && products[productId]) {
+        const item = products[productId];
+        document.getElementById('product-name').innerText = item.name;
+        document.getElementById('product-price').innerText = item.price;
+        document.getElementById('product-img').src = item.img;
+
+        // Custom Size labels for shoes
+        if (item.type === "shoe") {
+            const select = document.getElementById('size-select');
+            select.innerHTML = `
+                <option>US MEN 8</option>
+                <option>US MEN 9</option>
+                <option>US MEN 10</option>
+                <option>US MEN 11</option>
+                <option>US MEN 12</option>
+            `;
+        }
+    } else {
+        // Fallback for missing items
+        document.getElementById('product-name').innerText = "ITEM UNKNOWN";
+        document.getElementById('product-price').innerText = "CONTACT FOR PRICE";
+    }
+</script>
+
+</body>
+</html>

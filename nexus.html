@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE NEXUS | Culture, Science, and Wellness</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-dark: #1e1e1e;
+            --accent-blue: #3498db;
+            --accent-gold: #fdbb2d;
+            --accent-emerald: #2ecc71;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #e0e0e0;
+            line-height: 1.7;
+        }
+
+        /* STICKY CONTACT BAR */
+        .story-contact-bar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px 0;
+            background: rgba(18, 18, 18, 0.95);
+            border-bottom: 1px solid var(--accent-gold);
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+        .contact-group span { display: block; font-size: 0.5rem; letter-spacing: 2px; color: var(--accent-gold); text-transform: uppercase; text-align: center; font-weight: bold; }
+        .story-call-link {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.7rem;
+            border: 1px solid rgba(253, 187, 45, 0.3);
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-transform: uppercase;
+        }
+        .order-glow { border-color: var(--accent-gold); animation: nexus-pulse 2s infinite; }
+
+        @keyframes nexus-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(253, 187, 45, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(253, 187, 45, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(253, 187, 45, 0); }
+        }
+
+        /* NAVIGATION */
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 30px; background: rgba(0, 0, 0, 0.8); 
+            backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: sticky; top: 50px; z-index: 1000;
+        }
+        .logo { font-family: 'Syncopate'; font-weight: 900; letter-spacing: 6px; color: #fff; text-decoration: none; font-size: 0.8rem; }
+        .logo span { color: var(--accent-gold); }
+        .nav-links a { font-size: 0.6rem; color: #666; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; margin-left: 15px; font-weight: bold; }
+
+        header {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+        header h1 { font-family: 'Syncopate'; font-size: 2.2rem; letter-spacing: 0.1em; margin: 0; }
+
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
+
+        /* VIDEO PREVIEW */
+        .av-preview {
+            background: var(--card-dark);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--accent-gold);
+            margin: 30px 0 50px 0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .card {
+            background-color: var(--card-dark);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s ease;
+        }
+        .card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
+
+        .card-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-bottom: 2px solid var(--accent-blue); }
+
+        .card-content { padding: 25px; }
+        .card-content h3 { font-family: 'Syncopate'; font-size: 0.8rem; margin-bottom: 10px; color: #fff; }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: #fff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 15px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* STATUS DOT */
+        @keyframes pulse-gold {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(0.95); opacity: 1; }
+        }
+        .status-dot {
+            height: 10px; width: 10px; background-color: var(--accent-gold); 
+            border-radius: 50%; display: inline-block; animation: pulse-gold 2s infinite ease-in-out;
+        }
+
+        .wellness-card { border-left: 4px solid var(--accent-emerald); }
+        .wellness-img { border-bottom: 2px solid var(--accent-emerald); }
+        
+        footer { text-align: center; padding: 50px; color: #555; border-top: 1px solid #333; font-size: 0.6rem; letter-spacing: 2px; }
+        footer a { color: var(--accent-gold); text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="story-contact-bar">
+    <div class="contact-group">
+        <span>Nexus Admin</span>
+        <a href="tel:19105499227" class="story-call-link">Call Office</a>
+    </div>
+    <div class="contact-group">
+        <span>Nexus Merchant</span>
+        <a href="tel:19108796800" class="story-call-link order-glow">Place Order</a>
+    </div>
+</div>
+
+<nav>
+    <a href="index.html" class="logo">SOUND<span>SHOP</span></a>
+    <div class="nav-links">
+        <a href="catalog.html">Catalog</a>
+        <a href="lab.html">Lab</a>
+        <a href="portal.html">Lounge</a>
+        <a href="licensing.html">Rights</a>
+    </div>
+</nav>
+
+<header>
+    <h1>THE NEXUS</h1>
+    <p style="font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 10px;">Culture | Science | Wellness</p>
+</header>
+
+<div class="container">
+    <div class="av-preview">
+        <h3 style="color: var(--accent-gold); margin-bottom: 15px; font-family: 'Syncopate'; font-size: 0.7rem;">Nexus Broadcast Preview</h3>
+        <video controls poster="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=800" style="width: 100%; border-radius: 8px;">
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="grid">
+        <div class="card" style="border: 2px solid var(--accent-gold); background: rgba(253, 187, 45, 0.05);">
+            <div class="card-content">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span class="status-dot"></span>
+                    <h3 style="margin: 0; color: var(--accent-gold); font-family: 'Syncopate'; font-size: 0.8rem;">Studio: Verified Only</h3>
+                </div>
+                <p style="font-size: 0.85rem; color: #aaa;">Broadcasting: Tue & Thu | 11:00 AM — 2:00 PM</p>
+                <div style="background: #000; padding: 12px; border-radius: 6px; margin: 15px 0; border: 1px dashed var(--accent-gold);">
+                    <p style="font-size: 0.7rem; color: var(--accent-gold); margin: 0; font-family: 'Courier New', monospace;">[ACCESS LEVEL: RESTRICTED]<br>Admin Approval Required</p>
+                </div>
+                <a href="mailto:admin@soundshop.cc" class="btn" style="background-color: var(--accent-gold); color: #000;">Apply for Clearance</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="guitar.jpg" alt="Creative Pulse" class="card-img">
+            <div class="card-content">
+                <h3>The Creative Pulse</h3>
+                <p style="font-size: 0.85rem; color: #aaa;">Essential roadmaps for the independent creator.</p>
+                <a href="https://online.berklee.edu/takenote" target="_blank" class="btn">Berklee: Industry Hub</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="ny.jpg" alt="Market Intel" class="card-img">
+            <div class="card-content">
+                <h3>Market Intelligence</h3>
+                <p style="font-size: 0.85rem; color: #aaa;">Global trends in music tech and professional design.</p>
+                <a href="https://www.billboard.com/pro/" target="_blank" class="btn">Industry Analysis</a>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="text-align: center; margin-bottom: 40px; color: var(--accent-emerald); font-family: 'Syncopate'; font-size: 1rem; letter-spacing: 4px;">Digital Wellness Hub</h2>
+    <div class="grid">
+        <div class="card wellness-card">
+            <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800" alt="Mindfulness" class="card-img wellness-img">
+            <div class="card-content">
+                <img src="stoneglo.jpg" style="width: 40px; height: 40px; border-radius: 50%; float: right; border: 1px solid var(--accent-emerald); margin-left: 10px;">
+                <h3>Digital Detox Guide</h3>
+                <p style="font-size: 0.85rem; color: #aaa;">Reclaim your focus from the attention economy. Expert strategies for tech-life balance.</p>
+                <a href="https://www.humanetech.com/take-control" target="_blank" class="btn" style="background-color: var(--accent-emerald);">Start Detoxing</a>
+            </div>
+        </div>
+
+        <div class="card wellness-card">
+            <div class="card-content">
+                <h3>Informed Living</h3>
+                <p style="font-size: 0.85rem; color: #aaa;">Stay informed about what you buy. Access health impact data on everyday products.</p>
+                <a href="https://www.ewg.org/skindeep/" target="_blank" class="btn" style="background-color: var(--accent-emerald);">Consumer Safety Data</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 | THE MODERN EXPLORER | <a href="index.html">EXIT TO MAIN</a>
+</footer>
+
+</body>
+</html>
+
+

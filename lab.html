@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOUND SHOP | THE LAB</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CQ81083J1M');
+    </script>
+
+    <style>
+        :root {
+            --teal: #00ffcc;
+            --brand-yellow: #ffd700;
+            --midnight: #0a0b0c;
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--midnight); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* Ticker */
+        .ticker { background: var(--teal); color: #000; padding: 6px 0; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; overflow: hidden; }
+        .ticker-content { display: inline-block; animation: marquee 30s linear infinite; white-space: nowrap; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* Navigation */
+        nav { padding: 20px; background: rgba(10, 11, 12, 0.95); display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 2000; backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
+        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 8px; font-size: 1.2rem; text-transform: uppercase; text-align: center; background: linear-gradient(to right, #fff 20%, var(--teal) 50%, #fff 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 4s linear infinite; }
+        
+        .nav-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: #fff; font-size: 0.5rem; letter-spacing: 1px; font-weight: 700; opacity: 0.6; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover { opacity: 1; color: var(--teal); }
+
+        /* Contact Bar */
+        .contact-bar { display: flex; justify-content: center; gap: 10px; padding: 15px; background: rgba(0, 255, 204, 0.05); }
+        .call-btn { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 5px; font-weight: 800; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; }
+        .btn-order { border-color: var(--brand-yellow); color: var(--brand-yellow); }
+
+        .container { padding: 20px; max-width: 1100px; margin: 0 auto; }
+        
+        /* Grid Background Effect */
+        .grid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px); background-size: 50px 50px; transform: perspective(500px) rotateX(60deg) translateY(-100px); transform-origin: top; animation: gridMove 20s linear infinite; z-index: -2; }
+        @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 100%; } }
+
+        /* Product Styles */
+        .category-title { font-family: 'Syncopate'; color: var(--teal); border-bottom: 1px solid rgba(0,255,204,0.2); padding-bottom: 10px; margin: 60px 0 25px; letter-spacing: 5px; text-transform: uppercase; font-size: 1rem; text-align: center; }
+        .rim-category { color: var(--brand-yellow); border-bottom-color: var(--brand-yellow); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
+        
+        .item { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            padding: 15px; 
+            text-align: center; 
+            transition: 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .item:hover { border-color: var(--teal); box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); transform: translateY(-5px); }
+        .rim-item:hover { border-color: var(--brand-yellow); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+
+        .item img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 12px; transition: 0.3s; }
+        .item p { font-size: 0.6rem; margin: 5px 0; letter-spacing: 2px; color: #888; text-transform: uppercase; font-weight: 700; }
+        .price-tag { color: var(--brand-yellow); font-weight: 900; font-size: 0.7rem; display: block; margin-top: 8px; letter-spacing: 1px; }
+
+        /* Rim Protocol */
+        .rim-protocol-box {
+            border: 1px solid var(--brand-yellow);
+            padding: 25px;
+            margin: 40px 0;
+            background: rgba(255, 215, 0, 0.02);
+            border-radius: 15px;
+        }
+        .rim-protocol-box h4 { font-family: 'Syncopate'; color: var(--brand-yellow); font-size: 0.75rem; letter-spacing: 3px; margin-bottom: 15px; }
+        .rim-protocol-box li { font-size: 0.7rem; color: #ccc; margin-bottom: 8px; list-style: none; text-transform: uppercase; letter-spacing: 1px; }
+
+        footer { padding: 60px 20px; text-align: center; background: #000; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 100px; }
+        .copyright { color: #333; font-size: 0.5rem; letter-spacing: 4px; text-transform: uppercase; }
+
+        @keyframes shine { from { background-position: 0% center; } to { background-position: 200% center; } }
+    </style>
+</head>
+<body>
+
+<div class="ticker">
+    <div class="ticker-content">THE LAB // CUSTOM APPAREL // INITIALIZED RIM SERIES // GLOBAL LOGISTICS // HAND-CRAFTED MERCHANDISE //</div>
+</div>
+
+<nav>
+    <div class="logo">SOUND SHOP</div>
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="catalog.html">CATALOG</a>
+        <a href="studio.html">STUDIO</a>
+        <a href="vault.html">VAULT</a>
+        <a href="portal.html">PORTAL</a>
+        <a href="join.html">MEMBERSHIP</a>
+        <a href="about.html">ABOUT</a>
+    </div>
+</nav>
+
+<div class="contact-bar">
+    <a href="tel:19105499227" class="call-btn">LOGISTICS</a>
+    <a href="tel:19108796800" class="call-btn btn-order">DIRECT ORDER</a>
+</div>
+
+<div class="grid-bg"></div>
+
+<div class="container">
+
+    <div class="category-title">Featured Prototype</div>
+    <div style="max-width: 600px; margin: 0 auto 60px; border: 1px solid var(--teal); padding: 15px; background: rgba(0,0,0,0.5); text-align: center; border-radius: 20px; backdrop-filter: blur(20px);">
+        <a href="rim-details.html?rim=SPCEDITION" style="text-decoration:none;">
+            <img src="smrspceditionr.jpg" alt="SMR Special Edition" style="width:100%; border-radius:12px;">
+            <div style="color: var(--teal); font-family: 'Syncopate'; letter-spacing: 6px; margin-top: 20px; font-size: 0.9rem;">SMR SPECIAL EDITION</div>
+            <p style="margin-top:5px; font-size: 0.6rem; letter-spacing: 2px;">ELITE SERIES SHOWCASE</p>
+        </a>
+    </div>
+
+    <h2 class="category-title">Footwear Collection</h2>
+    <div class="grid">
+        <a href="product-details.html?id=heritage-boot" class="item"><img src="j_zbeach.jpg"><p>HERITAGE BOOT</p><span class="price-tag">$185.00</span></a>
+        <a href="product-details.html?id=black-low" class="item"><img src="blkltps.jpg"><p>SMR BLACK LOW</p><span class="price-tag">$145.00</span></a>
+        <a href="product-details.html?id=trail-runner" class="item"><img src="smrtr.jpg"><p>TRAIL RUNNER GREY</p><span class="price-tag">$160.00</span></a>
+        <a href="product-details.html?id=athletic-runner" class="item"><img src="smrblkarfg.jpg"><p>ATHLETIC RUNNER</p><span class="price-tag">$155.00</span></a>
+        <a href="product-details.html?id=court-black" class="item"><img src="smrcsblk.jpg"><p>COURT SHOE BLACK</p><span class="price-tag">$130.00</span></a>
+        <a href="product-details.html?id=court-white" class="item"><img src="smrcs.jpg"><p>COURT SHOE WHITE</p><span class="price-tag">$130.00</span></a>
+        <a href="product-details.html?id=hi-top-white" class="item"><img src="fwhtw.jpg"><p>HI-TOP WHITE</p><span class="price-tag">$170.00</span></a>
+        <a href="product-details.html?id=fashion-runner" class="item"><img src="smrfgblkgld.jpg"><p>BLACK & GOLD FASHION</p><span class="price-tag">$195.00</span></a>
+        <a href="product-details.html?id=low-top-black" class="item"><img src="fwltb.jpg"><p>LOW TOP BLACK</p><span class="price-tag">$140.00</span></a>
+    </div>
+
+    <h2 class="category-title">Streetwear Apparel</h2>
+    <div class="grid">
+        <a href="product-details.html?id=black-pullover" class="item"><img src="blkplhsmr.jpg"><p>BLACK PULLOVER</p><span class="price-tag">$85.00</span></a>
+        <a href="product-details.html?id=black-zip" class="item"><img src="njjc.jpg"><p>SMR BLACK ZIP</p><span class="price-tag">$95.00</span></a>
+        <a href="product-details.html?id=white-zip" class="item"><img src="whtzhsmr.jpg"><p>WHITE ZIP HOODIE</p><span class="price-tag">$95.00</span></a>
+        <a href="product-details.html?id=optical-zip" class="item"><img src="blkzhoptcn.jpg"><p>OPTICAL ZIP</p><span class="price-tag">$110.00</span></a>
+        <a href="product-details.html?id=logo-hoodie" class="item"><img src="blnsjs.jpg"><p>SMR LOGO HOODIE</p><span class="price-tag">$85.00</span></a>
+        <a href="product-details.html?id=good-hood-tee" class="item"><img src="tee.jpg"><p>A GOOD HOOD TEE</p><span class="price-tag">$45.00</span></a>
+        <a href="product-details.html?id=graphic-black" class="item"><img src="blkblts.jpg"><p>GRAPHIC TEE BLACK</p><span class="price-tag">$45.00</span></a>
+        <a href="product-details.html?id=graphic-white" class="item"><img src="whttsblts.jpg"><p>GRAPHIC TEE WHITE</p><span class="price-tag">$45.00</span></a>
+        <a href="product-details.html?id=custom-high" class="item"><img src="blkh.jpg"><p>CUSTOM HIGH HOODIE</p><span class="price-tag">$120.00</span></a>
+    </div>
+
+    <h2 class="category-title rim-category">Automotive Series: Initialized</h2>
+    
+    <div class="rim-protocol-box">
+        <h4>🛡️ PROCUREMENT PROTOCOL</h4>
+        <ul>
+            <li>• 50% Non-Refundable deposit required for forging</li>
+            <li>• Custom automotive sales are final / No returns</li>
+            <li>• Secure ACH settlement available via Bunker</li>
+        </ul>
+    </div>
+    
+    <div class="grid">
+        <a href="rim-details.html?rim=A" class="item rim-item"><img src="rimz_a.jpg"><p>LETTER A</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=B" class="item rim-item"><img src="rimz_b.jpg"><p>LETTER B</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=C" class="item rim-item"><img src="rimz_c.jpg"><p>LETTER C</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=D" class="item rim-item"><img src="rimz_d.jpg"><p>LETTER D</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=E" class="item rim-item"><img src="rimz_e.jpg"><p>LETTER E</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=F" class="item rim-item"><img src="rimz_f.jpg"><p>LETTER F</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=G" class="item rim-item"><img src="rimz_g.jpg"><p>LETTER G</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=H" class="item rim-item"><img src="rimz_h.jpg"><p>LETTER H</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=I" class="item rim-item"><img src="rimz_i.jpg"><p>LETTER I</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=J" class="item rim-item"><img src="rimz_j.jpg"><p>LETTER J</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=K" class="item rim-item"><img src="rimz_k.jpg"><p>LETTER K</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=L" class="item rim-item"><img src="rimz_l.jpg"><p>LETTER L</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=M" class="item rim-item"><img src="rimz_m.jpg"><p>LETTER M</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=N" class="item rim-item"><img src="rimz_n.jpg"><p>LETTER N</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=O" class="item rim-item"><img src="rimz_o.jpg"><p>LETTER O</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=P" class="item rim-item"><img src="rimz_p.jpg"><p>LETTER P</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=Q" class="item rim-item"><img src="rimz_q.jpg"><p>LETTER Q</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=R" class="item rim-item"><img src="rimz_r.jpg"><p>LETTER R</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=S" class="item rim-item"><img src="rimz_s.jpg"><p>LETTER S</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=T" class="item rim-item"><img src="rimz_t.jpg"><p>LETTER T</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=U" class="item rim-item"><img src="rimz_u.jpg"><p>LETTER U</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=V" class="item rim-item"><img src="rimz_v.jpg"><p>LETTER V</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=W" class="item rim-item"><img src="rimz_w.jpg"><p>LETTER W</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=X" class="item rim-item"><img src="rimz_x.jpg"><p>LETTER X</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=Y" class="item rim-item"><img src="rimz_y.jpg"><p>LETTER Y</p><span class="price-tag">$1,500/EA</span></a>
+        <a href="rim-details.html?rim=Z" class="item rim-item"><img src="rimz_z.jpg"><p>LETTER Z</p><span class="price-tag">$1,500/EA</span></a>
+    </div>
+
+    <footer>
+        <div class="copyright">&copy; 2026 SOUND SHOP | LAB & LOGISTICS | ALL RIGHTS RESERVED.</div>
+    </footer>
+
+</div>
+
+</body>
+</html>

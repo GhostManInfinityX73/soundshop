@@ -1,0 +1,63 @@
+/* 12. HOLOGRAPHIC MAPPING (3D GEOSPATIAL OVERLAYS) */
+.story-card {
+    position: relative;
+    overflow: hidden;
+    perspective: 1000px; /* Enables the 3D depth effect */
+    z-index: 1;
+}
+
+.state-hologram {
+    position: absolute;
+    top: 50%;
+    right: -20px; /* Tucked slightly to the side for better readability */
+    transform: translateY(-50%) rotateY(-15deg); /* 3D tilt */
+    width: 180px;
+    height: auto;
+    opacity: 0.12; /* Subtle enough to stay behind text */
+    pointer-events: none;
+    z-index: -1;
+    filter: drop-shadow(0 0 8px var(--teal));
+    transition: opacity 0.5s ease;
+}
+
+/* Specific Glow for North Carolina Card */
+.story-card.nc-legacy .state-hologram {
+    filter: drop-shadow(0 0 8px var(--brand-yellow));
+}
+
+.map-path {
+    fill: none;
+    stroke-width: 1.5;
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawHologram 5s forwards ease-in-out, hoverHologram 4s infinite alternate;
+}
+
+.nexus-beacon {
+    fill: #fff;
+    animation: pulseBeacon 2s infinite ease-in-out;
+}
+
+/* ANIMATIONS */
+@keyframes drawHologram {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes hoverHologram {
+    from { transform: translateY(-50%) rotateY(-15deg) scale(1); }
+    to { transform: translateY(-53%) rotateY(-10deg) scale(1.05); }
+}
+
+@keyframes pulseBeacon {
+    0%, 100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+    50% { opacity: 0.4; transform: scale(1.8); filter: blur(2px); }
+}
+
+/* MOBILE OPTIMIZATION for Holograms */
+@media (max-width: 600px) {
+    .state-hologram {
+        width: 130px;
+        right: -10px;
+        opacity: 0.08;
+    }
+}
