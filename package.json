@@ -3,5 +3,12 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "node-forge": "^1.4.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.1"
+  },
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   }
 }
