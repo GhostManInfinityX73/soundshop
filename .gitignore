@@ -4,3 +4,10 @@ Bluezone*
 20260328_105304.JPG
 *.pem
 vault_ledger.log
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
