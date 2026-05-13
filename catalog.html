@@ -2,252 +2,205 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOUND SHOP | CATALOG</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOUND SHOP | Zander Johnson</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;400;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --neon-cyan: #00ffcc;
-            --neon-gold: #ffcc00;
-            --alert-red: #ff4444;
-            --dark-bg: #000000;
-            --card-bg: #080808;
-            --orange-text: #FF9900;
+            --studio-black: #020202;
+            --panel-gray: #0d0d0d;
+            --neon-teal: #00ffcc;
+            --wu-gold: #fdbb2d;
         }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
-            background-color: var(--dark-bg);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--studio-black);
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-transform: uppercase;
-            font-size: 11px;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.03) 0%, transparent 80%);
         }
 
-        .security-banner {
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-gold));
-            color: #000;
-            padding: 4px 15px;
-            font-size: 8px;
-            font-weight: 900;
-            letter-spacing: 1px;
+        /* HUD NAVIGATION */
+        .catalog-hud {
+            display: grid; grid-template-columns: 1fr 1fr;
+            background: #000; border-bottom: 2px solid var(--neon-teal);
+            position: sticky; top: 0; z-index: 2000;
+        }
+        .hud-link {
+            padding: 15px 5px; text-align: center; text-decoration: none; color: #fff;
+            font-size: 0.6rem; text-transform: uppercase; font-weight: 900; letter-spacing: 2px;
+        }
+        .hud-link span { display: block; font-size: 0.4rem; color: var(--neon-teal); font-family: 'Syncopate'; }
+
+        header { padding: 40px 20px; text-align: center; }
+        header h1 { font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 10px; color: #fff; }
+
+        .container { max-width: 900px; margin: auto; padding: 10px; }
+
+        /* POSTER-FIRST VIDEO SECTION */
+        .video-section {
+            margin-bottom: 40px; background: var(--panel-gray);
+            border: 1px solid #1a1a1a; padding: 15px; border-radius: 4px;
+            text-align: center;
+        }
+        .video-container {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+            background: url('https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=1000&q=80') center/cover;
+            border: 1px solid var(--neon-teal);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+            cursor: pointer;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
         }
-
-        header { padding: 20px 10px; text-align: center; border-bottom: 1px solid #111; }
-        .logo { font-size: 20px; letter-spacing: 10px; font-weight: 900; margin-bottom: 15px; }
-        .logo .gold { color: var(--neon-gold); }
-
-        nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; font-size: 9px; font-weight: 800; }
-        nav a { color: #fff; text-decoration: none; opacity: 0.5; transition: 0.3s; }
-        nav a:hover { opacity: 1; color: var(--neon-cyan); }
-        nav a.active { opacity: 1; border-bottom: 1.5px solid var(--neon-cyan); padding-bottom: 2px; }
-        .soon-tag { color: var(--orange-text); font-size: 6px; vertical-align: top; margin-left: 1px; }
-
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
-
-        .hero { text-align: center; padding: 30px 10px; }
-        .hero h1 { font-size: 24px; letter-spacing: 12px; margin: 0; }
-        .hero p { color: var(--neon-cyan); font-size: 9px; letter-spacing: 4px; margin-top: 10px; }
-
-        .track-card { 
-            background: var(--card-bg); 
-            border: 1px solid #151515; 
-            border-left: 3px solid var(--neon-gold); 
-            border-radius: 8px; 
-            padding: 15px; 
-            margin-bottom: 20px; 
+        /* Play button overlay to show it's clickable */
+        .video-container::before {
+            content: '▶';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: var(--neon-teal);
+            z-index: 3;
+            text-shadow: 0 0 15px var(--neon-teal);
+            opacity: 0.8;
         }
-        .track-card h3 { margin: 0; font-size: 14px; letter-spacing: 3px; font-weight: 900; }
-        .sku { color: #444; font-size: 7px; margin-top: 4px; font-weight: 800; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 5; }
 
-        audio { width: 100%; margin: 15px 0; filter: invert(1) contrast(1.2); height: 30px; }
-
-        .license-btn { 
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-gold)); 
-            color: #000; 
-            border: none; 
-            padding: 12px; 
-            width: 100%; 
-            font-weight: 900; 
-            font-size: 10px; 
-            letter-spacing: 2px; 
-            cursor: pointer; 
-            border-radius: 4px; 
-            text-decoration: none; 
-            display: block; 
-            text-align: center; 
+        /* AUDIO RACK */
+        .audio-rack {
+            background: var(--panel-gray); border: 1px solid #1a1a1a;
+            border-left: 4px solid var(--neon-teal); padding: 20px; margin-bottom: 20px;
         }
+        .track-info { display: flex; justify-content: space-between; font-size: 0.5rem; color: #666; margin-top: 5px; }
 
-        .coming-soon { border: 1px dashed #222; padding: 25px; text-align: center; border-radius: 8px; margin-top: 40px; }
-        .coming-soon h4 { color: var(--neon-gold); letter-spacing: 4px; margin: 0; font-size: 11px; }
-        .coming-soon p { font-size: 8px; color: #555; letter-spacing: 2px; margin-top: 8px; line-height: 1.5; }
+        .visualizer-screen {
+            height: 80px; background: #000; display: flex; align-items: flex-end; 
+            justify-content: center; gap: 3px; margin-bottom: 15px; border: 1px solid #151515;
+        }
+        .wave-bar { width: 6px; height: 10%; background: var(--neon-teal); opacity: 0.3; transition: height 0.05s ease; }
 
-        footer { text-align: center; padding: 40px; font-size: 8px; color: #222; letter-spacing: 2px; }
+        audio { width: 100%; filter: invert(1) hue-rotate(150deg); height: 40px; margin-bottom: 15px; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .cta-btn {
+            padding: 14px; text-align: center; text-decoration: none; font-weight: 900;
+            font-size: 0.6rem; text-transform: uppercase; border-radius: 2px;
+        }
+        .wu-buy { background: var(--wu-gold); color: #000; }
+        .call-company { border: 1px solid var(--neon-teal); color: var(--neon-teal); }
+
+        footer { text-align: center; padding: 40px; font-size: 0.5rem; color: #333; letter-spacing: 4px; }
     </style>
 </head>
 <body>
 
-<div class="security-banner">
-    <span>SYSTEM STATUS: ENCRYPTED</span>
-    <span>RSA-2048 SECURE</span>
+<div class="catalog-hud">
+    <a href="tel:19108796800" class="hud-link"><span>Direct Order</span>Call Now</a>
+    <a href="https://www.westernunion.com/us/en/send-money/start.html" target="_blank" class="hud-link" style="color:var(--wu-gold)"><span>Checkout</span>WU Portal</a>
 </div>
 
 <header>
-    <div class="logo">SOUND <span class="gold">SHOP</span></div>
-    <nav>
-           <a href="index.html" style="border-bottom: 2px solid var(--neon-teal); padding-bottom: 2px;">HOME</a>
-            <a href="studio.html">STUDIO<span class="soon-tag">SOON</span></a>
-            <a href="catalog.html">SOUNDTRACKS</a>
-            <a href="lab.html"> SHOWCASE</a>
-            <a href="nexus.html">PODCASTING</a>
-            <a href="vault.html">VAULT</a>
-            <a href="portal.html">PORTAL</a>
-            <a href="chat-preview.html">CHAT<span class="soon-tag">SOON</span></a>
-    </nav>
+    <h1>SOUND SHOP</h1>
+    <p style="font-size:0.5rem; color:var(--neon-teal); letter-spacing:3px;">ZANDER JOHNSON PRODUCTIONS</p>
 </header>
 
-<div class="hero">
-    <h1>CATALOG</h1>
-    <p>PROFESSIONAL AUDIO ASSETS</p>
-</div>
-
 <div class="container">
-
-    <!-- TRACK ENTRIES -->
-    <div class="track-card">
-        <h3>CROWNED</h3>
-        <div class="sku">SKU: SS-CRN-011</div>
-        <audio controls preload="metadata"><source src="audio/crnd.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=CROWNED%20LICENSE&amount=$24.99" class="license-btn">LICENSE - $24.99</a>
+    <div class="video-section">
+        <p style="font-family:'Syncopate'; font-size:0.55rem; color:var(--neon-teal); margin-bottom:15px; letter-spacing:3px;">SPIRITUAL GUIDANCE: GOD IS IN CONTROL</p>
+        <!-- The image is now the trigger. The video ONLY loads when clicked. -->
+        <div class="video-container" id="videoBox" onclick="loadVideo()"></div>
     </div>
 
-    <div class="track-card">
-        <h3>HIGH RISE</h3>
-        <div class="sku">SKU: SS-HGR-012</div>
-        <audio controls preload="metadata"><source src="audio/highrise.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=HIGH%20RISE%20LICENSE&amount=$24.99" class="license-btn">LICENSE - $24.99</a>
-    </div>
+    <div id="catalog-container"></div>
 
-    <div class="track-card">
-        <h3>BOTRIX</h3>
-        <div class="sku">SKU: SS-BTX-003</div>
-        <audio controls preload="metadata"><source src="audio/botrix.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=BOTRIX%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    <div style="text-align:center; padding: 40px; border: 2px dashed #222;">
+        <div style="font-family:'Syncopate'; font-size:0.7rem; letter-spacing:4px;">CATALOG UPDATES</div>
+        <a onclick="alert('New instrumentals added every 24 hours at 12:00 AM EST.')" style="display: inline-block; margin-top: 20px; padding: 12px 25px; border: 1px solid var(--neon-teal); color: var(--neon-teal); text-decoration: none; font-family: 'Syncopate'; font-size: 0.6rem; cursor: pointer;">Check Timeframe</a>
     </div>
-
-    <div class="track-card">
-        <h3>ELECTRO</h3>
-        <div class="sku">SKU: SS-ELC-004</div>
-        <audio controls preload="metadata"><source src="audio/electro.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=ELECTRO%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>WAVETOXTON</h3>
-        <div class="sku">SKU: SS-WVT-005</div>
-        <audio controls preload="metadata"><source src="audio/wavetoxton.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=WAVETOXTON%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>GSMOKE</h3>
-        <div class="sku">SKU: SS-GSM-006</div>
-        <audio controls preload="metadata"><source src="audio/gsmoke.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=GSMOKE%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>FEAR NOT</h3>
-        <div class="sku">SKU: SS-FRN-007</div>
-        <audio controls preload="metadata"><source src="audio/fearnot.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=FEAR%20NOT%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>SPACEROIDS</h3>
-        <div class="sku">SKU: SS-SPD-008</div>
-        <audio controls preload="metadata"><source src="audio/spaceroids.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=SPACEROIDS%20LICENSE&amount=$29.99" class="license-btn">LICENSE - $29.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>GRUDGE GOBBLER</h3>
-        <div class="sku">SKU: SS-TGG-010</div>
-        <audio controls preload="metadata"><source src="audio/tgg.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=GRUDGE%20GOBBLER%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>EMPTY GRAVE</h3>
-        <div class="sku">SKU: SS-EGV-013</div>
-        <audio controls preload="metadata"><source src="audio/emptygrave.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=EMPTY%20GRAVE%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>HOLDEN HW</h3>
-        <div class="sku">SKU: SS-HHW-014</div>
-        <audio controls preload="metadata"><source src="audio/holdenhw.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=HOLDEN%20HW%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>RUMBLER</h3>
-        <div class="sku">SKU: SS-RMB-016</div>
-        <audio controls preload="metadata"><source src="audio/rumbler.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=RUMBLER%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>SM</h3>
-        <div class="sku">SKU: SS-SMX-017</div>
-        <audio controls preload="metadata"><source src="audio/sm.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=SM%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <div class="track-card">
-        <h3>POE</h3>
-        <div class="sku">SKU: SS-POE-019</div>
-        <audio controls preload="metadata"><source src="audio/poe.m4a" type="audio/mp4"></audio>
-        <a href="checkout.html?product=POE%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
-    </div>
-
-    <!-- LIVE BROADCAST VAULT (MULTI-LAYER INFRASTRUCTURE) -->
-    <div class="video-vault">
-        <h4>BROADCAST FEED: <span class="live-dot"></span> ACTIVE</h4>
-        
-        <div class="video-container">
-            <!-- LAYER 1: Background Infrastructure Animation -->
-            <video class="bg-animation-video" autoplay loop muted playsinline>
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-blue-and-white-lines-9051-preview.mp4" type="video/mp4">
-            </video>
-            
-            <!-- LAYER 2: Live Feed Foreground Layer -->
-            <iframe 
-                src="https://tubitv.com/embed/live/622159" 
-                class="video-frame" 
-                allow="autoplay; fullscreen; picture-in-picture" 
-                sandbox="allow-scripts allow-same-origin allow-presentation; allow-forms"
-                frameborder="0">
-            </iframe>
-        </div>
-        
-        <div class="signal-status">ENCRYPTED STREAM // LIVE FROM FAYETTEVILLE</div>
-    </div>
-
-    <div class="coming-soon">
-        <h4>NEW RELEASES DAILY</h4>
-        <p>LAB PROCESSING ACTIVE. CHECK BACK EVERY 24 HOURS FOR NEW INFRASTRUCTURE UPDATES.</p>
-    </div>
-
 </div>
 
-<footer>
-    © 2026 SOUND SHOP // FAYETTEVILLE, NC
-</footer>
+<footer>&copy; 2026 | ZANDER JOHNSON | RSA-2048 SECURE</footer>
 
+<script>
+    // POSTER-FIRST LOGIC: Load the YouTube iframe ONLY after a click
+    function loadVideo() {
+        const box = document.getElementById('videoBox');
+        box.innerHTML = '<iframe src="https://www.youtube.com/embed/S_I_6Yx9Nis?autoplay=1&rel=0" title="Spiritual Guidance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        box.style.background = "black"; // Switch to black when video starts
+    }
+
+    const tracks = [
+        { name: "CRND", file: "crnd.m4a", bpm: "140", key: "C Minor" },
+        { name: "Highrise", file: "highrise.m4a", bpm: "128", key: "G# Major" },
+        { name: "Botrix", file: "botrix.m4a", bpm: "145", key: "F Major" },
+        { name: "Electro", file: "electro.m4a", bpm: "130", key: "D Minor" },
+        { name: "Wavetoxton", file: "wavetoxton.m4a", bpm: "138", key: "A# Minor" },
+        { name: "G-Smoke", file: "gsmoke.m4a", bpm: "95", key: "E Minor" },
+        { name: "Fear Not", file: "fearnot.m4a", bpm: "142", key: "B Major" },
+        { name: "Spaceroids", file: "spaceroids.m4a", bpm: "120", key: "C Major" },
+        { name: "This Poppin", file: "thispoppin.m4a", bpm: "100", key: "G Minor" },
+        { name: "The Grudge", file: "tgg.m4a", bpm: "148", key: "F# Minor" },
+        { name: "Empty Grave", file: "emptygrave.m4a", bpm: "88", key: "D Major" },
+        { name: "Holden HW", file: "holdenhw.m4a", bpm: "140", key: "A Minor" },
+        { name: "SM", file: "sm.m4a", bpm: "135", key: "C# Minor" },
+        { name: "POE", file: "poe.m4a", bpm: "125", key: "E Major" },
+        { name: "Creep", file: "creep.m4a", bpm: "140", key: "B Minor" }
+    ];
+
+    const container = document.getElementById('catalog-container');
+    let audioCtx;
+
+    tracks.forEach((track, index) => {
+        const rack = document.createElement('div');
+        rack.className = 'audio-rack';
+        rack.innerHTML = `
+            <div style="display:flex; justify-content:space-between;">
+                <div style="font-family:'Syncopate'; font-size:0.7rem; color:var(--neon-teal);">${track.name}</div>
+                <div style="font-size:0.4rem; color:#444;">ID: SS-${index+1}</div>
+            </div>
+            <div class="track-info">
+                <span>BPM: ${track.bpm}</span><span>KEY: ${track.key}</span>
+            </div>
+            <div class="visualizer-screen" id="viz-${index}">
+                ${'<div class="wave-bar"></div>'.repeat(20)}
+            </div>
+            <audio id="audio-${index}" controls>
+                <source src="audio/${track.file}" type="audio/mp4">
+            </audio>
+            <div class="action-grid">
+                <a href="https://www.westernunion.com/us/en/send-money/start.html" target="_blank" class="cta-btn wu-buy">WU Checkout</a>
+                <a href="tel:19108796800" class="cta-btn call-company">Call Company</a>
+            </div>
+        `;
+        container.appendChild(rack);
+        
+        const audio = document.getElementById(`audio-${index}`);
+        audio.onplay = () => {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioCtx.createMediaElementSource(audio);
+            const analyzer = audioCtx.createAnalyser();
+            source.connect(analyzer);
+            analyzer.connect(audioCtx.destination);
+            analyzer.fftSize = 64;
+            const dataArray = new Uint8Array(analyzer.frequencyBinCount);
+            const bars = document.getElementById(`viz-${index}`).getElementsByClassName('wave-bar');
+            function draw() {
+                if (audio.paused) return;
+                requestAnimationFrame(draw);
+                analyzer.getByteFrequencyData(dataArray);
+                for (let i = 0; i < bars.length; i++) {
+                    const h = (dataArray[i % 32] / 255) * 100;
+                    bars[i].style.height = Math.max(10, h) + '%';
+                }
+            }
+            draw();
+        };
+    });
+</script>
 </body>
 </html>
