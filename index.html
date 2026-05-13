@@ -280,7 +280,7 @@
         <div class="track-title">BOTRIX</div>
         <div class="button-row">
             <button class="btn-preview" onclick="playAudio('botrix.m4a')">PLAY PREVIEW</button>
-            <button class="btn-license" onclick="openProduct('BOTRIX LICENSE', '', '$29.99', 'service')">LICENSE - $29.99</button>
+            <button class="btn-license" onclick="openProduct('BOTRIX LICENSE', '$29.99')">LICENSE - $29.99</button>
         </div>
     </div>
 
@@ -288,7 +288,7 @@
         <div class="track-title">ELECTRO</div>
         <div class="button-row">
             <button class="btn-preview" onclick="playAudio('electro.m4a')">PLAY PREVIEW</button>
-            <button class="btn-license" onclick="openProduct('ELECTRO LICENSE', '', '$29.99', 'service')">LICENSE - $29.99</button>
+            <button class="btn-license" onclick="openProduct('ELECTRO LICENSE', '$29.99')">LICENSE - $29.99</button>
         </div>
     </div>
     
@@ -296,7 +296,7 @@
         <div class="track-title">THE GRUDGE GOBBLER</div>
         <div class="button-row">
             <button class="btn-preview" onclick="playAudio('tgg.m4a')">PLAY PREVIEW</button>
-            <button class="btn-license" onclick="openProduct('THE GRUDGE GOBBLER LICENSE', '', '$29.99', 'service')">LICENSE - $29.99</button>
+            <button class="btn-license" onclick="openProduct('THE GRUDGE GOBBLER LICENSE', '$29.99')">LICENSE - $29.99</button>
         </div>
     </div>
 
@@ -358,26 +358,32 @@
         const BUNKER_GATEWAY = "https://556ae7a3649f79af-68-216-98-97.serveusercontent.com";
 
         function playAudio(file) {
+            // CRITICAL REROUTE: Fixes Grudge Gobbler mix-up
+            let targetFile = file;
+            if (file === 'tgg.m4a') {
+                targetFile = 'Grudge_Gobbler.m4a';
+            }
+
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
-                if (currentAudio.src.toLowerCase().includes(file.toLowerCase())) {
+                if (currentAudio.src.includes(targetFile)) {
                     currentAudio = null;
                     return;
                 }
             }
 
-            // Enhanced loading with error handling for GitHub/Termux case-sensitivity
-            currentAudio = new Audio('./audio/' + file);
+            currentAudio = new Audio('./audio/' + targetFile);
             
             const playPromise = currentAudio.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    console.error("Playback failed:", error);
-                    // Automatic fallback for Grudge Gobbler naming variations
-                    if(file === 'tgg.m4a') {
-                        console.log("Attempting alternate: Grudge_Gobbler.m4a");
-                        playAudio('Grudge_Gobbler.m4a');
+                    console.error("Playback failed for:", targetFile, error);
+                    // Automatic fallback for Termux naming variations
+                    if(targetFile === 'Grudge_Gobbler.m4a') {
+                        console.log("Attempting alternate: tgg.m4a");
+                        currentAudio = new Audio('./audio/tgg.m4a');
+                        currentAudio.play();
                     }
                 });
             }
