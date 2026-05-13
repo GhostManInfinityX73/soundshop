@@ -383,7 +383,7 @@
                     // Automatic fallback for Termux naming variations
                     if(targetFile === 'Grudge_Gobbler.m4a') {
                         console.log("Attempting alternate: tgg.m4a");
-                        currentAudio = new Audio('./audio/tgg.m4a');
+                        currentAudio = new Audio('tgg.m4a');
                         currentAudio.play();
                     }
                 });
@@ -391,7 +391,7 @@
         }
 
         function toggleChat() {
-            const win = document.getElementById('chatWindow');
+            const win = document.getEleme²²ntById('chatWindow');
             win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
         }
 
