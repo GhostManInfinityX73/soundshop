@@ -92,6 +92,23 @@
         .notice-title { color: var(--orange-text); font-size: 11px; font-weight: 900; letter-spacing: 1.5px; margin-bottom: 8px; }
         .notice-body { font-size: 10px; line-height: 1.4; color: #CCC; text-transform: none; }
 
+        /* VISUALIZER STYLES */
+        .visualizer-container {
+            width: 90%;
+            max-width: 450px;
+            margin: 10px auto;
+            background: #050505;
+            border-radius: 12px;
+            border: 1px solid #111;
+            overflow: hidden;
+            height: 80px;
+        }
+        #audio-visualizer {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
         .video-container {
             width: 90%;
             max-width: 450px;
@@ -258,7 +275,7 @@
     <div class="cta-container">
         <a href="tel:9105499227" style="flex: 1;"><button class="btn-cta">📞 CALL SHOP</button></a>
         <a href="sms:9105499227" style="flex: 1;"><button class="btn-cta">✉️ MESSAGE</button></a>
-        <a href="tel:9108796800" style="flex: 1;"><button class="btn-cta">📞 CONTACT CEO</button></a>        
+        <button class="btn-cta" style="flex: 1;" onclick="triggerGatekeeper('inquiry')">📝 INQUIRY</button>
     </div>
 
     <div class="system-notice">
@@ -266,6 +283,11 @@
         <div class="notice-body">
             SOUND SHOP is currently routing secure payments through <strong>Western Union</strong>. Manual MTCN verification is required for all digital licensing.
         </div>
+    </div>
+
+    <!-- AUDIO VISUALIZER SECTION -->
+    <div class="visualizer-container">
+        <canvas id="audio-visualizer"></canvas>
     </div>
 
     <div class="video-container" id="video-box" onclick="loadVideo()">
@@ -308,19 +330,6 @@
         <a href="https://www.netflix.com" target="_blank" style="display: inline-block; background: var(--netflix-red); color: #fff; padding: 12px 25px; border-radius: 5px; font-weight: 900; font-size: 10px; text-decoration: none; letter-spacing: 1px;">WATCH ON NETFLIX</a>
     </div>
 
-    <div class="infra-section">
-        <div class="infra-header">PAYMENT INFRASTRUCTURE STATUS</div>
-        <div class="infra-grid">
-            <div class="infra-tile active">
-                <div class="tile-label">WESTERN UNION</div>
-                <div class="tile-status status-on">● LIVE / ACTIVE</div>
-            </div>
-            <div class="infra-tile"><div class="tile-label">CASH APP</div><div class="tile-status status-off">○ STANDBY</div></div>
-            <div class="infra-tile"><div class="tile-label">STRIPE</div><div class="tile-status status-off">○ STANDBY</div></div>
-            <div class="infra-tile"><div class="tile-label">PAYPAL</div><div class="tile-status status-off">○ STANDBY</div></div>
-        </div>
-    </div>
-
     <footer>
         <p id="copyright-trigger">&copy; 2026 SOUND SHOP | RSA-2048 SECURE</p>
     </footer>
@@ -345,7 +354,6 @@
     <div id="productOverlay" class="modal">
         <div class="modal-content">
             <h2 id="overlayTitle" class="modal-title"></h2>
-            <div id="infoSection"></div>
             <div id="overlayPrice" class="modal-price"></div>
             <a id="overlayCheckout" href="checkout.html" class="cta-pay-btn">CONFIRM & PAY VIA WESTERN UNION</a>
             <div class="close-modal" onclick="closeProduct()">[ CANCEL / RETURN ]</div>
@@ -353,44 +361,93 @@
     </div>
 
     <script>
+        // GLOBAL AUDIO & VISUALIZER VARIABLES
         let currentAudio = null;
-        // PUBLIC SERVEO GATEWAY
+        let audioContext = null;
+        let analyser = null;
+        let source = null;
+        let animationId = null;
+
         const BUNKER_GATEWAY = "https://556ae7a3649f79af-68-216-98-97.serveusercontent.com";
 
+        // FUNCTIONAL PLAYBACK WITH VISUALIZER
         function playAudio(file) {
-            // CRITICAL REROUTE: Fixes Grudge Gobbler mix-up
-            let targetFile = file;
-            if (file === 'tgg.m4a') {
-                targetFile = 'Grudge_Gobbler.m4a';
-            }
+            const audioPath = './audio/' + file;
 
+            // 1. If music is already playing, handle the toggle
             if (currentAudio) {
+                const isPlayingSameFile = currentAudio.src.endsWith(file);
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
-                if (currentAudio.src.includes(targetFile)) {
+                cancelAnimationFrame(animationId); // Stop visualizer loop
+                
+                if (isPlayingSameFile) {
                     currentAudio = null;
                     return;
                 }
             }
 
-            currentAudio = new Audio('./audio/' + targetFile);
-            
-            const playPromise = currentAudio.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.error("Playback failed for:", targetFile, error);
-                    // Automatic fallback for Termux naming variations
-                    if(targetFile === 'Grudge_Gobbler.m4a') {
-                        console.log("Attempting alternate: tgg.m4a");
-                        currentAudio = new Audio('tgg.m4a');
-                        currentAudio.play();
-                    }
-                });
+            // 2. Initialize Audio Object
+            currentAudio = new Audio(audioPath);
+            currentAudio.crossOrigin = "anonymous"; // REQUIRED FOR GITHUB VISUALIZATION
+
+            // 3. Initialize Web Audio API (First click only)
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256; // Sensitivity of the bars
             }
+
+            // 4. Reconnect Source
+            if (source) source.disconnect();
+            source = audioContext.createMediaElementSource(currentAudio);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            // 5. Play and Start Visualizer
+            currentAudio.play().then(() => {
+                if (audioContext.state === 'suspended') audioContext.resume();
+                startVisualizer();
+            }).catch(e => {
+                console.error("Playback error:", e);
+                alert("Audio Sync Error: Ensure " + file + " is in the /audio folder on GitHub.");
+            });
         }
 
+        function startVisualizer() {
+            const canvas = document.getElementById('audio-visualizer');
+            const ctx = canvas.getContext('2d');
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function renderFrame() {
+                animationId = requestAnimationFrame(renderFrame);
+                analyser.getByteFrequencyData(dataArray);
+
+                // Clear Canvas
+                ctx.fillStyle = '#050505';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                let barWidth = (canvas.width / bufferLength) * 2;
+                let barHeight;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = dataArray[i] / 2;
+                    
+                    // Draw Bars in Neon Teal
+                    ctx.fillStyle = '#00FFC2';
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+                    x += barWidth + 1;
+                }
+            }
+            renderFrame();
+        }
+
+        // OTHER SHOP LOGIC
         function toggleChat() {
-            const win = document.getEleme²²ntById('chatWindow');
+            const win = document.getElementById('chatWindow');
             win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
         }
 
@@ -398,10 +455,9 @@
             const input = document.getElementById('chatInput');
             const history = document.getElementById('chat-history');
             const message = input.value.trim();
-
             if (!message) return;
 
-            history.innerHTML += `<p style="margin-top:10px;"><strong style="color:var(--orange-text)">YOU:</strong> ${message}</p>`;
+            history.innerHTML += `<p><strong style="color:var(--orange-text)">YOU:</strong> ${message}</p>`;
             input.value = '';
             history.scrollTop = history.scrollHeight;
 
@@ -411,16 +467,11 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: message, platform: 'Mobile Web' })
                 });
-
                 if (response.ok) {
                     history.innerHTML += `<p style="color:var(--neon-teal); font-size:9px;">[ SECURED IN VAULT ]</p>`;
-                    setTimeout(() => {
-                        history.innerHTML += `<p style="margin-top:10px;"><strong style="color:var(--neon-teal)">ZANDER:</strong> I've received your request. How else can I help?</p>`;
-                        history.scrollTop = history.scrollHeight;
-                    }, 1000);
                 }
             } catch (err) {
-                history.innerHTML += `<p style="color:red; font-size:9px;">[ VAULT OFFLINE - CHECK TERMUX ]</p>`;
+                console.error("Bunker offline:", err);
             }
         }
 
@@ -432,7 +483,8 @@
         function openProduct(name, price) {
             document.getElementById('overlayTitle').innerText = name;
             document.getElementById('overlayPrice').innerText = price;
-            document.getElementById('overlayCheckout').href = `checkout.html?product=${encodeURIComponent(name)}&amount=${encodeURIComponent(price)}`;
+            const link = document.getElementById('overlayCheckout');
+            link.href = `checkout.html?product=${encodeURIComponent(name)}&amount=${encodeURIComponent(price)}`;
             document.getElementById('productOverlay').style.display = 'block';
         }
 
@@ -447,16 +499,6 @@
                 body: JSON.stringify({ action: type })
             });
         }
-
-        let tapCount = 0;
-        document.getElementById('copyright-trigger').addEventListener('click', () => {
-            tapCount++;
-            if (tapCount === 2) {
-                const access = prompt("RSA-2048 CHALLENGE:");
-                if (access === "bunker-alpha") window.location.href = `${BUNKER_GATEWAY}/admin-vault`;
-            }
-            setTimeout(() => { tapCount = 0; }, 500);
-        });
     </script>
 </body>
 </html>
