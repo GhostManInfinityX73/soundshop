@@ -41,7 +41,7 @@
 
         .container { max-width: 900px; margin: auto; padding: 10px; }
 
-        /* POSTER-FIRST VIDEO SECTION */
+        /* VIDEO SECTION: POSTER-FIRST */
         .video-section {
             margin-bottom: 40px; background: var(--panel-gray);
             border: 1px solid #1a1a1a; padding: 15px; border-radius: 4px;
@@ -49,27 +49,21 @@
         }
         .video-container {
             position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+            /* Persistent Sunrise Image */
             background: url('https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=1000&q=80') center/cover;
             border: 1px solid var(--neon-teal);
             box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
-        /* Play button overlay to show it's clickable */
+        /* Play Button Overlay */
         .video-container::before {
             content: '▶';
-            position: absolute;
-            top: 50%; left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: var(--neon-teal);
-            z-index: 3;
-            text-shadow: 0 0 15px var(--neon-teal);
-            opacity: 0.8;
+            font-size: 3rem; color: var(--neon-teal);
+            z-index: 3; text-shadow: 0 0 15px var(--neon-teal); opacity: 0.8;
         }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 5; }
 
         /* AUDIO RACK */
         .audio-rack {
@@ -94,6 +88,13 @@
         .wu-buy { background: var(--wu-gold); color: #000; }
         .call-company { border: 1px solid var(--neon-teal); color: var(--neon-teal); }
 
+        .help-bubble {
+            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+            background: var(--neon-teal); border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            cursor: pointer; z-index: 9999; font-size: 1.5rem; color: #000;
+        }
+
         footer { text-align: center; padding: 40px; font-size: 0.5rem; color: #333; letter-spacing: 4px; }
     </style>
 </head>
@@ -112,7 +113,6 @@
 <div class="container">
     <div class="video-section">
         <p style="font-family:'Syncopate'; font-size:0.55rem; color:var(--neon-teal); margin-bottom:15px; letter-spacing:3px;">SPIRITUAL GUIDANCE: GOD IS IN CONTROL</p>
-        <!-- The image is now the trigger. The video ONLY loads when clicked. -->
         <div class="video-container" id="videoBox" onclick="loadVideo()"></div>
     </div>
 
@@ -124,16 +124,35 @@
     </div>
 </div>
 
+<div class="help-bubble" onclick="alert('Support coming tomorrow! Use Call Now for now.')">💬</div>
+
 <footer>&copy; 2026 | ZANDER JOHNSON | RSA-2048 SECURE</footer>
 
 <script>
-    // POSTER-FIRST LOGIC: Load the YouTube iframe ONLY after a click
+    // GitHub Optimized Video Load
     function loadVideo() {
         const box = document.getElementById('videoBox');
-        box.innerHTML = '<iframe src="https://www.youtube.com/embed/S_I_6Yx9Nis?autoplay=1&rel=0" title="Spiritual Guidance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-        box.style.background = "black"; // Switch to black when video starts
+        box.innerHTML = `
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Syncopate'; font-size:0.6rem; color:var(--neon-teal); text-align:center;">
+                CONNECTING TO STREAM...<br>
+                <span style="font-size:0.4rem; opacity:0.6; letter-spacing:2px;">GOD IS IN CONTROL</span>
+            </div>
+        `;
+
+        setTimeout(() => {
+            box.innerHTML = `
+                <iframe 
+                    src="https://www.youtube.com/embed/S_I_6Yx9Nis?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1" 
+                    title="Spiritual Guidance" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; z-index:10;"
+                    allowfullscreen>
+                </iframe>
+            `;
+        }, 800); 
     }
 
+    // Audio Catalog Data
     const tracks = [
         { name: "CRND", file: "crnd.m4a", bpm: "140", key: "C Minor" },
         { name: "Highrise", file: "highrise.m4a", bpm: "128", key: "G# Major" },
