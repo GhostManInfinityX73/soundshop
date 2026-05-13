@@ -1,6 +1,15 @@
-vault/
-*.wav
-Bluezone*
-20260328_105304.JPG
-*.pem
+# Security Bunker & Payment Data
+ss_private.pem
+ss_public.pem
+secure_holding.json
+trigger.txt
 vault_ledger.log
+
+# Node & Dependencies
+node_modules/
+node/
+package-lock.json
+
+# Environment & System
+.env
+.DS_Store
