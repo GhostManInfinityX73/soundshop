@@ -123,26 +123,96 @@
 
         .netflix-card {
             background: var(--card-bg);
-            border: 1px solid rgba(229, 9, 20, 0.3);
             border-radius: 15px;
             width: 90%;
             max-width: 450px;
-            margin: 25px auto;
-            padding: 20px;
-            text-align: center;
+            margin: 20px auto;
+            padding: 25px;
+            border-top: 4px solid var(--netflix-red);
             box-sizing: border-box;
         }
-        .netflix-btn {
-            display: block;
-            background: var(--netflix-red);
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
+
+        /* CHAT BUBBLE STYLING */
+        .chat-launcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--neon-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 255, 194, 0.4);
+            z-index: 6000;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .chat-window {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            height: 400px;
+            background: #0a0a0a;
+            border: 1px solid var(--neon-teal);
+            border-radius: 15px;
+            z-index: 6000;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-header {
+            background: var(--neon-teal);
+            color: #000;
+            padding: 15px;
             font-weight: 900;
+            font-size: 10px;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #chat-history {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
             font-size: 11px;
-            text-decoration: none;
-            letter-spacing: 2px;
-            margin-top: 15px;
+            color: #ccc;
+            text-transform: none;
+            text-align: left;
+        }
+
+        .chat-input-area {
+            padding: 10px;
+            border-top: 1px solid #222;
+            display: flex;
+            gap: 5px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: #111;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        .chat-send-btn {
+            background: var(--neon-teal);
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: 900;
+            font-size: 10px;
+            cursor: pointer;
         }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; backdrop-filter: blur(20px); overflow-y: auto; }
@@ -207,7 +277,6 @@
         </div>
     </div>
 
-    <!-- TRACK 1 -->
     <div class="track-card">
         <div class="track-title">BOTRIX</div>
         <div class="button-row">
@@ -216,7 +285,6 @@
         </div>
     </div>
 
-    <!-- TRACK 2 -->
     <div class="track-card">
         <div class="track-title">ELECTRO</div>
         <div class="button-row">
@@ -225,20 +293,20 @@
         </div>
     </div>
     
-    <!-- TRACK 3: FIXED GRUDGE GOBBLER -->
     <div class="track-card">
         <div class="track-title">THE GRUDGE GOBBLER</div>
         <div class="button-row">
-            <!-- Corrected file path to tgg.m4a for repository compatibility -->
             <button class="btn-preview" onclick="playAudio('tgg.m4a')">PLAY PREVIEW</button>
             <button class="btn-license" onclick="openProduct('THE GRUDGE GOBBLER LICENSE', '', '$29.99', 'service')">LICENSE - $29.99</button>
         </div>
     </div>
 
     <div class="netflix-card">
-        <h3 style="color: var(--netflix-red); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 5px;">STREAMING PLACEMENTS</h3>
-        <p style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 20px; text-transform: none;">Featured audio assets in Netflix productions.</p>
-        <a href="https://www.netflix.com" target="_blank" class="netflix-btn">WATCH ON NETFLIX</a>
+        <h3 style="color: var(--netflix-red); font-size: 0.9rem; letter-spacing: 3px; margin-bottom: 10px; font-weight: 900;">STREAMING PLACEMENTS</h3>
+        <p style="font-size: 0.75rem; color: #888; margin-bottom: 20px; text-transform: none; line-height: 1.4;">
+            Official audio assets and custom soundtracks featured in Netflix original productions.
+        </p>
+        <a href="https://www.netflix.com" target="_blank" style="display: inline-block; background: var(--netflix-red); color: #fff; padding: 12px 25px; border-radius: 5px; font-weight: 900; font-size: 10px; text-decoration: none; letter-spacing: 1px;">WATCH ON NETFLIX</a>
     </div>
 
     <div class="infra-section">
@@ -258,6 +326,23 @@
         <p id="copyright-trigger">&copy; 2026 SOUND SHOP | RSA-2048 SECURE</p>
     </footer>
 
+    <div class="chat-launcher" onclick="toggleChat()">💬</div>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>SOUND SHOP | LIVE SUPPORT</span>
+            <span onclick="toggleChat()" style="cursor:pointer;">[ X ]</span>
+        </div>
+        <div id="chat-history">
+            <p style="color:var(--neon-teal)">System: Connecting to secure vault...</p>
+            <p>Welcome to Sound Shop. How can we assist with your licensing inquiry today?</p>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type your message...">
+            <button class="chat-send-btn" onclick="sendChatMessage()">SEND</button>
+        </div>
+    </div>
+
     <div id="productOverlay" class="modal">
         <div class="modal-content">
             <h2 id="overlayTitle" class="modal-title"></h2>
@@ -272,22 +357,65 @@
         let currentAudio = null;
 
         function playAudio(file) {
-            // Stop any currently playing audio before starting new track
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
-                // If clicking the same button, just stop it
                 if (currentAudio.src.includes(file)) {
                     currentAudio = null;
                     return;
                 }
             }
-            // Use relative path for GitHub repository compatibility
             currentAudio = new Audio('audio/' + file);
             currentAudio.play().catch(e => {
                 console.error("Playback error:", e);
-                alert("Preview error. Ensure 'audio/" + file + "' exists in your repo.");
             });
+        }
+
+        function toggleChat() {
+            const win = document.getElementById('chatWindow');
+            win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const history = document.getElementById('chat-history');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            history.innerHTML += `<p style="margin-top:10px;"><strong style="color:var(--orange-text)">YOU:</strong> ${message}</p>`;
+            input.value = '';
+            history.scrollTop = history.scrollHeight;
+
+            try {
+                const response = await fetch('http://10.60.63.227:3001/chat-inquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        platform: 'Mobile Web'
+                    })
+                });
+
+                if (response.ok) {
+                    history.innerHTML += `<p style="color:var(--neon-teal); font-size:9px;">[ SECURED IN VAULT ]</p>`;
+                    
+                    const greetings = [
+                        "Good day to you! How may I help you?",
+                        "Hello! How are you? I've received your message.",
+                        "Good afternoon! Thank you for reaching out to Sound Shop."
+                    ];
+                    const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+
+                    setTimeout(() => {
+                        history.innerHTML += `<p style="margin-top:10px;"><strong style="color:var(--neon-teal)">ZANDER:</strong> ${randomGreeting}</p>`;
+                        history.scrollTop = history.scrollHeight;
+                    }, 1000);
+                }
+            } catch (err) {
+                console.error("🔒 Bunker connection failed:", err);
+                history.innerHTML += `<p style="color:red; font-size:9px;">[ CONNECTION ERROR: BUNKER OFFLINE ]</p>`;
+            }
         }
 
         function loadVideo() {
@@ -295,20 +423,11 @@
             container.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/b4EX0kljru8?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
         }
 
-        function updateCheckoutLink() {
-            const name = document.getElementById('overlayTitle').innerText;
-            const price = document.getElementById('overlayPrice').innerText;
-            const link = document.getElementById('overlayCheckout');
-            link.href = `checkout.html?product=${encodeURIComponent(name)}&amount=${encodeURIComponent(price)}`;
-        }
-
-        function openProduct(name, img, price, type) {
+        function openProduct(name, price) {
             document.getElementById('overlayTitle').innerText = name;
             document.getElementById('overlayPrice').innerText = price;
-            const infoSection = document.getElementById('infoSection');
-            infoSection.innerHTML = `<p style="font-size: 0.7rem; color: #888;">WESTERN UNION SECURE CHECKOUT</p>`;
-            
-            updateCheckoutLink();
+            const link = document.getElementById('overlayCheckout');
+            link.href = `checkout.html?product=${encodeURIComponent(name)}&amount=${encodeURIComponent(price)}`;
             document.getElementById('productOverlay').style.display = 'block';
         }
 
@@ -317,21 +436,19 @@
         }
 
         function triggerGatekeeper(type) {
-            // Communication with your custom mobile server API
-            fetch('https://sound-shop-api.soundshop.cc/gatekeeper-trigger', {
+            fetch('http://10.60.63.227:3001/chat-inquiry', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: type })
             });
         }
 
-        // Admin Vault Easter Egg Logic
         let tapCount = 0;
         document.getElementById('copyright-trigger').addEventListener('click', () => {
             tapCount++;
             if (tapCount === 2) {
                 const access = prompt("RSA-2048 CHALLENGE:");
-                if (access === "bunker-alpha") window.location.href = "https://sound-shop-api.soundshop.cc/admin-vault";
+                if (access === "bunker-alpha") window.location.href = "http://10.60.63.227:3001/admin-vault";
             }
             setTimeout(() => { tapCount = 0; }, 500);
         });
