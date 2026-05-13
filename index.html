@@ -1,1 +1,333 @@
-[PASTE YOUR FULL HTML CODE HERE]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOUND SHOP | Authentic Infrastructure</title>
+    <style>
+        :root {
+            --neon-teal: #00FFC2;
+            --dark-bg: #000000;
+            --card-bg: #0D0D0D;
+            --orange-text: #FF9900;
+            --netflix-red: #E50914;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #FFFFFF;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .top-bar {
+            background-color: var(--neon-teal);
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 15px;
+        }
+
+        .top-bar-text { color: #000; font-size: 10px; font-weight: 900; letter-spacing: 1px; }
+
+        header { padding: 20px 0 10px 0; }
+        .logo { font-size: 2.5rem; letter-spacing: 8px; font-weight: 800; margin: 10px 0 15px 0; }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        nav a { color: var(--neon-teal); text-decoration: none; position: relative; }
+        
+        .soon-tag {
+            color: var(--orange-text);
+            font-size: 7px;
+            vertical-align: top;
+            margin-left: 2px;
+        }
+
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px auto 20px auto;
+            width: 95%;
+            max-width: 450px;
+        }
+        .btn-cta {
+            flex: 1;
+            background: #111;
+            border: 1.5px solid #222;
+            color: #fff;
+            padding: 12px 5px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .system-notice {
+            border: 1px solid var(--orange-text);
+            border-radius: 12px;
+            margin: 10px auto 20px auto;
+            width: 90%;
+            max-width: 450px;
+            padding: 15px;
+            background: rgba(255, 153, 0, 0.05);
+            box-sizing: border-box;
+            display: block;
+            text-decoration: none;
+        }
+        .notice-title { color: var(--orange-text); font-size: 12px; font-weight: 900; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .notice-body { font-size: 11px; line-height: 1.4; color: #CCC; text-transform: none; }
+
+        .video-container {
+            width: 90%;
+            max-width: 450px;
+            margin: 0 auto 15px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #1a1a1a;
+            position: relative;
+            background-color: #111;
+            aspect-ratio: 16 / 9;
+            cursor: pointer;
+        }
+
+        .track-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            margin: 12px auto;
+            padding: 20px;
+            text-align: left;
+            border-left: 4px solid var(--neon-teal);
+            box-sizing: border-box;
+        }
+        .track-title { font-weight: 900; letter-spacing: 4px; margin-bottom: 15px; font-size: 14px; }
+        .button-row { display: flex; gap: 12px; }
+        .btn-preview { flex: 1; background: transparent; border: 1px solid var(--neon-teal); color: var(--neon-teal); padding: 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; }
+        .btn-license { flex: 1; background: var(--neon-teal); border: none; color: #000; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; }
+
+        .netflix-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            margin: 25px auto;
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .netflix-btn {
+            display: block;
+            background: var(--netflix-red);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 11px;
+            text-decoration: none;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; backdrop-filter: blur(20px); overflow-y: auto; }
+        .modal-content { max-width: 450px; margin: 50px auto; padding: 20px; text-align: center; }
+        .modal-title { font-weight: 900; color: var(--neon-teal); margin-bottom: 10px; font-size: 1.2rem; letter-spacing: 2px; }
+        .modal-price { color: var(--orange-text); font-weight: 900; font-size: 1.2rem; margin: 15px 0; }
+        .cta-pay-btn { display: block; width: 100%; padding: 20px; background: var(--neon-teal); color: #000; text-decoration: none; font-weight: 900; border-radius: 10px; margin-top: 20px; font-size: 0.8rem; letter-spacing: 2px; }
+        .close-modal { color: #555; font-size: 0.6rem; cursor: pointer; margin-top: 30px; letter-spacing: 2px; }
+
+        .infra-section { width: 90%; max-width: 450px; margin: 40px auto; text-align: left; }
+        .infra-header { font-size: 11px; font-weight: 900; color: #444; margin-bottom: 15px; letter-spacing: 2px; }
+        .infra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .infra-tile { background: #080808; border: 1px solid #1a1a1a; border-radius: 10px; padding: 15px; text-decoration: none; display: block; }
+        .infra-tile.active { border-color: var(--neon-teal); background: rgba(0, 255, 194, 0.02); }
+        .tile-label { font-size: 9px; font-weight: 900; color: #666; margin-bottom: 5px; }
+        .tile-status { font-size: 10px; font-weight: 900; }
+        .status-on { color: var(--neon-teal); }
+        .status-off { color: #333; }
+
+        footer { padding: 30px 0; color: #222; font-size: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span class="top-bar-text">AUTHENTIC INFRASTRUCTURE</span>
+    </div>
+
+    <header>
+        <div class="logo">SOUND SHOP</div>
+        <nav>
+            <a href="index.html" style="border-bottom: 2px solid var(--neon-teal); padding-bottom: 2px;">HOME</a>
+            <a href="shop.html">SHOP</a>
+            <a href="studio.html">STUDIO<span class="soon-tag">SOON</span></a>
+            <a href="catalog.html">SOUNDTRACKS</a>
+            <a href="lab.html"> SHOWCASE</a>
+            <a href="nexus.html">PODCASTING</a>
+            <a href="vault.html">VAULT</a>
+            <a href="portal.html">PORTAL</a>
+            <a href="chat-preview.html">CHAT<span class="soon-tag">SOON</span></a>
+        </nav>
+    </header>
+
+    <div class="cta-container">
+        <a href="tel:9105499227" style="flex: 1;"><button class="btn-cta">📞 CALL SHOP</button></a>
+        <a href="sms:9105499227" style="flex: 1;"><button class="btn-cta">✉️ MESSAGE</button></a>
+        <button class="btn-cta" style="flex: 1;" onclick="triggerGatekeeper('inquiry')">📝 INQUIRY</button>
+    </div>
+
+    <div class="system-notice">
+        <div class="notice-title">SYSTEM NOTICE</div>
+        <div class="notice-body">
+            SOUND SHOP is currently routing secure payments through <strong>Western Union</strong>. Manual MTCN verification is required for all digital licensing.
+        </div>
+    </div>
+
+    <div class="video-container" id="video-box" onclick="loadVideo()">
+        <!-- FIXED IMAGE PATH: images/ny.jpg -->
+        <div class="video-placeholder" style="width:100%; height:100%; background: url('images/ny.jpg') center/cover; display:flex; align-items:center; justify-content:center;">
+            <div style="width:60px; height:60px; background:rgba(255,0,0,0.9); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                <div style="border-style:solid; border-width:10px 0 10px 15px; border-color:transparent transparent transparent white;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRACKS -->
+    <div class="track-card">
+        <div class="track-title">BOTRIX</div>
+        <div class="button-row">
+            <button class="btn-preview" onclick="playAudio('botrix.m4a')">PLAY PREVIEW</button>
+            <button class="btn-license" onclick="openProduct('BOTRIX LICENSE', '', '$29.99', 'service')">LICENSE - $29.99</button>
+        </div>
+    </div>
+
+    <div class="track-card">
+        <div class="track-title">ELECTRO</div>
+        <div class="button-row">
+            <button class="btn-preview" onclick="playAudio('electro.m4a')">PLAY PREVIEW</button>
+            <button class="btn-license" onclick="openProduct('ELECTRO LICENSE', '', '$29.99', 'service')">LICENSE - $29.99</button>
+        </div>
+    </div>
+    
+    <div class="track-card">
+        <div class="track-title">THE GRUDGE GOBBLER</div>
+        <div class="button-row">
+            <button class="btn-preview" onclick="playAudio('tgg.m4a')">PLAY PREVIEW</button>
+            <button class="btn-license" onclick="openProduct('THE GRUDGE GOBBLER LICENSE', '', '$29.99', 'service')">LICENSE - $29.99</button>
+        </div>
+    </div>
+
+    <div class="netflix-card">
+        <h3 style="color: var(--netflix-red); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 5px;">STREAMING PLACEMENTS</h3>
+        <p style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 20px; text-transform: none;">Featured audio assets in Netflix productions and global streaming networks.</p>
+        <a href="https://www.netflix.com" target="_blank" class="netflix-btn">WATCH ON NETFLIX</a>
+    </div>
+
+    <div class="infra-section">
+        <div class="infra-header">PAYMENT INFRASTRUCTURE STATUS</div>
+        <div class="infra-grid">
+            <div class="infra-tile active">
+                <div class="tile-label">WESTERN UNION</div>
+                <div class="tile-status status-on">● LIVE / ACTIVE</div>
+            </div>
+            <div class="infra-tile"><div class="tile-label">CASH APP</div><div class="tile-status status-off">○ STANDBY</div></div>
+            <div class="infra-tile"><div class="tile-label">STRIPE</div><div class="tile-status status-off">○ STANDBY</div></div>
+            <div class="infra-tile"><div class="tile-label">PAYPAL</div><div class="tile-status status-off">○ STANDBY</div></div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="copyright-trigger">&copy; 2026 SOUND SHOP</p>
+    </footer>
+
+    <div id="productOverlay" class="modal">
+        <div class="modal-content">
+            <h2 id="overlayTitle" class="modal-title"></h2>
+            <div id="infoSection"></div>
+            <div id="overlayPrice" class="modal-price"></div>
+            <a id="overlayCheckout" href="checkout.html" class="cta-pay-btn">CONFIRM & PAY VIA WESTERN UNION</a>
+            <div class="close-modal" onclick="closeProduct()">[ CANCEL / RETURN ]</div>
+        </div>
+    </div>
+
+    <script>
+        let currentAudio = null;
+
+        function playAudio(file) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                if (currentAudio.src.endsWith(file)) {
+                    currentAudio = null;
+                    return;
+                }
+            }
+            // Ensure audio path is correct for GitHub structure
+            currentAudio = new Audio('audio/' + file);
+            currentAudio.play().catch(e => {
+                console.error("Playback error:", e);
+            });
+        }
+
+        function loadVideo() {
+            const container = document.getElementById('video-box');
+            // Changed to match the video referenced in your placeholder
+            container.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/b4EX0kljru8?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+        }
+
+        function updateCheckoutLink() {
+            const name = document.getElementById('overlayTitle').innerText;
+            const price = document.getElementById('overlayPrice').innerText;
+            const link = document.getElementById('overlayCheckout');
+            link.href = `checkout.html?product=${encodeURIComponent(name)}&amount=${encodeURIComponent(price)}`;
+        }
+
+        function openProduct(name, img, price, type) {
+            document.getElementById('overlayTitle').innerText = name;
+            document.getElementById('overlayPrice').innerText = price;
+            const infoSection = document.getElementById('infoSection');
+            infoSection.innerHTML = `<p style="font-size: 0.7rem; color: #888;">WESTERN UNION SECURE CHECKOUT</p>`;
+            
+            updateCheckoutLink();
+            document.getElementById('productOverlay').style.display = 'block';
+        }
+
+        function closeProduct() {
+            document.getElementById('productOverlay').style.display = 'none';
+        }
+
+        function triggerGatekeeper(type) {
+            fetch('https://sound-shop-api.soundshop.cc/gatekeeper-trigger', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: type })
+            });
+        }
+
+        let tapCount = 0;
+        document.getElementById('copyright-trigger').addEventListener('click', () => {
+            tapCount++;
+            if (tapCount === 2) {
+                const access = prompt("RSA-2048 CHALLENGE:");
+                if (access === "bunker-alpha") window.location.href = "https://sound-shop-api.soundshop.cc/admin-vault";
+            }
+            setTimeout(() => { tapCount = 0; }, 500);
+        });
+    </script>
+</body>
+</html>
+
