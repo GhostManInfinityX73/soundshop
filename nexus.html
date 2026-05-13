@@ -14,6 +14,7 @@
             --accent-blue: #3498db;
             --accent-gold: #fdbb2d;
             --accent-emerald: #2ecc71;
+            --teal: #00ffcc;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,6 +24,7 @@
             background-color: var(--bg-dark);
             color: #e0e0e0;
             line-height: 1.7;
+            overflow-x: hidden;
         }
 
         /* STICKY CONTACT BAR */
@@ -60,14 +62,46 @@
 
         /* NAVIGATION */
         nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 30px; background: rgba(0, 0, 0, 0.8); 
-            backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: sticky; top: 50px; z-index: 1000;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 20px; 
+            background: rgba(10, 11, 12, 0.98); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+            position: sticky; 
+            top: 45px; 
+            z-index: 1000;
         }
-        .logo { font-family: 'Syncopate'; font-weight: 900; letter-spacing: 6px; color: #fff; text-decoration: none; font-size: 0.8rem; }
-        .logo span { color: var(--accent-gold); }
-        .nav-links a { font-size: 0.6rem; color: #666; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; margin-left: 15px; font-weight: bold; }
+        .logo { 
+            font-family: 'Syncopate', sans-serif; 
+            font-weight: 700; 
+            letter-spacing: 4px; 
+            color: #fff; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo span { color: var(--teal); }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 10px; 
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+        .nav-links a { 
+            font-size: 0.55rem; 
+            color: #888; 
+            text-decoration: none; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            transition: 0.3s; 
+            font-weight: 700; 
+            white-space: nowrap;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--teal); }
 
         header {
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
@@ -80,7 +114,6 @@
 
         .container { max-width: 1000px; margin: auto; padding: 20px; }
 
-        /* VIDEO PREVIEW */
         .av-preview {
             background: var(--card-dark);
             padding: 25px;
@@ -124,15 +157,15 @@
             text-align: center;
         }
 
-        /* STATUS DOT */
+        .status-dot {
+            height: 10px; width: 10px; background-color: var(--accent-gold); 
+            border-radius: 50%; display: inline-block; animation: pulse-gold 2s infinite ease-in-out;
+        }
+
         @keyframes pulse-gold {
             0% { transform: scale(0.95); opacity: 1; }
             50% { transform: scale(1.2); opacity: 0.7; }
             100% { transform: scale(0.95); opacity: 1; }
-        }
-        .status-dot {
-            height: 10px; width: 10px; background-color: var(--accent-gold); 
-            border-radius: 50%; display: inline-block; animation: pulse-gold 2s infinite ease-in-out;
         }
 
         .wellness-card { border-left: 4px solid var(--accent-emerald); }
@@ -158,10 +191,11 @@
 <nav>
     <a href="index.html" class="logo">SOUND<span>SHOP</span></a>
     <div class="nav-links">
+        <a href="index.html">Home</a>
         <a href="catalog.html">Catalog</a>
         <a href="lab.html">Lab</a>
-        <a href="portal.html">Lounge</a>
-        <a href="licensing.html">Rights</a>
+        <a href="nexus.html" class="active">Nexus</a>
+        <a href="vault.html">Vault</a>
     </div>
 </nav>
 
@@ -173,7 +207,8 @@
 <div class="container">
     <div class="av-preview">
         <h3 style="color: var(--accent-gold); margin-bottom: 15px; font-family: 'Syncopate'; font-size: 0.7rem;">Nexus Broadcast Preview</h3>
-        <video controls poster="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=800" style="width: 100%; border-radius: 8px;">
+        <!-- FIXED POSTER PATH -->
+        <video controls poster="images/ny.jpg" style="width: 100%; border-radius: 8px;">
             <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         </video>
     </div>
@@ -194,7 +229,8 @@
         </div>
 
         <div class="card">
-            <img src="guitar.jpg" alt="Creative Pulse" class="card-img">
+            <!-- FIXED IMAGE PATH: images/guitar.jpg -->
+            <img src="images/guitar.jpg" alt="Creative Pulse" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=800'">
             <div class="card-content">
                 <h3>The Creative Pulse</h3>
                 <p style="font-size: 0.85rem; color: #aaa;">Essential roadmaps for the independent creator.</p>
@@ -203,7 +239,8 @@
         </div>
 
         <div class="card">
-            <img src="ny.jpg" alt="Market Intel" class="card-img">
+            <!-- FIXED IMAGE PATH: images/ny.jpg -->
+            <img src="images/ny.jpg" alt="Market Intel" class="card-img">
             <div class="card-content">
                 <h3>Market Intelligence</h3>
                 <p style="font-size: 0.85rem; color: #aaa;">Global trends in music tech and professional design.</p>
@@ -217,7 +254,8 @@
         <div class="card wellness-card">
             <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800" alt="Mindfulness" class="card-img wellness-img">
             <div class="card-content">
-                <img src="stoneglo.jpg" style="width: 40px; height: 40px; border-radius: 50%; float: right; border: 1px solid var(--accent-emerald); margin-left: 10px;">
+                <!-- FIXED IMAGE PATH: images/stoneglo.jpg -->
+                <img src="images/stoneglo.jpg" style="width: 40px; height: 40px; border-radius: 50%; float: right; border: 1px solid var(--accent-emerald); margin-left: 10px;" onerror="this.style.display='none'">
                 <h3>Digital Detox Guide</h3>
                 <p style="font-size: 0.85rem; color: #aaa;">Reclaim your focus from the attention economy. Expert strategies for tech-life balance.</p>
                 <a href="https://www.humanetech.com/take-control" target="_blank" class="btn" style="background-color: var(--accent-emerald);">Start Detoxing</a>
@@ -240,5 +278,3 @@
 
 </body>
 </html>
-
-
