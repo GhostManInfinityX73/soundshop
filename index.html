@@ -354,22 +354,33 @@
 
     <script>
         let currentAudio = null;
-        // PUBLIC SERVEO BUNKER URL
+        // PUBLIC SERVEO GATEWAY
         const BUNKER_GATEWAY = "https://556ae7a3649f79af-68-216-98-97.serveusercontent.com";
 
         function playAudio(file) {
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
-                if (currentAudio.src.includes(file)) {
+                if (currentAudio.src.toLowerCase().includes(file.toLowerCase())) {
                     currentAudio = null;
                     return;
                 }
             }
-            currentAudio = new Audio('audio/' + file);
-            currentAudio.play().catch(e => {
-                console.error("Playback error:", e);
-            });
+
+            // Enhanced loading with error handling for GitHub/Termux case-sensitivity
+            currentAudio = new Audio('./audio/' + file);
+            
+            const playPromise = currentAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.error("Playback failed:", error);
+                    // Automatic fallback for Grudge Gobbler naming variations
+                    if(file === 'tgg.m4a') {
+                        console.log("Attempting alternate: Grudge_Gobbler.m4a");
+                        playAudio('Grudge_Gobbler.m4a');
+                    }
+                });
+            }
         }
 
         function toggleChat() {
@@ -389,34 +400,21 @@
             history.scrollTop = history.scrollHeight;
 
             try {
-                // ROUTING VIA PUBLIC SERVEO TUNNEL
                 const response = await fetch(`${BUNKER_GATEWAY}/chat-inquiry`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: message,
-                        platform: 'Mobile Web'
-                    })
+                    body: JSON.stringify({ message: message, platform: 'Mobile Web' })
                 });
 
                 if (response.ok) {
                     history.innerHTML += `<p style="color:var(--neon-teal); font-size:9px;">[ SECURED IN VAULT ]</p>`;
-                    
-                    const greetings = [
-                        "Good day to you! How may I help you?",
-                        "Hello! How are you? I've received your message.",
-                        "Good afternoon! Thank you for reaching out to Sound Shop."
-                    ];
-                    const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-
                     setTimeout(() => {
-                        history.innerHTML += `<p style="margin-top:10px;"><strong style="color:var(--neon-teal)">ZANDER:</strong> ${randomGreeting}</p>`;
+                        history.innerHTML += `<p style="margin-top:10px;"><strong style="color:var(--neon-teal)">ZANDER:</strong> I've received your request. How else can I help?</p>`;
                         history.scrollTop = history.scrollHeight;
                     }, 1000);
                 }
             } catch (err) {
-                console.error("🔒 Bunker connection failed:", err);
-                history.innerHTML += `<p style="color:red; font-size:9px;">[ CONNECTION ERROR: BUNKER OFFLINE ]</p>`;
+                history.innerHTML += `<p style="color:red; font-size:9px;">[ VAULT OFFLINE - CHECK TERMUX ]</p>`;
             }
         }
 
@@ -428,8 +426,7 @@
         function openProduct(name, price) {
             document.getElementById('overlayTitle').innerText = name;
             document.getElementById('overlayPrice').innerText = price;
-            const link = document.getElementById('overlayCheckout');
-            link.href = `checkout.html?product=${encodeURIComponent(name)}&amount=${encodeURIComponent(price)}`;
+            document.getElementById('overlayCheckout').href = `checkout.html?product=${encodeURIComponent(name)}&amount=${encodeURIComponent(price)}`;
             document.getElementById('productOverlay').style.display = 'block';
         }
 
@@ -438,7 +435,6 @@
         }
 
         function triggerGatekeeper(type) {
-            // ROUTING VIA PUBLIC SERVEO TUNNEL
             fetch(`${BUNKER_GATEWAY}/chat-inquiry`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -451,7 +447,6 @@
             tapCount++;
             if (tapCount === 2) {
                 const access = prompt("RSA-2048 CHALLENGE:");
-                // ROUTING VIA PUBLIC SERVEO TUNNEL
                 if (access === "bunker-alpha") window.location.href = `${BUNKER_GATEWAY}/admin-vault`;
             }
             setTimeout(() => { tapCount = 0; }, 500);
