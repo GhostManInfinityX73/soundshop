@@ -132,7 +132,6 @@
             box-sizing: border-box;
         }
 
-        /* CHAT BUBBLE STYLING */
         .chat-launcher {
             position: fixed;
             bottom: 20px;
@@ -355,6 +354,8 @@
 
     <script>
         let currentAudio = null;
+        // PUBLIC SERVEO BUNKER URL
+        const BUNKER_GATEWAY = "https://556ae7a3649f79af-68-216-98-97.serveusercontent.com";
 
         function playAudio(file) {
             if (currentAudio) {
@@ -388,7 +389,8 @@
             history.scrollTop = history.scrollHeight;
 
             try {
-                const response = await fetch('http://10.60.63.227:3001/chat-inquiry', {
+                // ROUTING VIA PUBLIC SERVEO TUNNEL
+                const response = await fetch(`${BUNKER_GATEWAY}/chat-inquiry`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -436,7 +438,8 @@
         }
 
         function triggerGatekeeper(type) {
-            fetch('http://10.60.63.227:3001/chat-inquiry', {
+            // ROUTING VIA PUBLIC SERVEO TUNNEL
+            fetch(`${BUNKER_GATEWAY}/chat-inquiry`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: type })
@@ -448,7 +451,8 @@
             tapCount++;
             if (tapCount === 2) {
                 const access = prompt("RSA-2048 CHALLENGE:");
-                if (access === "bunker-alpha") window.location.href = "http://10.60.63.227:3001/admin-vault";
+                // ROUTING VIA PUBLIC SERVEO TUNNEL
+                if (access === "bunker-alpha") window.location.href = `${BUNKER_GATEWAY}/admin-vault`;
             }
             setTimeout(() => { tapCount = 0; }, 500);
         });
