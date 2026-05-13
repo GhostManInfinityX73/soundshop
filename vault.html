@@ -3,71 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Vault | Sound Shop Access</title>
+    <title>THE VAULT | PRO AUDIO ASSETS</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;900&display=swap');
-        :root { --teal: #00ffcc; --dark: #020202; }
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;700;900&display=swap');
         
-        body { margin:0; background: var(--dark); color:#fff; font-family:'Inter', sans-serif; overflow-x:hidden; }
+        :root { 
+            --teal: #00ffcc; 
+            --dark: #020202; 
+            --gold: #ffd700;
+            --purple-glow: rgba(80, 0, 255, 0.15);
+            --teal-glow: rgba(0, 255, 204, 0.1);
+            --border: rgba(0, 255, 204, 0.15);
+        }
         
-        /* Navigation - Matches index.html */
-        nav { padding: 20px; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
-        .logo { font-weight: 900; letter-spacing: 3px; font-size: 1rem; text-transform: uppercase; font-style: italic; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--dark); 
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            min-height: 100vh;
+        }
+
+        /* HIGH-COLOR BACKGROUND SYSTEM */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* Animated Color Nebula */
+        .nebula {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--purple-glow) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, var(--teal-glow) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, #050505 0%, #000 100%);
+            filter: blur(80px);
+            animation: nebulaShift 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes nebulaShift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, 5%) scale(1.1); }
+        }
+
+        .grid-plane {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            bottom: -20%;
+            left: -50%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 80px 80px;
+            transform: perspective(600px) rotateX(70deg);
+            animation: moveGrid 12s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 80px; }
+        }
+
+        .glow-horizon {
+            position: absolute;
+            bottom: 30%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--teal), transparent);
+            box-shadow: 0 0 50px var(--teal);
+            opacity: 0.4;
+        }
+
+        nav { 
+            padding: 20px 40px; 
+            background: rgba(0, 0, 0, 0.85); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-family: 'Syncopate'; font-weight: 700; letter-spacing: 5px; font-size: 0.9rem; }
         .logo span { color: var(--teal); }
-        .nav-links a { text-decoration: none; color: #fff; font-size: 0.65rem; margin-left: 10px; letter-spacing: 1px; font-weight: 700; opacity: 0.6; }
-        .nav-links a:hover { opacity: 1; color: var(--teal); }
 
-        .grid-bg { position:fixed; top:0; left:0; width:100%; height:100%; background-image:linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px); background-size: 50px 50px; transform: perspective(500px) rotateX(60deg); z-index:-1; }
-        
-        .vault-header { padding: 60px 20px; text-align:center; }
-        h1 { font-weight:100; letter-spacing:15px; font-size:3rem; margin:0; text-transform: uppercase; }
-        .user-id { color: var(--teal); font-size:0.7rem; letter-spacing:3px; margin-top:10px; opacity:0.6; font-weight: 700; }
+        .status-bar {
+            background: rgba(0, 255, 204, 0.05);
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: var(--teal);
+            border-bottom: 1px solid var(--border);
+        }
 
-        .file-grid { max-width:1200px; margin:0 auto; padding:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
-        .file-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:30px; border-radius:24px; transition:0.3s; position: relative; overflow: hidden; }
-        .file-card:hover { border-color: var(--teal); background:rgba(0,255,204,0.02); transform:translateY(-5px); }
-        
-        .file-name { font-weight:700; font-size:1.2rem; margin-bottom:5px; display:block; color: #fff; }
-        .file-type { color:#555; font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; display: block; margin-bottom: 10px; }
-        
-        .dl-btn { display:inline-block; margin-top:20px; padding:12px 25px; background: var(--teal); color:#000; text-decoration:none; border-radius:50px; font-weight:900; font-size:0.75rem; transition:0.3s; text-transform: uppercase; border: none; cursor: pointer; }
-        .dl-btn:hover { box-shadow:0 0 20px rgba(0,255,204,0.4); transform: scale(1.05); }
+        .hero { padding: 80px 20px 20px; text-align:center; }
+        h1 { font-family: 'Syncopate'; font-weight:700; letter-spacing:18px; font-size:clamp(1.8rem, 10vw, 3.5rem); margin:0; color: #fff; }
 
-        footer { text-align: center; padding: 40px; opacity: 0.3; font-size: 0.6rem; letter-spacing: 2px; }
+        /* HYPERLINKED WESTERN UNION CTA */
+        .checkout-notice {
+            max-width: 600px;
+            margin: 20px auto 60px;
+            padding: 20px;
+            border: 1px solid var(--teal);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            transition: 0.4s;
+            cursor: pointer;
+        }
+        .checkout-notice:hover { border-color: var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.3); }
+        .checkout-notice a { text-decoration: none; color: var(--teal); font-size: 0.7rem; letter-spacing: 3px; font-weight: 900; display: block; }
+        .checkout-notice span { color: var(--gold); }
+
+        .file-grid { 
+            max-width:1200px; 
+            margin:0 auto; 
+            padding:20px; 
+            display:grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap:35px; 
+        }
+        .file-card { 
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 50px 35px; 
+            transition: 0.3s;
+        }
+        .file-card:hover { border-color: var(--teal); background: rgba(0, 255, 204, 0.05); transform: scale(1.02); }
+        
+        .file-type { color: var(--teal); font-size:0.55rem; font-weight: 900; text-transform:uppercase; letter-spacing:4px; margin-bottom: 20px; display: block; }
+        .file-name { font-family: 'Syncopate'; font-weight:700; font-size:0.85rem; letter-spacing: 2px; color: #fff; }
+        
+        .dl-btn { 
+            display:block; width: 100%; text-align: center; margin-top: 40px; padding: 20px; 
+            background: var(--teal); color: #000; text-decoration:none; font-weight:900; 
+            font-size:0.75rem; letter-spacing: 4px; text-transform: uppercase; border: none; 
+        }
+
+        footer { text-align: center; padding: 100px; opacity: 0.2; font-size: 0.6rem; letter-spacing: 5px; }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="logo">SOUND<span>SHOP</span></div>
-        <div class="nav-links">
-            <a href="index.html">HOME</a>
-            <a href="catalog.html">BEATS</a>
-            <a href="vault.html" style="color: var(--teal); opacity: 1;">LOUNGE</a>
-        </div>
-    </nav>
 
-    <div class="grid-bg"></div>
-    
-    <div class="vault-header">
-        <h1>THE VAULT</h1>
-        <div class="user-id" id="display-email">AUTHENTICATING...</div>
+    <div class="bg-container">
+        <div class="nebula"></div>
+        <div class="grid-plane"></div>
+        <div class="glow-horizon"></div>
     </div>
 
-    <div class="file-grid" id="file-container">
-        </div>
+    <nav><div class="logo">SOUND<span>SHOP</span></div></nav>
 
-    <footer>ACCESS GRANTED // MMXXVI</footer>
+    <div class="status-bar">
+        <div id="session-id">SESSION: AUTHENTICATING...</div>
+        <div>UPLINK: ENCRYPTED  MMXXVI</div>
+    </div>
+    
+    <div class="hero">
+        <h1>THE VAULT</h1>
+        <div style="opacity: 0.5; font-size: 0.6rem; letter-spacing: 6px; margin-top: 15px; text-transform: uppercase;">Professional Digital Assets</div>
+    </div>
+
+    <div class="checkout-notice">
+        <a href="checkout.html">SECURE ACQUISITION <span>VIA WESTERN UNION</span></a>
+    </div>
+
+    <div class="file-grid" id="file-container"></div>
+
+    <footer>SOUND SHOP DIGITAL INFRASTRUCTURE // SECURE TERMINAL</footer>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const userEmail = urlParams.get('email') || "GUEST_USER";
-        document.getElementById('display-email').innerText = `SESSION_ID: ${userEmail.toUpperCase()}`;
+        const userEmail = urlParams.get('email') || "AUTHORIZED_CLIENT";
+        document.getElementById('session-id').innerText = `SESSION_ID: ${userEmail.toUpperCase()}`;
 
-        // Example Library
+        // Your specific licensed soundtracks
         const library = [
-            { name: "Cinematic Atmosphere Pack Vol 1", type: "WAV / 24-bit", file: "atmos_v1.zip" },
-            { name: "808 Street Kit (Legacy Edition)", type: "Drum Kit / MIDI", file: "808_street.zip" },
-            { name: "Orchestral Strings - Staccato", type: "Instrument Pack", file: "strings_stac.zip" }
+            { name: "GRUDGE GOBBLER", type: "MASTER WAV / LICENSED", file: "grudge_gobbler.zip" },
+            { name: "THE RUMBLER", type: "MASTER WAV / LICENSED", file: "the_rumbler.zip" },
+            { name: "ELECTRO", type: "MASTER WAV / LICENSED", file: "electro.zip" }
         ];
 
         const container = document.getElementById('file-container');
@@ -76,25 +207,10 @@
                 <div class="file-card">
                     <span class="file-type">${item.type}</span>
                     <span class="file-name">${item.name}</span>
-                    <a href="downloads/${item.file}" class="dl-btn" onclick="logActivity('${item.name}')">DOWNLOAD FILE</a>
+                    <a href="downloads/${item.file}" class="dl-btn">DOWNLOAD ASSET</a>
                 </div>
             `;
         });
-
-        function logActivity(fileName) {
-            console.log("Logging download for: " + fileName);
-            // Optional: Connect to your local Termux server
-            fetch('http://localhost:3000/api/log-activity', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: userEmail,
-                    action: 'DOWNLOAD',
-                    item: fileName,
-                    timestamp: new Date()
-                })
-            }).catch(err => console.log("Offline mode: Activity not logged to server."));
-        }
     </script>
 </body>
 </html>

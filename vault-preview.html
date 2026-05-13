@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE VAULT | PREMIUM UNLOCKED</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --teal: #00ffcc; 
+            --dark: #020202; 
+            --glass: rgba(255, 255, 255, 0.03); 
+            --gold: #fdbb2d;
+            --electric-purple: #9d50bb;
+            --neon-blue: #00d2ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--dark); 
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 204, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(157, 80, 187, 0.05) 0%, transparent 20%);
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .hero-glow {
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #020202, #0a0a0a, #020202);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header { 
+            font-family: 'Syncopate'; 
+            letter-spacing: 12px; 
+            background: linear-gradient(to right, var(--teal), #fff, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            animation: glow-shift 3s infinite alternate;
+        }
+
+        @keyframes glow-shift {
+            from { filter: drop-shadow(0 0 5px var(--teal)); }
+            to { filter: drop-shadow(0 0 20px var(--neon-blue)); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-10px) rotateX(2deg); }
+            100% { transform: translateY(0px) rotateX(0deg); }
+        }
+
+        .container { padding: 20px; max-width: 600px; margin: 0 auto; perspective: 1000px; }
+
+        .vault-card { 
+            background: var(--glass); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 24px; 
+            padding: 30px; 
+            margin-bottom: 30px; 
+            backdrop-filter: blur(15px);
+            animation: float 5s ease-in-out infinite;
+            position: relative;
+            transition: 0.4s;
+            text-align: center;
+        }
+
+        .vault-card:hover { border-color: var(--teal); box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); }
+
+        .tier-gold { border-top: 4px solid var(--gold); }
+        .tier-purple { border-top: 4px solid var(--electric-purple); }
+        .tier-blue { border-top: 4px solid var(--neon-blue); }
+
+        .title { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 15px; letter-spacing: 3px; display: block; }
+        
+        .feature-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            font-size: 0.55rem;
+            margin: 5px 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .download-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 18px; 
+            border: none;
+            border-radius: 12px; 
+            font-weight: 900; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            cursor: pointer;
+            margin-top: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-purple { background: var(--electric-purple); color: #fff; }
+        .btn-blue { background: var(--neon-blue); color: #000; }
+
+        .desc { font-size: 0.75rem; color: #aaa; line-height: 1.6; margin-bottom: 10px; text-align: left; }
+    </style>
+</head>
+<body>
+
+    <div class="hero-glow">
+        <div class="header">THE VAULT</div>
+        <p style="font-size: 0.6rem; letter-spacing: 4px; color: var(--teal); margin-top: 10px;">REWARD HUB: DOWNLOADS ACTIVE</p>
+    </div>
+
+    <div class="container">
+
+        <!-- PACKAGE 1: GOLD BUNDLE -->
+        <div class="vault-card tier-gold">
+            <span class="title" style="color: var(--gold);">PRODUCER'S GOLD BUNDLE</span>
+            <p class="desc">Exclusive bonus tracks and unreleased loops including high-impact soundtrack stems.</p>
+            <div class="feature-tag">WAV Stems</div>
+            <div class="feature-tag">24-Bit Audio</div>
+            <button class="download-btn btn-gold" onclick="secureHandshake('GOLD_BUNDLE')">CLAIM REWARD</button>
+        </div>
+
+        <!-- PACKAGE 2: VISUAL OVERDRIVE -->
+        <div class="vault-card tier-purple">
+            <span class="title" style="color: var(--electric-purple);">VISUAL OVERDRIVE PACK</span>
+            <p class="desc">High-quality 4K renders and digital assets from the Initialized Rim Collection.</p>
+            <div class="feature-tag">4K PNG Assets</div>
+            <div class="feature-tag">3D Object Files</div>
+            <button class="download-btn btn-purple" onclick="secureHandshake('VISUAL_PACK')">CLAIM REWARD</button>
+        </div>
+
+        <!-- PACKAGE 3: CYBER-SYSTEMS -->
+        <div class="vault-card tier-blue">
+            <span class="title" style="color: var(--neon-blue);">CYBER-SYSTEMS EXPANSION</span>
+            <p class="desc">Exclusive Node.js snippets and CSS blueprints for your next digital project.</p>
+            <div class="feature-tag">Backend Code</div>
+            <div class="feature-tag">UI Templates</div>
+            <button class="download-btn btn-blue" onclick="secureHandshake('TECH_PACK')">CLAIM REWARD</button>
+        </div>
+
+    </div>
+
+    <div style="padding: 40px; text-align: center; opacity: 0.4;">
+        <p style="font-size: 0.5rem; letter-spacing: 2px;">SECURE DOWNLOAD PROTOCOL RSA-4096 ENABLED</p>
+        <a href="index.html" style="color: var(--teal); text-decoration: none; font-size: 0.6rem; display: block; margin-top: 20px;">[ TERMINATE SESSION ]</a>
+    </div>
+
+    <script>
+        function secureHandshake(packageId) {
+            // 1. Map to your actual file locations in Termux/Cloudflare
+            const rewards = {
+                'GOLD_BUNDLE': 'downloads/producers_gold_bundle.zip',
+                'VISUAL_PACK': 'downloads/visual_overdrive_assets.zip',
+                'TECH_PACK': 'downloads/cyber_systems_expansion.zip'
+            };
+
+            const filePath = rewards[packageId];
+
+            // 2. Log activity to your Termux Server for your records
+            fetch('http://localhost:3001/vault-redemption', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    package: packageId, 
+                    timestamp: new Date().toISOString(),
+                    status: 'HANDSHAKE_INITIATED'
+                })
+            }).catch(e => console.log("Bunker logging local..."));
+
+            // 3. Execute Secure Download
+            alert("SECURITY BUNKER: Handshake verified. Reward package is being pushed to your device.");
+            
+            const link = document.createElement('a');
+            link.href = filePath;
+            link.setAttribute('download', ''); // Forces mobile download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+
+</body>
+</html>

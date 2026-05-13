@@ -2,231 +2,255 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOUND SHOP | LICENSING & CONTRACTS</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Shop | Official Licensing Portal</title>
     <style>
         :root {
-            --teal: #00ffcc;
-            --brand-yellow: #ffd700;
-            --midnight: #0a0b0c;
+            --cyan: #00f3ff;
+            --deep-blue: #00121a;
+            --card-bg: rgba(20, 20, 20, 0.8);
+            --border-glow: rgba(0, 243, 255, 0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            background: var(--midnight); 
-            color: #fff; 
-            font-family: 'Inter', sans-serif; 
-            overflow-x: hidden;
+        body {
+            background: radial-gradient(circle at top right, #002b36, #000000);
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
         }
 
-        /* High-Impact Background */
-        .bg-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background: linear-gradient(rgba(10,11,12,0.9), rgba(10,11,12,0.95)),
-                        url('https://images.unsplash.com/photo-1598653222000-6b7b7a552625?auto=format&fit=crop&q=80');
-            background-size: cover;
-            background-position: center;
+        /* Professional Header */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-glow);
+            margin-bottom: 40px;
         }
 
-        /* Sound Shop Navigation */
-        nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 30px; background: rgba(10, 11, 12, 0.98); 
-            backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 255, 204, 0.2);
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 6px; color: var(--teal); text-transform: uppercase; font-size: 1rem; }
-        
-        .nav-links { display: flex; gap: 15px; }
-        .nav-links a { font-size: 0.65rem; color: #888; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; font-weight: 700; }
-        .nav-links a:hover { color: var(--teal); }
-
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        
-        .header-title { text-align: center; margin-bottom: 50px; }
-        .header-title h1 { font-family: 'Syncopate'; font-size: 2.5rem; font-weight: 700; letter-spacing: -1px; color: #fff; }
-        .header-title p { color: var(--teal); letter-spacing: 4px; font-size: 0.7rem; text-transform: uppercase; margin-top: 10px; }
-
-        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 60px; }
-
-        .pricing-card {
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(0, 255, 204, 0.1);
-            padding: 30px; border-radius: 20px; text-align: center;
-            transition: 0.4s; cursor: pointer;
-        }
-        .pricing-card:hover, .pricing-card.selected { border-color: var(--teal); background: rgba(0, 255, 204, 0.05); transform: translateY(-5px); }
-        .pricing-card.selected { border-width: 2px; box-shadow: 0 0 20px rgba(0, 255, 204, 0.1); }
-        
-        .pricing-card h3 { font-family: 'Syncopate'; font-size: 0.8rem; letter-spacing: 3px; color: var(--teal); margin-bottom: 15px; }
-        .price { font-size: 3rem; font-weight: 900; margin-bottom: 10px; font-family: 'Inter'; }
-
-        .contract-section { 
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 25px; padding: 30px; backdrop-filter: blur(20px);
+        .logo-text {
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--cyan);
+            text-shadow: 0 0 15px var(--cyan);
         }
 
-        .contract-box {
-            background: #000; border: 1px solid #222; 
-            padding: 25px; height: 250px; overflow-y: auto; 
-            border-radius: 15px; font-family: 'Courier New', monospace;
-            font-size: 0.85rem; color: #aaa; margin-bottom: 25px; line-height: 1.6;
+        /* Tier Grid - Dramatic Image Hover Feel */
+        .tier-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        input { 
-            width: 100%; padding: 18px; background: rgba(255,255,255,0.05); 
-            border: 1px solid #333; color: #fff; border-radius: 12px; 
-            font-size: 1rem; margin-bottom: 20px; outline: none; transition: 0.3s;
+        .license-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
-        input:focus { border-color: var(--teal); }
 
-        .sig-pad { background: #fff; border-radius: 12px; cursor: crosshair; touch-action: none; }
-
-        .buy-btn { 
-            background: var(--teal); color: #000; padding: 20px; border: none; 
-            border-radius: 12px; font-weight: 900; width: 100%; 
-            cursor: pointer; text-transform: uppercase; letter-spacing: 3px;
-            transition: 0.4s; margin-top: 20px; font-family: 'Syncopate';
+        .license-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,243,255,0.05) 0%, transparent 70%);
+            pointer-events: none;
         }
-        .buy-btn:hover { background: var(--brand-yellow); transform: scale(1.02); }
 
-        footer { text-align: center; padding: 40px; color: #444; font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; }
+        .license-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
+            border-color: var(--cyan);
+        }
+
+        .tier-title {
+            color: var(--cyan);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .price-tag {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin: 10px 0 20px 0;
+        }
+
+        /* Contract & Signature Section */
+        .execution-zone {
+            max-width: 800px;
+            margin: 60px auto;
+            background: rgba(10, 10, 10, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .contract-text {
+            height: 200px;
+            overflow-y: auto;
+            background: #050505;
+            padding: 20px;
+            border-left: 4px solid var(--cyan);
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #111;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        #sig-canvas {
+            width: 100%;
+            height: 200px;
+            background: #000;
+            border: 1px solid var(--cyan);
+            border-radius: 10px;
+            margin: 20px 0;
+            touch-action: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: var(--cyan);
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+        }
     </style>
 </head>
 <body>
 
-<div class="bg-overlay"></div>
+    <header>
+        <div class="logo-text">Sound Shop</div>
+        <p>Official Digital License & Soundtrack Acquisition</p>
+    </header>
 
-<nav>
-    <div class="logo">SOUND SHOP</div>
-    <div class="nav-links">
-        <a href="catalog.html">Catalog</a>
-        <a href="lab.html">Lab</a>
-        <a href="product-details.html">Gear</a>
-        <a href="index.html">Exit</a>
-    </div>
-</nav>
-
-<div class="container">
-    <div class="header-title">
-        <p>IP & Rights Management</p>
-        <h1>MASTER LICENSING</h1>
-    </div>
-
-    <div class="pricing-grid">
-        <div class="pricing-card" onclick="selectTier('Standard', '49.00', this)">
-            <h3>STANDARD</h3>
-            <div class="price">$49</div>
-            <p style="color: #666; font-size: 0.7rem;">NON-MONETIZED / LEASE</p>
+    <div class="tier-container">
+        <!-- Standard -->
+        <div class="license-card">
+            <h3 class="tier-title">Standard Lease</h3>
+            <p class="price-tag">$29.99 USD</p>
+            <ul>
+                <li>High Quality WAV/MP3</li>
+                <li>Limit: 2,000 Streams</li>
+                <li>Non-Exclusive Rights</li>
+            </ul>
         </div>
-        <div class="pricing-card selected" onclick="selectTier('Commercial', '149.00', this)">
-            <h3>COMMERCIAL</h3>
-            <div class="price">$149</div>
-            <p style="color: var(--teal); font-size: 0.7rem;">UNLIMITED STREAMING</p>
+
+        <!-- Commercial -->
+        <div class="license-card">
+            <h3 class="tier-title">Commercial</h3>
+            <p class="price-tag">$149.99 USD</p>
+            <ul>
+                <li>Unlimited Streams</li>
+                <li>Music Video & Radio Rights</li>
+                <li>Sync Licensing Ready</li>
+            </ul>
         </div>
-        <div class="pricing-card" onclick="selectTier('Exclusive', '499.00', this)">
-            <h3>EXCLUSIVE</h3>
-            <div class="price">$499</div>
-            <p style="color: #666; font-size: 0.7rem;">TOTAL OWNERSHIP BUYOUT</p>
+
+        <!-- Exclusive -->
+        <div class="license-card">
+            <h3 class="tier-title">Exclusive Ownership</h3>
+            <p class="price-tag">Contact for Quote</p>
+            <ul>
+                <li>Full Copyright Transfer</li>
+                <li>Removed from Storefront</li>
+                <li>Contractor Grade Agreement</li>
+            </ul>
         </div>
     </div>
 
-    <div class="contract-section">
-        <h2 style="font-family: 'Syncopate'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; color: var(--teal);">SIGN LICENSE AGREEMENT</h2>
-        <div class="contract-box" id="main-contract-box"></div>
+    <div class="execution-zone">
+        <h2>License Execution</h2>
+        <div class="contract-text">
+            <h4>TERMS OF SERVICE & PRIVACY POLICY</h4>
+            <p>1. <strong>Licensing:</strong> Upon verification of the MTCN, Sound Shop grants a non-transferable license to the user.</p>
+            <p>2. <strong>Privacy:</strong> All transaction data is processed via the Security Bunker. We do not store personal details beyond verification needs.</p>
+            <p>3. <strong>Payment:</strong> Western Union MTCN must be valid and verifiable within 24 hours of submission.</p>
+        </div>
 
-        <form id="licenseForm" onsubmit="handleFinalSubmit(event)">
-            <input type="text" id="licenseeName" placeholder="LEGAL FULL NAME" required onkeyup="syncSignatures(this.value)">
-            <p style="font-size: 0.65rem; color: #666; margin-bottom: 10px; letter-spacing: 2px;">DRAW SIGNATURE BELOW</p>
-            <canvas class="sig-pad" id="signature-canvas" width="800" height="150" style="width: 100%; height: 120px;"></canvas>
+        <input type="text" class="input-field" placeholder="Full Legal Name" id="userName">
+        <input type="text" class="input-field" placeholder="Western Union MTCN (10 Digits)" id="mtcnNumber">
+
+        <h3>Digital Signature</h3>
+        <canvas id="sig-canvas"></canvas>
+
+        <button class="submit-btn" onclick="processOrder()">Authorize & Secure Purchase</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sig-canvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        // Mobile Responsive Setup
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX || e.touches[0].clientX) - rect.left,
+                y: (e.clientY || e.touches[0].clientY) - rect.top
+            };
+        }
+
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); drawing = true; ctx.beginPath(); });
+        canvas.addEventListener('mousedown', () => { drawing = true; ctx.beginPath(); });
+        
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
+        window.addEventListener('mouseup', () => drawing = false);
+        window.addEventListener('touchend', () => drawing = false);
+
+        function draw(e) {
+            if (!drawing) return;
+            const pos = getMousePos(e);
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#00f3ff';
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function processOrder() {
+            const name = document.getElementById('userName').value;
+            const mtcn = document.getElementById('mtcnNumber').value;
             
-            <button type="submit" class="buy-btn">Authorize & Enter Bunker</button>
-        </form>
-    </div>
-</div>
-
-<footer>&copy; 2026 SOUND SHOP // FAYETTEVILLE NC // SECURED BY RSA-2048</footer>
-
-<script>
-    let currentTier = "Commercial";
-    let currentPrice = "149.00";
-
-    function selectTier(tier, price, element) {
-        currentTier = tier;
-        currentPrice = price;
-        document.querySelectorAll('.pricing-card').forEach(card => card.classList.remove('selected'));
-        element.classList.add('selected');
-        updateContract();
-    }
-
-    function updateContract() {
-        const name = document.getElementById('licenseeName').value || "________________";
-        const date = new Date().toLocaleDateString();
-        const contractHTML = `
-            <h3 style="color:var(--teal)">1. THE PARTIES</h3>
-            <p>This <strong>${currentTier}</strong> License is established on ${date} between <strong>Sound Shop</strong> (Lessor) and <strong>${name}</strong> (Licensee).</p>
-            <br>
-            <h3 style="color:var(--teal)">2. USAGE RIGHTS</h3>
-            <p>Subject to payment of $${currentPrice}, Licensee is granted a ${currentTier === 'Exclusive' ? 'Permanent' : 'Non-exclusive'} right to the specified audio master.</p>
-            <br>
-            <h3 style="color:var(--teal)">3. SETTLEMENT</h3>
-            <p>Payment to be processed via Sound Shop Security Bunker Port 3001. All sales are final and binding.</p>
-            <br>
-            <p><strong>LICENSEE SIGNATURE:</strong> <span style="font-style: italic; color:var(--teal);">${name}</span></p>
-        `;
-        document.getElementById('main-contract-box').innerHTML = contractHTML;
-    }
-
-    function syncSignatures(val) {
-        updateContract();
-    }
-
-    function handleFinalSubmit(e) {
-        e.preventDefault();
-        // Redirect to your vault/bunker with the price as a variable
-        window.location.href = `vault.html?amount=${currentPrice}&license=${currentTier}`;
-    }
-
-    // SIGNATURE CANVAS LOGIC
-    const canvas = document.getElementById('signature-canvas');
-    const ctx = canvas.getContext('2d');
-    let writing = false;
-
-    // Support for both mouse and touch
-    function getPos(e) {
-        const rect = canvas.getBoundingClientRect();
-        return {
-            x: (e.clientX || e.touches[0].clientX) - rect.left,
-            y: (e.clientY || e.touches[0].clientY) - rect.top
-        };
-    }
-
-    function start(e) { writing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); }
-    function stop() { writing = false; }
-    function move(e) {
-        if(!writing) return;
-        const p = getPos(e);
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "#000";
-        ctx.lineTo(p.x, p.y);
-        ctx.stroke();
-    }
-
-    canvas.addEventListener('mousedown', start);
-    canvas.addEventListener('touchstart', start);
-    window.addEventListener('mouseup', stop);
-    window.addEventListener('touchend', stop);
-    canvas.addEventListener('mousemove', move);
-    canvas.addEventListener('touchmove', move);
-
-    // Initial Load
-    updateContract();
-</script>
-
+            if(!name || !mtcn) {
+                alert("Please complete all professional fields.");
+                return;
+            }
+            // Logic to send to your Security Bunker
+            console.log("Transmitting to Bunker...");
+            alert("Authorization received. Verification in progress.");
+        }
+    </script>
 </body>
 </html>

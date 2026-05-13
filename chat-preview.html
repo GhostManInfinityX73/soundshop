@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sound Shop | Live Chat</title>
+    <style>
+        :root {
+            --neon-cyan: #00f2ff;
+            --deep-black: #000000;
+            --glass: rgba(255, 255, 255, 0.03);
+            --nav-bg: rgba(10, 10, 10, 0.95);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--deep-black);
+            color: #ffffff;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--nav-bg);
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 15px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+            margin-left: 10px;
+        }
+
+        .nav-links a:hover {
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+
+        /* --- PREVIEW / COMING SOON SECTION --- */
+        #preview-layer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding-top: 60px; /* Offset for nav bar */
+            background: radial-gradient(circle at center, #001a1a 0%, #000 100%);
+        }
+
+        .status-badge {
+            border: 1px solid var(--neon-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--neon-cyan);
+            animation: pulse 2s infinite;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            letter-spacing: 6px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .glow-text {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.7);
+        }
+
+        .integrity-box {
+            margin-top: 40px;
+            padding: 20px;
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            max-width: 80%;
+            font-size: 12px;
+            color: #888;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav>
+        <div class="nav-logo">Sound Shop</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html" style="border-color: rgba(255,0,0,0.3);">Log Out</a>
+        </div>
+    </nav>
+
+    <!-- COMING SOON VIEW -->
+    <div id="preview-layer">
+        <div class="status-badge">ENCRYPTED PORTAL</div>
+        <h1>SOUND SHOP</h1>
+        <h1 class="glow-text">LIVE CHAT</h1>
+        
+        <div class="integrity-box">
+            <b style="color: var(--neon-cyan);">INTEGRITY PROTOCOL:</b><br><br>
+            • NO EXTERNAL LINKS • NO EXPLICIT MEDIA • <br>
+            • NO HARASSMENT • NO MIDDLEMEN • PROFESSIONAL ONLY
+        </div>
+        
+        <p style="color: #444; margin-top: 30px; font-size: 0.8rem; letter-spacing: 2px;">STATUS: ARCHITECTING PHASE</p>
+    </div>
+
+</body>
+</html>

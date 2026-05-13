@@ -15,33 +15,82 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--midnight); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body { 
+            background: var(--midnight); 
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
+        }
 
-        nav { padding: 20px; background: rgba(10, 11, 12, 0.95); display: flex; flex-direction: column; gap: 15px; border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
-        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 8px; font-size: 1.2rem; text-transform: uppercase; text-align: center; color: var(--teal); }
+        nav { 
+            padding: 20px; 
+            background: rgba(10, 11, 12, 0.95); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            border-bottom: 1px solid rgba(0, 255, 204, 0.2); 
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { 
+            font-family: 'Syncopate', sans-serif; 
+            font-weight: 700; 
+            letter-spacing: 8px; 
+            font-size: 1.2rem; 
+            text-transform: uppercase; 
+            text-align: center; 
+            color: var(--teal); 
+        }
 
-        .container { padding: 40px 20px; max-width: 900px; margin: 0 auto; }
+        .container { padding: 40px 20px; max-width: 1000px; margin: 0 auto; min-height: 100vh; }
         
         .product-display { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 20px; }
         
-        .product-image-container { flex: 1; min-width: 300px; }
-        .product-image-container img { width: 100%; border-radius: 20px; border: 1px solid var(--teal); box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); }
+        .product-image-container { flex: 1.2; min-width: 300px; }
+        .product-image-container img { 
+            width: 100%; 
+            border-radius: 20px; 
+            border: 1px solid rgba(0, 255, 204, 0.3); 
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.15);
+        }
 
         .product-info { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 20px; }
-        .product-title { font-family: 'Syncopate'; font-size: 1.5rem; letter-spacing: 4px; color: var(--teal); text-transform: uppercase; line-height: 1.2; }
-        .product-price { font-size: 1.8rem; font-weight: 900; color: var(--brand-yellow); }
-        .product-desc { color: #888; font-size: 0.9rem; line-height: 1.6; border-left: 2px solid var(--teal); padding-left: 15px; }
+        .product-title { 
+            font-family: 'Syncopate'; 
+            font-size: 1.6rem; 
+            letter-spacing: 4px; 
+            color: var(--teal); 
+            text-transform: uppercase; 
+        }
+        .product-price { font-size: 2rem; font-weight: 900; color: var(--brand-yellow); }
+        .product-desc { 
+            color: #aaa; 
+            font-size: 0.95rem; 
+            line-height: 1.7; 
+            border-left: 3px solid var(--teal); 
+            padding-left: 20px;
+        }
 
-        .option-group { margin-top: 10px; }
-        .option-label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: block; color: var(--teal); font-weight: 700; }
+        .option-group { margin-top: 15px; }
+        .option-label { 
+            font-size: 0.75rem; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            margin-bottom: 12px; 
+            display: block; 
+            color: var(--teal); 
+            font-weight: 700; 
+        }
         
         select {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 204, 0.3);
+            border: 1px solid rgba(0, 255, 204, 0.4);
             color: #fff;
-            border-radius: 8px;
+            border-radius: 12px;
             font-family: 'Inter';
             outline: none;
             appearance: none;
@@ -50,24 +99,39 @@
         .buy-btn {
             background: var(--teal);
             color: #000;
-            padding: 22px;
+            padding: 24px;
             text-align: center;
             text-decoration: none;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 3px;
-            border-radius: 12px;
-            margin-top: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
             transition: 0.3s;
             display: block;
             border: none;
             cursor: pointer;
+            width: 100%;
         }
 
-        .buy-btn:hover { background: var(--brand-yellow); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 255, 204, 0.2); }
+        .buy-btn:hover { 
+            background: var(--brand-yellow); 
+            transform: translateY(-5px); 
+        }
 
-        .back-link { color: #666; text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; display: inline-block; transition: 0.3s; }
-        .back-link:hover { color: var(--teal); }
+        .wu-disclaimer {
+            font-size: 0.65rem; 
+            color: #777; 
+            text-align: center; 
+            margin-top: 20px; 
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .back-link { color: #666; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 30px; display: block; }
     </style>
 </head>
 <body>
@@ -81,76 +145,144 @@
     
     <div class="product-display">
         <div class="product-image-container">
-            <img id="product-img" src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800&q=80" alt="Product View">
+            <!-- FIXED IMAGE URL BELOW -->
+            <img id="product-img" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80" alt="Sound Shop High Performance Gear">
         </div>
 
         <div class="product-info">
-            <h1 id="product-name" class="product-title">SOUND SHOP EDITION</h1>
+            <h1 id="product-name" class="product-title">LOADING PRODUCT...</h1>
             <div id="product-price" class="product-price">$ --.--</div>
             
-            <p class="product-desc" id="product-desc">Authentic Sound Shop merchandise. Hand-crafted for high-impact performance. Built for the culture in Fayetteville, NC.</p>
+            <p class="product-desc" id="product-desc">
+                Fetching the latest details from the Sound Shop database...
+            </p>
             
             <div class="option-group">
-                <label class="option-label">SELECT SIZE / OPTION</label>
+                <label class="option-label" id="option-header">SELECT OPTION</label>
                 <select id="size-select">
-                    <option>STANDARD EDITION</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
+                    <option value="" disabled selected>CHOOSE YOUR SPECIFICATIONS</option>
                 </select>
             </div>
 
-            <button onclick="location.href='vault.html'" class="buy-btn">INITIATE CHECKOUT</button>
-            <p style="font-size: 0.55rem; color: #444; text-align: center; margin-top: 15px; letter-spacing: 1px;">SECURE ACH/CARD SETTLEMENT VIA BUNKER PORT 3001</p>
+            <!-- WESTERN UNION CALL TO ACTION -->
+            <button onclick="initiateCheckout()" class="buy-btn">CHECKOUT VIA WESTERN UNION</button>
+            
+            <div class="wu-disclaimer">
+                OFFICIAL WESTERN UNION PAYMENT GATEWAY<br>
+                SECURED BY SOUND SHOP BUNKER PORT 3001
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Expanded database based on your screenshots
     const products = {
-        // Clothing & Gear
-        "heritage-boot": { name: "Heritage Boot", price: "$185.00", img: "j_zbeach.jpg", type: "shoe" },
-        "black-low": { name: "SMR Black Low", price: "$145.00", img: "blkltps.jpg", type: "shoe" },
-        "black-pullover": { name: "Black Pullover Hoodie", price: "$85.00", img: "blkplhsmr.jpg", type: "apparel" },
-        "optical-zip": { name: "Optical Zip Hoodie", price: "$110.00", img: "blkzhoptcn.jpg", type: "apparel" },
-        
-        // Rims (A-Z)
-        "rim-a": { name: "Initialized Rim: A", price: "$1,500/EA", img: "rimz_a.jpg", type: "rim" },
-        "rim-b": { name: "Initialized Rim: B", price: "$1,500/EA", img: "rimz_b.jpg", type: "rim" },
-        
-        // Audio/SKUs from your Screenshot
-        "SKU-UND": { name: "UNDFTD Soundtrack", price: "$25.00", img: "https://images.unsplash.com/photo-1514525253344-991c0555b002?auto=format&fit=crop&w=800", type: "audio" },
-        "SKU-SPD": { name: "SPACEROIDS Audio", price: "$30.00", img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800", type: "audio" }
+        "black-pullover": { 
+            name: "Black Pullover Hoodie", 
+            price: "$85.00", 
+            img: "blkplhsmr.jpg", 
+            type: "apparel",
+            desc: "Heavyweight premium fleece. Custom Sound Shop heritage cut. Features reinforced stitching for high-impact wear."
+        },
+        "optical-zip": { 
+            name: "Optical Zip Hoodie", 
+            price: "$110.00", 
+            img: "blkzhoptcn.jpg", 
+            type: "apparel",
+            desc: "Advanced optical-thread construction. Reflective Sound Shop detailing for visibility and performance."
+        },
+        "heritage-boot": { 
+            name: "Heritage Boot", 
+            price: "$185.00", 
+            img: "j_zbeach.jpg", 
+            type: "shoe",
+            desc: "The original Sound Shop silhouette. Hand-crafted rugged leather with industrial traction outsoles."
+        },
+        "black-low": { 
+            name: "SMR Black Low", 
+            price: "$145.00", 
+            img: "blkltps.jpg", 
+            type: "shoe",
+            desc: "Low-profile aesthetic meeting professional durability. Lightweight chassis with custom heel support."
+        },
+        "rim-a": { 
+            name: "Initialized Rim: A", 
+            price: "$1,500/EA", 
+            img: "rimz_a.jpg", 
+            type: "rim",
+            desc: "Custom-forged aluminum. Precision-milled 'A' structural spoke. Engineered for maximum performance."
+        },
+        "rim-b": { 
+            name: "Initialized Rim: B", 
+            price: "$1,500/EA", 
+            img: "rimz_b.jpg", 
+            type: "rim",
+            desc: "Signature alphabet series 'B'. Lightweight alloy construction with custom aerospace finish."
+        },
+        "SKU-UND": { 
+            name: "UNDFTD Soundtrack", 
+            price: "$25.00", 
+            img: "undftd_cover.jpg", 
+            type: "audio",
+            desc: "High-fidelity digital license. Produced in-house at Sound Shop for high-energy environments."
+        }
     };
 
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
+    const select = document.getElementById('size-select');
 
     if (productId && products[productId]) {
         const item = products[productId];
+        
         document.getElementById('product-name').innerText = item.name;
         document.getElementById('product-price').innerText = item.price;
-        document.getElementById('product-img').src = item.img;
+        // Only updates if the local image file is found, otherwise keeps the fixed top image
+        if(item.img.includes('.')) document.getElementById('product-img').src = item.img;
+        document.getElementById('product-desc').innerText = item.desc;
 
-        // Custom Size labels for shoes
         if (item.type === "shoe") {
-            const select = document.getElementById('size-select');
-            select.innerHTML = `
-                <option>US MEN 8</option>
-                <option>US MEN 9</option>
-                <option>US MEN 10</option>
-                <option>US MEN 11</option>
-                <option>US MEN 12</option>
-            `;
+            document.getElementById('option-header').innerText = "SELECT SIZE (8-13)";
+            let sizes = ["US 8", "US 8.5", "US 9", "US 9.5", "US 10", "US 10.5", "US 11", "US 12", "US 13"];
+            sizes.forEach(sz => {
+                let opt = document.createElement("option");
+                opt.value = sz; opt.text = sz;
+                select.appendChild(opt);
+            });
+        } 
+        else if (item.type === "apparel") {
+            document.getElementById('option-header').innerText = "SELECT SIZE (S-3XL)";
+            let sizes = ["SMALL", "MEDIUM", "LARGE", "X-LARGE", "XX-LARGE", "XXX-LARGE"];
+            sizes.forEach(sz => {
+                let opt = document.createElement("option");
+                opt.value = sz; opt.text = sz;
+                select.appendChild(opt);
+            });
+        } 
+        else if (item.type === "rim") {
+            document.getElementById('option-header').innerText = "WHEEL CONFIGURATION";
+            let configs = ["20 INCH", "22 INCH", "24 INCH"];
+            configs.forEach(cfg => {
+                let opt = document.createElement("option");
+                opt.value = cfg; opt.text = cfg;
+                select.appendChild(opt);
+            });
         }
-    } else {
-        // Fallback for missing items
-        document.getElementById('product-name').innerText = "ITEM UNKNOWN";
-        document.getElementById('product-price').innerText = "CONTACT FOR PRICE";
+        else {
+            let opt = document.createElement("option");
+            opt.value = "STANDARD"; opt.text = "STANDARD DIGITAL LICENSE";
+            select.appendChild(opt);
+        }
+    }
+
+    function initiateCheckout() {
+        const selectedOption = select.value;
+        if (!selectedOption) {
+            alert("Please select your size/option before proceeding to Western Union checkout.");
+            return;
+        }
+        window.location.href = `vault.html?id=${productId}&option=${encodeURIComponent(selectedOption)}&gateway=WU`;
     }
 </script>
-
 </body>
 </html>

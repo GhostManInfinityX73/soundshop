@@ -8,7 +8,7 @@
     <style>
         :root { --teal: #00ffcc; --dark: #050505; --brand-yellow: #fdbb2d; --glass: rgba(255, 255, 255, 0.05); }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; }
+        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         
         /* HEADER */
         nav { padding: 15px; background: rgba(0, 0, 0, 0.95); text-align: center; border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
@@ -22,9 +22,9 @@
         .membership-header h1 { font-family: 'Syncopate'; font-size: 1.5rem; letter-spacing: 10px; margin-bottom: 10px; }
 
         /* TIER CARDS */
-        .tier-container { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+        .tier-container { padding: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto; }
         .tier-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; text-align: center; border-bottom: 4px solid var(--teal); }
-        .tier-name { font-size: 0.7rem; letter-spacing: 4px; color: #666; text-transform: uppercase; margin-bottom: 15px; }
+        .tier-name { font-size: 0.7rem; letter-spacing: 4px; color: #888; text-transform: uppercase; margin-bottom: 15px; }
         .tier-price { font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; }
         .tier-price span { font-size: 0.8rem; color: var(--teal); }
         
@@ -32,14 +32,23 @@
         .feature-item { font-size: 0.75rem; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: #ccc; }
         .feature-item::before { content: '▶'; color: var(--teal); font-size: 0.6rem; }
 
-        button.cta { width: 100%; padding: 15px; border-radius: 10px; border: none; background: #1a1a1a; color: #fff; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
+        /* BUTTONS */
+        .button-stack { display: flex; flex-direction: column; gap: 10px; }
+        button.cta { width: 100%; padding: 15px; border-radius: 10px; border: none; background: #1a1a1a; color: #fff; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+        button.cta:active { transform: scale(0.98); }
+        
         .tier-card.premium { border-color: var(--brand-yellow); }
-        .tier-card.premium button.cta { background: var(--brand-yellow); color: #000; }
+        .btn-order { background: var(--brand-yellow) !important; color: #000 !important; }
+        .btn-call { border: 1px solid var(--teal) !important; background: transparent !important; color: var(--teal) !important; }
 
-        /* WESTERN UNION INSTRUCTIONS */
-        .wu-instructions { margin: 20px; padding: 20px; background: rgba(253, 187, 45, 0.1); border: 1px dashed var(--brand-yellow); border-radius: 15px; }
-        .wu-title { color: var(--brand-yellow); font-weight: 900; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; }
-        .wu-step { font-size: 0.7rem; line-height: 1.6; color: #eee; margin-bottom: 8px; }
+        /* CHECKOUT MODAL */
+        #checkout-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: #0a0a0a; border: 2px solid var(--brand-yellow); border-radius: 20px; padding: 25px; z-index: 1001; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; }
+        .wu-title { color: var(--brand-yellow); font-family: 'Syncopate'; font-size: 0.8rem; margin-bottom: 15px; }
+        .wu-info { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(253, 187, 45, 0.2); }
+        .wu-info p { font-size: 0.75rem; margin-bottom: 5px; color: #eee; }
+        
+        input#mtcn-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #000; color: var(--brand-yellow); font-weight: 900; text-align: center; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -48,11 +57,10 @@
     <div class="logo">SOUND SHOP</div>
     <div class="nav-links">
         <a href="index.html">HOME</a>
-        <a href="studio.html">STUDIO</a>
-        <a href="join.html" class="active">JOIN</a>
-        <a href="services.html">SERVICES</a>
-        <a href="membership.html">MEMBERS</a>
-        <a href="about.html">ABOUT</a>
+        <a href="catalog.html">SOUNDTRACKS</a>
+        <a href="lab.html">SHOWCASE</a>
+        <a href="vault.html">VAULT</a>
+        <a href="portal.html">PORTAL</a>
     </div>
 </nav>
 
@@ -61,60 +69,95 @@
 </div>
 
 <div class="tier-container">
+    <!-- FREE TIER -->
     <div class="tier-card">
         <div class="tier-name">FREE PASS</div>
         <div class="tier-price">$0<span>/FOREVER</span></div>
         <div class="feature-list">
             <div class="feature-item">Weekly Sound Samples</div>
             <div class="feature-item">Newsletter Updates</div>
-            <div class="feature-item">Basic Gear Access</div>
             <div class="feature-item">Limited Catalog Preview</div>
         </div>
         <button class="cta" onclick="joinFree()">GET STARTED</button>
     </div>
 
+    <!-- PRO TIER -->
     <div class="tier-card premium">
         <div class="tier-name">PRO SOUNDTRACKER</div>
         <div class="tier-price">$49<span>/MONTH</span></div>
         <div class="feature-list">
             <div class="feature-item">Full Commercial Licensing</div>
             <div class="feature-item">High-Impact Studio Tools</div>
-            <div class="feature-item">Priority Vault Core Access</div>
-            <div class="feature-item">Custom RSA-4096 Protection</div>
+            <div class="feature-item">RSA-4096 Secure Access</div>
         </div>
-        <button class="cta" onclick="showWU()">JOIN WITH WESTERN UNION</button>
+        
+        <div class="button-stack">
+            <button class="cta btn-order" onclick="window.location.href='catalog.html'">ORDER NOW</button>
+            <button class="cta" onclick="openCheckout()">WESTERN UNION CHECKOUT</button>
+            <button class="cta btn-call" onclick="window.location.href='tel:9105499227'">CALL FOR INQUIRY</button>
+        </div>
     </div>
 </div>
 
-<div id="wu-guide" class="wu-instructions">
-    <div class="wu-title">WESTERN UNION TRANSFER PROTOCOL</div>
-    <div class="wu-step">1. Visit any Western Union location or use the app.</div>
-    <div class="wu-step">2. Send payment to: <strong>ZANDER [VERIFY NAME VIA CALL]</strong>.</div>
-    <div class="wu-step">3. Destination: <strong>Fayetteville, NC, USA</strong>.</div>
-    <div class="wu-step">4. Once sent, call <strong>(910) 549-9227</strong> with your MTCN number.</div>
-    <div class="wu-step">5. Your Pro account will be activated in the Security Bunker.</div>
+<!-- WU CHECKOUT MODAL -->
+<div class="modal-overlay" id="overlay" onclick="closeCheckout()"></div>
+<div id="checkout-modal">
+    <div class="wu-title">WU TRANSFER PROTOCOL</div>
+    <div class="wu-info">
+        <p>RECIPIENT: <strong>ZANDER</strong></p>
+        <p>LOCATION: <strong>Fayetteville, NC, USA</strong></p>
+        <p>TOTAL: <strong>$49.00 USD</strong></p>
+    </div>
+    <p style="font-size: 0.6rem; color: #888; margin-bottom: 10px; text-transform: uppercase;">Enter MTCN number to log order:</p>
+    <input type="text" id="mtcn-input" placeholder="MTCN #########">
+    <button class="cta btn-order" onclick="submitMTCN()">CONFIRM TRANSFER</button>
+    <button class="cta" onclick="closeCheckout()" style="background: transparent; font-size: 0.6rem; margin-top: 5px;">CLOSE</button>
 </div>
 
 <script>
-    // Handles Western Union Section Scroll
-    function showWU() {
-        document.getElementById('wu-guide').scrollIntoView({ behavior: 'smooth' });
-        alert("Follow the Western Union Protocol below to activate Pro status.");
+    function openCheckout() {
+        document.getElementById('checkout-modal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
     }
 
-    // Handles Free Membership & Instant Vault Access
+    function closeCheckout() {
+        document.getElementById('checkout-modal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function submitMTCN() {
+        const mtcn = document.getElementById('mtcn-input').value;
+        if (!mtcn || mtcn.length < 8) {
+            alert("VALID MTCN REQUIRED FOR SECURITY BUNKER LOGGING.");
+            return;
+        }
+
+        // POST to your Node.js Termux Server
+        fetch('http://localhost:3001/order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                service: 'PRO_MEMBERSHIP',
+                mtcn: mtcn,
+                status: 'PENDING_CALL'
+            })
+        }).then(() => {
+            alert("MTCN LOGGED. Redirecting to Portal. Call (910) 549-9227 to finalize.");
+            window.location.href = "portal.html";
+        }).catch(err => {
+            alert("Network offline. Please call to provide MTCN manually.");
+        });
+    }
+
     function joinFree() {
-        const email = prompt("ENTER EMAIL FOR INSTANT VAULT ACCESS:");
+        const email = prompt("ENTER EMAIL FOR VAULT ACCESS:");
         if (email) {
-            // Logs to your Termux Server (Port 3001)
             fetch('http://localhost:3001/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email, tier: 'FREE' })
-            }).catch(err => console.log("Vault offline, logging locally..."));
-            
-            // Immediate Redirect to the Reward Page
-            window.location.href = "vault-preview.html";
+            });
+            window.location.href = "vault.html";
         }
     }
 </script>

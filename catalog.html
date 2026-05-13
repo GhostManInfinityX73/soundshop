@@ -2,225 +2,252 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOUND SHOP | Beat Catalog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;900&display=swap" rel="stylesheet">
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-CQ81083J1M');
-    </script>
-    
-    <script src="https://web.squarecdn.com/v1/payments.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOUND SHOP | CATALOG</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        :root { --teal: #00ffcc; --dark: #050505; --glass: rgba(255, 255, 255, 0.05); --neon-pink: #ff00ff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--dark); color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        
-        body::before {
-            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 9998; background-size: 100% 4px, 3px 100%; pointer-events: none;
+        :root {
+            --neon-cyan: #00ffcc;
+            --neon-gold: #ffcc00;
+            --alert-red: #ff4444;
+            --dark-bg: #000000;
+            --card-bg: #080808;
+            --orange-text: #FF9900;
         }
 
-        .ticker { background: var(--teal); color: #000; padding: 6px 0; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; overflow: hidden; }
-        .ticker-content { display: inline-block; animation: marquee 30s linear infinite; }
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        body {
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
 
-        nav { padding: 20px; background: rgba(0, 0, 0, 0.9); display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0, 255, 204, 0.2); }
-        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 8px; font-size: 1.2rem; text-transform: uppercase; text-align: center; background: linear-gradient(to right, #fff 20%, var(--teal) 50%, #fff 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shine 4s linear infinite; }
-        
-        .nav-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .nav-links a { text-decoration: none; color: #fff; font-size: 0.5rem; letter-spacing: 1px; font-weight: 700; opacity: 0.6; transition: 0.3s; text-transform: uppercase; }
-        .nav-links a:hover { opacity: 1; color: var(--teal); }
+        .security-banner {
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-gold));
+            color: #000;
+            padding: 4px 15px;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+        }
 
-        .contact-bar { display: flex; justify-content: center; gap: 10px; padding: 15px; background: rgba(0, 255, 204, 0.05); }
-        .call-btn { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 5px; font-weight: 800; font-size: 0.7rem; letter-spacing: 1px; }
-        .btn-order { background: var(--teal); color: #000; }
+        header { padding: 20px 10px; text-align: center; border-bottom: 1px solid #111; }
+        .logo { font-size: 20px; letter-spacing: 10px; font-weight: 900; margin-bottom: 15px; }
+        .logo .gold { color: var(--neon-gold); }
 
-        .catalog-header { padding: 40px 20px; text-align: center; }
-        .catalog-header h1 { font-family: 'Syncopate'; font-size: 1.8rem; letter-spacing: 5px; color: #fff; }
-        .catalog-header p { font-size: 0.7rem; color: var(--teal); letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
+        nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; font-size: 9px; font-weight: 800; }
+        nav a { color: #fff; text-decoration: none; opacity: 0.5; transition: 0.3s; }
+        nav a:hover { opacity: 1; color: var(--neon-cyan); }
+        nav a.active { opacity: 1; border-bottom: 1.5px solid var(--neon-cyan); padding-bottom: 2px; }
+        .soon-tag { color: var(--orange-text); font-size: 6px; vertical-align: top; margin-left: 1px; }
 
-        .product-container { max-width: 900px; margin: 0 auto; padding: 20px; }
-        .track-card { background: var(--glass); border: 1px solid rgba(0, 255, 204, 0.15); border-radius: 20px; padding: 25px; margin-bottom: 25px; backdrop-filter: blur(15px); border-left: 5px solid var(--teal); }
-        
-        .track-title { font-family: 'Syncopate'; font-size: 1rem; letter-spacing: 2px; color: #fff; margin-bottom: 5px; }
-        .track-sku { font-size: 0.6rem; color: #666; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
-        
-        audio { width: 100%; height: 40px; margin: 15px 0; border-radius: 10px; filter: invert(1) hue-rotate(180deg) brightness(1.5); }
-        .buy-btn { background: var(--teal); color: #000; border: none; padding: 16px; width: 100%; border-radius: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
-        #paymentModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; justify-content:center; align-items:center; backdrop-filter: blur(10px); }
-        .modal-content { background:#111; border: 1px solid var(--teal); padding:35px; border-radius:24px; width:90%; max-width:400px; text-align: center; }
-        input { width:100%; padding:15px; margin:10px 0; border-radius:10px; border:1px solid #333; background:#1a1a1a; color:#fff; font-size: 1rem; }
-        
-        #toast { visibility: hidden; min-width: 250px; background-color: var(--teal); color: #000; text-align: center; border-radius: 5px; padding: 15px; position: fixed; z-index: 3000; bottom: 30px; left: 50%; transform: translateX(-50%); font-weight: bold; }
-        #toast.show { visibility: visible; }
-        footer { padding: 40px 20px; background: #000; border-top: 1px solid rgba(0, 255, 204, 0.1); text-align: center; }
-        .copyright { color: #333; font-size: 0.5rem; letter-spacing: 4px; }
+        .hero { text-align: center; padding: 30px 10px; }
+        .hero h1 { font-size: 24px; letter-spacing: 12px; margin: 0; }
+        .hero p { color: var(--neon-cyan); font-size: 9px; letter-spacing: 4px; margin-top: 10px; }
+
+        .track-card { 
+            background: var(--card-bg); 
+            border: 1px solid #151515; 
+            border-left: 3px solid var(--neon-gold); 
+            border-radius: 8px; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+        }
+        .track-card h3 { margin: 0; font-size: 14px; letter-spacing: 3px; font-weight: 900; }
+        .sku { color: #444; font-size: 7px; margin-top: 4px; font-weight: 800; }
+
+        audio { width: 100%; margin: 15px 0; filter: invert(1) contrast(1.2); height: 30px; }
+
+        .license-btn { 
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-gold)); 
+            color: #000; 
+            border: none; 
+            padding: 12px; 
+            width: 100%; 
+            font-weight: 900; 
+            font-size: 10px; 
+            letter-spacing: 2px; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            text-decoration: none; 
+            display: block; 
+            text-align: center; 
+        }
+
+        .coming-soon { border: 1px dashed #222; padding: 25px; text-align: center; border-radius: 8px; margin-top: 40px; }
+        .coming-soon h4 { color: var(--neon-gold); letter-spacing: 4px; margin: 0; font-size: 11px; }
+        .coming-soon p { font-size: 8px; color: #555; letter-spacing: 2px; margin-top: 8px; line-height: 1.5; }
+
+        footer { text-align: center; padding: 40px; font-size: 8px; color: #222; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-<div class="ticker">
-    <div class="ticker-content">PREMIUM INSTRUMENTALS // SECURE PAYMENTS // RSA-2048 ENCRYPTED // ESTABLISHED 2026 //</div>
+<div class="security-banner">
+    <span>SYSTEM STATUS: ENCRYPTED</span>
+    <span>RSA-2048 SECURE</span>
 </div>
 
-<nav>
-    <div class="logo">SOUND SHOP</div>
-    <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="studio.html">STUDIO</a>
-        <a href="lab.html">THE LAB</a>
-        <a href="vault.html">VAULT</a>
-        <a href="portal.html">PORTAL</a>
-        <a href="nexus.html">BROADCAST</a>
-        <a href="about.html">ABOUT</a>
+<header>
+    <div class="logo">SOUND <span class="gold">SHOP</span></div>
+    <nav>
+           <a href="index.html" style="border-bottom: 2px solid var(--neon-teal); padding-bottom: 2px;">HOME</a>
+            <a href="studio.html">STUDIO<span class="soon-tag">SOON</span></a>
+            <a href="catalog.html">SOUNDTRACKS</a>
+            <a href="lab.html"> SHOWCASE</a>
+            <a href="nexus.html">PODCASTING</a>
+            <a href="vault.html">VAULT</a>
+            <a href="portal.html">PORTAL</a>
+            <a href="chat-preview.html">CHAT<span class="soon-tag">SOON</span></a>
+    </nav>
+</header>
+
+<div class="hero">
+    <h1>CATALOG</h1>
+    <p>PROFESSIONAL AUDIO ASSETS</p>
+</div>
+
+<div class="container">
+
+    <!-- TRACK ENTRIES -->
+    <div class="track-card">
+        <h3>CROWNED</h3>
+        <div class="sku">SKU: SS-CRN-011</div>
+        <audio controls preload="metadata"><source src="audio/crnd.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=CROWNED%20LICENSE&amount=$24.99" class="license-btn">LICENSE - $24.99</a>
     </div>
-</nav>
 
-<div class="contact-bar">
-    <a href="tel:19105499227" class="call-btn">OFFICE</a>
-    <a href="tel:19108796800" class="call-btn btn-order">PLACE ORDER</a>
-</div>
-
-<div class="catalog-header">
-    <h1>BEAT CATALOG</h1>
-    <p>Professional M4A Audio Assets</p>
-</div>
-
-<div class="product-container" id="product-container"></div>
-
-<div id="paymentModal">
-    <div class="modal-content">
-        <h3 id="modalTrackName" style="color:var(--teal); font-family: 'Syncopate';">Item</h3>
-        <p id="modalPrice" style="font-weight: 900; font-size: 1.4rem; color: #fff; margin-bottom: 20px;">$0.00</p>
-        <input type="email" id="customerEmail" placeholder="Email for Delivery">
-        <div id="card-container"></div>
-        <button class="buy-btn" id="card-button" type="button" onclick="handlePayment()">Secure Checkout</button>
-        <button onclick="closeModal()" style="background:none; border:none; color:#666; width:100%; margin-top:20px; cursor:pointer; text-transform: uppercase; font-weight: 800;">Cancel</button>
+    <div class="track-card">
+        <h3>HIGH RISE</h3>
+        <div class="sku">SKU: SS-HGR-012</div>
+        <audio controls preload="metadata"><source src="audio/highrise.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=HIGH%20RISE%20LICENSE&amount=$24.99" class="license-btn">LICENSE - $24.99</a>
     </div>
-</div>
 
-<div id="toast"></div>
+    <div class="track-card">
+        <h3>BOTRIX</h3>
+        <div class="sku">SKU: SS-BTX-003</div>
+        <audio controls preload="metadata"><source src="audio/botrix.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=BOTRIX%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>ELECTRO</h3>
+        <div class="sku">SKU: SS-ELC-004</div>
+        <audio controls preload="metadata"><source src="audio/electro.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=ELECTRO%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>WAVETOXTON</h3>
+        <div class="sku">SKU: SS-WVT-005</div>
+        <audio controls preload="metadata"><source src="audio/wavetoxton.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=WAVETOXTON%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>GSMOKE</h3>
+        <div class="sku">SKU: SS-GSM-006</div>
+        <audio controls preload="metadata"><source src="audio/gsmoke.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=GSMOKE%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>FEAR NOT</h3>
+        <div class="sku">SKU: SS-FRN-007</div>
+        <audio controls preload="metadata"><source src="audio/fearnot.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=FEAR%20NOT%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>SPACEROIDS</h3>
+        <div class="sku">SKU: SS-SPD-008</div>
+        <audio controls preload="metadata"><source src="audio/spaceroids.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=SPACEROIDS%20LICENSE&amount=$29.99" class="license-btn">LICENSE - $29.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>GRUDGE GOBBLER</h3>
+        <div class="sku">SKU: SS-TGG-010</div>
+        <audio controls preload="metadata"><source src="audio/tgg.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=GRUDGE%20GOBBLER%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>EMPTY GRAVE</h3>
+        <div class="sku">SKU: SS-EGV-013</div>
+        <audio controls preload="metadata"><source src="audio/emptygrave.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=EMPTY%20GRAVE%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>HOLDEN HW</h3>
+        <div class="sku">SKU: SS-HHW-014</div>
+        <audio controls preload="metadata"><source src="audio/holdenhw.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=HOLDEN%20HW%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>RUMBLER</h3>
+        <div class="sku">SKU: SS-RMB-016</div>
+        <audio controls preload="metadata"><source src="audio/rumbler.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=RUMBLER%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>SM</h3>
+        <div class="sku">SKU: SS-SMX-017</div>
+        <audio controls preload="metadata"><source src="audio/sm.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=SM%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <div class="track-card">
+        <h3>POE</h3>
+        <div class="sku">SKU: SS-POE-019</div>
+        <audio controls preload="metadata"><source src="audio/poe.m4a" type="audio/mp4"></audio>
+        <a href="checkout.html?product=POE%20LICENSE&amount=$19.99" class="license-btn">LICENSE - $19.99</a>
+    </div>
+
+    <!-- LIVE BROADCAST VAULT (MULTI-LAYER INFRASTRUCTURE) -->
+    <div class="video-vault">
+        <h4>BROADCAST FEED: <span class="live-dot"></span> ACTIVE</h4>
+        
+        <div class="video-container">
+            <!-- LAYER 1: Background Infrastructure Animation -->
+            <video class="bg-animation-video" autoplay loop muted playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-blue-and-white-lines-9051-preview.mp4" type="video/mp4">
+            </video>
+            
+            <!-- LAYER 2: Live Feed Foreground Layer -->
+            <iframe 
+                src="https://tubitv.com/embed/live/622159" 
+                class="video-frame" 
+                allow="autoplay; fullscreen; picture-in-picture" 
+                sandbox="allow-scripts allow-same-origin allow-presentation; allow-forms"
+                frameborder="0">
+            </iframe>
+        </div>
+        
+        <div class="signal-status">ENCRYPTED STREAM // LIVE FROM FAYETTEVILLE</div>
+    </div>
+
+    <div class="coming-soon">
+        <h4>NEW RELEASES DAILY</h4>
+        <p>LAB PROCESSING ACTIVE. CHECK BACK EVERY 24 HOURS FOR NEW INFRASTRUCTURE UPDATES.</p>
+    </div>
+
+</div>
 
 <footer>
-    <div class="copyright">&copy; 2026 SOUND SHOP | FAYETTEVILLE NC | SECURE GATEWAY</div>
+    © 2026 SOUND SHOP // FAYETTEVILLE, NC
 </footer>
 
-<script>
-    // Verified against your file screenshots to ensure filenames match storage exactly.
-    const audioTracks = [
-        { name: "Undefeated", price: "29.99", sku: "SKU-UND", file: "audio/undftd.m4a" },
-        { name: "IJDGAF", price: "49.99", sku: "SKU-IJG", file: "audio/ijdgaf.m4a" },
-        { name: "The Unknown", price: "34.99", sku: "SKU-UNK", file: "audio/theunknown.m4a" },
-        { name: "No Mans Crown", price: "24.99", sku: "SKU-NMC", file: "audio/nmc.m4a" },
-        { name: "Street Minded", price: "29.99", sku: "SKU-STR", file: "audio/strmnd.m4a" },
-        { name: "First Mill", price: "34.99", sku: "SKU-FML", file: "audio/frstmill.m4a" },
-        { name: "Crowned", price: "24.99", sku: "SKU-CRN", file: "audio/crnd.m4a" },
-        { name: "High Rise", price: "24.99", sku: "SKU-HGR", file: "audio/highrise.m4a" },
-        { name: "Botrix", price: "19.99", sku: "SKU-BTX", file: "audio/botrix.m4a" },
-        { name: "Electro", price: "19.99", sku: "SKU-ELC", file: "audio/electro.m4a" },
-        { name: "Wave Toxton", price: "29.99", sku: "SKU-WVT", file: "audio/wavetoxton.m4a" },
-        { name: "Smoked", price: "24.99", sku: "SKU-SMK", file: "audio/gsmoke.m4a" },
-        { name: "Fear Not", price: "24.99", sku: "SKU-FNT", file: "audio/fearnot.m4a" },
-        { name: "Spaceroids", price: "29.99", sku: "SKU-SPD", file: "audio/spaceroids.m4a" },
-        { name: "This Poppin", price: "19.99", sku: "SKU-TPP", file: "audio/thispoppin.m4a" },
-        { name: "Grudge Gobbler", price: "14.99", sku: "SKU-TGG", file: "audio/tgg.m4a" },
-        { name: "Empty Grave", price: "24.99", sku: "SKU-EGV", file: "audio/emptygrave.m4a" },
-        { name: "Heavy Weight", price: "29.99", sku: "SKU-HHW", file: "audio/holdenhw.m4a" },
-        { name: "The Rumbler", price: "24.99", sku: "SKU-RUM", file: "audio/rumbler.m4a" },
-        { name: "Z-Bung", price: "19.99", sku: "SKU-ZBG", file: "audio/zjbng.m4a" },
-        { name: "SM", price: "19.99", sku: "SKU-SMX", file: "audio/sm.m4a" },
-        { name: "Poe", price: "14.99", sku: "SKU-POE", file: "audio/poe.m4a" },
-        { name: "Creep", price: "19.99", sku: "SKU-CRP", file: "audio/creep.m4a" }
-    ];
-
-    const container = document.getElementById('product-container');
-    audioTracks.forEach(track => {
-        const cardDiv = document.createElement('div');
-        cardDiv.className = 'track-card';
-        cardDiv.innerHTML = `
-            <div class="track-title">${track.name}</div>
-            <div class="track-sku">${track.sku}</div>
-            <audio controls preload="metadata" controlsList="nodownload"><source src="${track.file}" type="audio/mp4"></audio>
-            <button class="buy-btn" onclick="openModal('${track.name}', '${track.price}', '${track.sku}')">LICENSE - $${track.price}</button>
-        `;
-        container.appendChild(cardDiv);
-    });
-
-    let currentOrder = {};
-    let card; 
-
-    async function initializeSquare() {
-        try {
-            const payments = Square.payments('sq0idp-65zuXXwmtAkENq9dLUBdiw', 'LMPQXX1');
-            card = await payments.card();
-            await card.attach('#card-container');
-        } catch (e) { console.error('Square Load Error', e); }
-    }
-    initializeSquare();
-
-    function showToast(msg) {
-        const t = document.getElementById("toast");
-        t.innerText = msg; t.className = "show";
-        setTimeout(() => t.className = "", 3000);
-    }
-
-    function openModal(name, price, sku) {
-        currentOrder = { name, price, sku };
-        document.getElementById('modalTrackName').innerText = name;
-        document.getElementById('modalPrice').innerText = '$' + price;
-        document.getElementById('paymentModal').style.display = 'flex';
-    }
-
-    function closeModal() { document.getElementById('paymentModal').style.display = 'none'; }
-
-    async function handlePayment() {
-        const email = document.getElementById("customerEmail").value;
-        if (!email) { showToast("Email required."); return; }
-        document.getElementById('card-button').innerText = "PROCESSING...";
-        try {
-            const result = await card.tokenize();
-            if (result.status === 'OK') { processCheckout(result.token); } 
-            else { showToast("Card Error"); resetBtn(); }
-        } catch (e) { showToast("Service Error"); resetBtn(); }
-    }
-
-    function resetBtn() {
-        const btn = document.getElementById('card-button');
-        btn.disabled = false; btn.innerText = "Secure Checkout";
-    }
-
-    async function processCheckout(token) {
-        try {
-            const res = await fetch('/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sourceId: token,
-                    amount: currentOrder.price, 
-                    customerEmail: document.getElementById("customerEmail").value,
-                    items: [{ name: currentOrder.name, sku: currentOrder.sku }]
-                })
-            });
-            const result = await res.json();
-            if (result.success) { window.location.href = "success.html"; } 
-            else { showToast(result.error); resetBtn(); }
-        } catch (err) { showToast("Server Error"); resetBtn(); }
-    }
-</script>
 </body>
-
-
 </html>
-
-
-
-

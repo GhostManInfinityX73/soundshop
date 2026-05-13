@@ -2,168 +2,172 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Vault | Sound Shop Gear</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>360° GEAR VAULT | SOUND SHOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        /* 1. Global Studio Theme */
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #000000;
-            background-image: linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .shop-header {
-            width: 100%;
-            max-width: 1100px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .logo { font-weight: 300; font-size: 1.2rem; cursor: pointer; }
-        .logo span { color: #00e5ff; font-weight: 800; }
-
-        .bag-icon {
-            border: 1px solid #00e5ff;
-            padding: 10px 15px;
-            border-radius: 50px;
-            color: #00e5ff;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .bag-icon:hover { background: #00e5ff; color: #000; }
-
-        .vault-title { text-align: center; margin: 60px 0; }
-        .vault-title h1 { font-size: 4rem; letter-spacing: 15px; margin: 0; font-weight: 200; }
-        .subtitle { color: #00e5ff; letter-spacing: 5px; font-size: 0.9rem; margin-top: 10px; }
+        :root { --teal: #00e5ff; --dark: #050505; --gold: #ffd700; --glass: rgba(255, 255, 255, 0.05); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        #typing-text { min-height: 1.2em; color: #888; font-size: 0.9rem; max-width: 600px; margin: 20px auto; line-height: 1.6; }
-
-        .pricing-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
-            max-width: 1200px;
-            width: 100%;
-            margin-bottom: 100px;
+        body { 
+            background: var(--dark); 
+            color: #fff; 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            perspective: 2000px;
         }
 
-        .pricing-card {
-            background-color: #121212;
-            border: 1px solid #222;
-            border-radius: 15px;
-            padding: 20px;
-            width: 320px;
-            text-align: center;
-            transition: all 0.4s ease;
+        .shop-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); position: relative; z-index: 1000; border-bottom: 1px solid rgba(0,229,255,0.1); }
+        .logo { font-family: 'Syncopate'; font-size: 0.9rem; letter-spacing: 4px; }
+        .logo span { color: var(--teal); }
+
+        .category-header { text-align: center; font-family: 'Syncopate'; font-size: 0.7rem; color: var(--teal); letter-spacing: 5px; margin-top: 60px; text-transform: uppercase; }
+
+        .stage { 
+            height: 400px; 
+            width: 100%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative; 
+            transform-style: preserve-3d;
+            margin-bottom: 40px;
         }
-        .pricing-card:hover { transform: translateY(-10px); border-color: #00e5ff; }
-        .pricing-card img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
 
-        .price { font-size: 1.8rem; font-weight: 800; color: #ffd700; margin-bottom: 15px; }
-
-        .buy-btn {
-            background-color: transparent;
-            color: #00e5ff;
-            border: 1px solid #00e5ff;
-            padding: 15px 30px;
-            width: 100%;
-            border-radius: 4px;
-            font-weight: 800;
-            text-transform: uppercase;
+        .carousel { 
+            position: relative; 
+            width: 180px; 
+            height: 260px; 
+            transform-style: preserve-3d; 
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        
+        .item { 
+            position: absolute; 
+            width: 180px; 
+            height: 260px; 
+            background: var(--glass); 
+            border: 1px solid rgba(0, 229, 255, 0.15); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 10px; 
             cursor: pointer;
+            backface-visibility: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             transition: 0.3s;
         }
-        .buy-btn:hover { background-color: #00e5ff; color: #000; }
 
-        @media (max-width: 600px) { .vault-title h1 { font-size: 2.5rem; } }
+        .item img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
+        .item h3 { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); text-align: center; }
+        .item .price { color: var(--gold); font-weight: 900; font-size: 0.8rem; margin-top: 5px; }
+
+        .nav-btns { display: flex; justify-content: center; gap: 25px; margin-top: -40px; margin-bottom: 60px; position: relative; z-index: 500; }
+        .nav-btns button { 
+            background: rgba(0,0,0,0.6); border: 1px solid var(--teal); color: var(--teal); 
+            padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 0.75rem; 
+            cursor: pointer; backdrop-filter: blur(5px);
+        }
+
+        #product-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 80vh; background: #0a0a0a; border-top: 3px solid var(--teal); border-radius: 30px 30px 0 0; z-index: 2000; padding: 30px; overflow-y: auto; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1500; backdrop-filter: blur(8px); }
+        .modal-img { width: 100%; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
+        .buy-btn { width: 100%; padding: 20px; background: var(--teal); color: #000; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 20px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
     <header class="shop-header">
-        <div class="logo" onclick="location.href='index.html'">
-            SOUND<span>SHOP</span>
-        </div>
-        <div id="bag-count" class="bag-icon" onclick="location.href='checkout.html'">
-            BAG [0]
-        </div>
+        <div class="logo">SOUND<span>SHOP</span></div>
+        <div style="color: var(--teal); font-weight: 900; font-size: 0.7rem; letter-spacing: 2px;">360° INFRASTRUCTURE</div>
     </header>
 
-    <div class="vault-title">
-        <h1>THE VAULT</h1>
-        <div class="subtitle">STREET MENTALITY RECORDS 2026 DROP</div>
-        <div id="typing-text"></div>
+    <div class="category-header">CLOTHING & HEADWEAR</div>
+    <div class="stage"><div class="carousel" id="clothing-carousel"></div></div>
+    <div class="nav-btns">
+        <button onclick="rotate('clothing', -1)">PREV</button>
+        <button onclick="rotate('clothing', 1)">NEXT</button>
     </div>
 
-    <div class="pricing-container">
-        <div class="pricing-card">
-            <img src="images/blkh.jpg" alt="A Good High Hoodie">
-            <h3>The High Mental</h3>
-            <div class="price">$55</div>
-            <button class="buy-btn" onclick="addToBag('The High Mental', 55)">Add to Bag</button>
-        </div>
-
-        <div class="pricing-card">
-            <img src="images/njjc.jpg" alt="NJJC Hoodie">
-            <h3>NJJC Heritage</h3>
-            <div class="price">$65</div>
-            <button class="buy-btn" onclick="addToBag('NJJC Heritage', 65)">Add to Bag</button>
-        </div>
+    <div class="category-header">FOOTWEAR STEP</div>
+    <div class="stage"><div class="carousel" id="footwear-carousel"></div></div>
+    <div class="nav-btns">
+        <button onclick="rotate('footwear', -1)">PREV</button>
+        <button onclick="rotate('footwear', 1)">NEXT</button>
     </div>
 
-    <div id="product-container" class="pricing-container"></div>
+    <div class="modal-overlay" id="overlay" onclick="closeProduct()"></div>
+    <div id="product-modal">
+        <img src="" id="m-img" class="modal-img">
+        <h2 id="m-title" style="font-family: 'Syncopate'; font-size: 1.1rem; color: var(--teal);"></h2>
+        <p id="m-price" style="color: var(--gold); font-weight: 900; font-size: 1.4rem; margin: 10px 0;"></p>
+        <p id="m-desc" style="font-size: 0.85rem; color: #aaa; line-height: 1.6;"></p>
+        <button class="buy-btn" onclick="processOrder()">BUY VIA WESTERN UNION</button>
+    </div>
 
     <script>
-        // 1. DATA & INITIALIZATION
-        const introText = "With at least 25 years of industry experience, I specialize in crafting high-impact instrumental soundtracks. Explore the drop.";
-        let charIndex = 0;
-        let bag = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // 2. TYPEWRITER EFFECT
-        function typeWriter() {
-            const el = document.getElementById("typing-text");
-            if (el && charIndex < introText.length) {
-                el.innerHTML += introText.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 40);
-            }
-        }
-
-        // 3. SHOPPING BAG LOGIC
-        function addToBag(itemName, price) {
-            bag.push({ name: itemName, price: price });
-            localStorage.setItem('cart', JSON.stringify(bag));
-            updateBagUI();
-            
-            if (confirm(`${itemName} added to your bag. Ready to checkout?`)) {
-                window.location.href = 'checkout.html';
-            }
-        }
-
-        function updateBagUI() {
-            const bagEl = document.getElementById('bag-count');
-            if (bagEl) bagEl.innerText = `BAG [${bag.length}]`;
-        }
-
-        // 4. INITIALIZE ON LOAD
-        window.onload = () => {
-            typeWriter();
-            updateBagUI();
+        // UPDATED PRODUCT IMAGES: Now pointing to the 'images/' subfolder
+        const products = {
+            clothing: [
+                { name: "NJJC Hoodie", price: 75, img: "images/njjc.jpg", sizes: ["S","M","L","XL","2XL"], desc: "Official NJJC street-grade heavy hoodie." },
+                { name: "SMR Showcase", price: 65, img: "images/smrshowcase.jpg", sizes: ["S","M","L","XL"], desc: "Limited edition SMR Showcase series." },
+                { name: "Black TNW Beanie", price: 35, img: "images/blktbnw.jpg", sizes: ["One Size"], desc: "High-profile 'That Shit Don't Hold No Weight' beanie." }, 
+                { name: "White TNW Beanie", price: 35, img: "images/whttbnw.jpg", sizes: ["One Size"], desc: "Premium White embroidery street beanie." },
+                { name: "SMR Black Cap", price: 40, img: "images/smrblkcpsg.jpg", sizes: ["Adjustable"], desc: "Official Sound Shop Records structured cap." },
+                { name: "SMR White Cap", price: 40, img: "images/smrwhtcp.jpg", sizes: ["Adjustable"], desc: "Clean white edition SMR headwear." }
+            ],
+            footwear: [
+                { name: "SMR CS Black", price: 130, img: "images/smrcsblk.jpg", sizes: ["8","9","10","11","12"], desc: "SMR Clean Black Court Shoes." },
+                { name: "SMR CS White", price: 130, img: "images/smrcs.jpg", sizes: ["8","9","10","11","12"], desc: "SMR Clean White Court Shoes." },
+                { name: "SMR Black Gold", price: 155, img: "images/smrfgblkgld.jpg", sizes: ["9","10","11","12"], desc: "Elite Fashion Sneaker with Gold hardware." },
+                { name: "Shadow Runner", price: 140, img: "images/smrtr.jpg", sizes: ["8.5","10","11"], desc: "Dynamic shadow-mesh performance runner." },
+                { name: "J-Z Beach Boot", price: 165, img: "images/j_zbeach.jpg", sizes: ["9","10","11","12"], desc: "All-terrain J-Z urban tactical boot." }
+            ]
         };
+
+        let angles = { clothing: 0, footwear: 0 };
+        function initCarousel(type) {
+            const container = document.getElementById(`${type}-carousel`);
+            const items = products[type];
+            const angleStep = 360 / items.length;
+            items.forEach((p, i) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                itemDiv.style.transform = `rotateY(${i * angleStep}deg) translateZ(300px)`;
+                itemDiv.onclick = () => openProduct(p);
+                itemDiv.innerHTML = `<img src="${p.img}"><h3>${p.name}</h3><div class="price">$${p.price}</div>`;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function rotate(type, dir) {
+            const container = document.getElementById(`${type}-carousel`);
+            const step = 360 / products[type].length;
+            angles[type] -= (dir * step);
+            container.style.transform = `rotateY(${angles[type]}deg)`;
+        }
+
+        function openProduct(p) {
+            document.getElementById('m-img').src = p.img;
+            document.getElementById('m-title').innerText = p.name;
+            document.getElementById('m-price').innerText = `$${p.price}`;
+            document.getElementById('m-desc').innerText = p.desc;
+            document.getElementById('product-modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeProduct() {
+            document.getElementById('product-modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function processOrder() {
+            alert("Order triggered. Check the Security Bunker for Western Union handshake.");
+        }
+
+        window.onload = () => { initCarousel('clothing'); initCarousel('footwear'); };
     </script>
 </body>
 </html>
