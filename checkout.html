@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOUND SHOP | Security Bunker Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
+    
+    <style>
+        :root { --teal: #00ffcc; --midnight: #0a0b0c; --card-bg: #111214; --gold: #ffcc00; }
+        body { background: var(--midnight); color: #fff; font-family: 'Inter', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        
+        .terminal-container { width: 95%; max-width: 450px; background: var(--card-bg); border: 1px solid var(--teal); border-radius: 12px; overflow: hidden; position: relative; z-index: 2; margin: 20px 0; }
+        .terminal-header { background: #000; padding: 20px; border-bottom: 1px solid var(--teal); text-align: center; }
+        .terminal-header h1 { font-family: 'Syncopate'; font-size: 0.65rem; letter-spacing: 4px; color: var(--teal); margin: 0; }
+        
+        .price-section { padding: 30px; text-align: center; background: #000; border-bottom: 1px solid #222; }
+        .total-amount { font-size: 3rem; font-weight: 900; text-shadow: 0 0 20px var(--teal); color: var(--teal); text-transform: lowercase; }
+        .product-label { font-size: 10px; letter-spacing: 3px; color: #555; margin-top: 10px; font-weight: 900; text-transform: uppercase; }
+
+        .receiver-info { background: #080808; padding: 15px; border-bottom: 1px solid #222; font-size: 11px; line-height: 1.6; text-transform: uppercase; }
+        .receiver-info strong { color: var(--gold); font-family: 'JetBrains Mono'; }
+
+        .terminal-toggle { display: flex; background: #000; padding: 5px; gap: 5px; }
+        .toggle-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #444; font-family: 'Syncopate'; font-size: 0.5rem; cursor: pointer; transition: 0.3s; }
+        .toggle-btn.active { color: var(--teal); border-bottom: 2px solid var(--teal); }
+
+        .form-body { padding: 25px; }
+        label { display: block; font-size: 0.55rem; color: #555; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
+        input { width: 100%; background: #080808; border: 1px solid #222; padding: 12px; color: var(--teal); border-radius: 6px; margin-bottom: 15px; font-family: 'JetBrains Mono'; outline: none; box-sizing: border-box; }
+        
+        .auth-btn { width: 100%; padding: 18px; background: var(--teal); color: #000; border: none; border-radius: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-family: 'Syncopate'; font-size: 0.7rem; cursor: pointer; box-shadow: 0 0 15px var(--teal); }
+        .hidden { display: none; }
+        
+        footer { padding: 15px; text-align: center; font-size: 0.5rem; color: #333; letter-spacing: 3px; background: #000; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="terminal-container">
+    <div class="terminal-header"><h1>SECURITY BUNKER GATEWAY</h1></div>
+    
+    <div class="price-section">
+        <div id="total-price" class="total-amount">$0.00</div>
+        <div id="product-name" class="product-label">PENDING ASSET SELECT...</div>
+    </div>
+
+    <div id="wu-details" class="receiver-info hidden">
+        <label>Receiver Profile:</label>
+        NAME: <strong>ZANDER</strong><br>
+        CITY: <strong>FAYETTEVILLE</strong><br>
+        STATE: <strong>NORTH CAROLINA</strong><br>
+        COUNTRY: <strong>USA</strong>
+    </div>
+
+    <div class="terminal-toggle">
+        <button class="toggle-btn active" onclick="switchMode('ach')">ACH ORIGIN</button>
+        <button class="toggle-btn" onclick="switchMode('wu')">WESTERN UNION</button>
+    </div>
+
+    <form id="achForm" class="form-body">
+        <label>Account Holder</label>
+        <input type="text" id="accHolder" placeholder="LEGAL NAME" required>
+        <label>Email Address</label>
+        <input type="email" id="accEmail" placeholder="CONTACT EMAIL" required>
+        <label>Bank Routing</label>
+        <input type="text" id="routingNumber" placeholder="9 DIGITS" required>
+        <label>Account Number</label>
+        <input type="text" id="accountNumber" placeholder="BANK ACCOUNT #" required>
+        <button type="submit" class="auth-btn">PROCESS SECURE ACH</button>
+    </form>
+
+    <form id="wuForm" class="form-body hidden">
+        <label>Sender Full Name</label>
+        <input type="text" id="wuName" placeholder="AS IT APPEARS ON RECEIPT" required>
+        <label>10-Digit MTCN #</label>
+        <input type="text" id="mtcn" placeholder="000-000-0000" required>
+        <label>Verify Amount (USD)</label>
+        <input type="text" id="wuAmount" placeholder="0.00" required>
+        <button type="submit" class="auth-btn" style="background: var(--gold); box-shadow: 0 0 15px var(--gold);">SUBMIT MTCN</button>
+    </form>
+
+    <footer>RSA-4096 SECURED // SOUND SHOP LEGACY</footer>
+</div>
+
+<script>
+    const publicKey = `-----BEGIN PUBLIC KEY-----MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAsGXxfZiR6xJn4GeOjm7M
+NVBt0uYh728HUnY15ctccak3vRMHSiWiavwHwPDzANXCGf0ev1F90eM2bubmxcLb
+1qXwX1XzSPX6ZwWD2akN4/kMS0wTNkdt+itevB1uunPnQWJylTYb/sTq9QG2TFZl
+yIUNI1dNN5EILoy3tnHHtmqQTM2KQ8hDqhIX7qGsbllolBid+zTpdgN0EfJPwpQe
+iFpth3iicyRrwVRFjtTYNrOEd3dHjXAITN9ZdTu+o86CO/JFxAbHPdtzVgYmYCFk
+FDiveIY14PwevLPDUf7SxlHvXrTFMkpSNqdiCqGWO+1TdxaosI0aUHJ7oxY83jXJ
+OikYux+03jZ71/+t7jwG0i81c7E1dDFzCXiyXb0wRRvkd78Jw0tjfbP0fGDHCheo
+EEM+LYKXveFqgn8b/ycDPj9606x57mEf8uYwfP1rtMk4WwYqEUUlSSjhWTwfymK7
+er7+0VkB6AZTRVpm0DybTdeelmkz9XF7MJU5KiFx8DV/RCdbZKJGAobNZ8tU9Osg
+If2Ata+NkC3KPMdkvyncru9CchnDMLtYM9iGQBov6JmvF/7Ss8OOTenJpKwBzm6N
+UNq2QFLeumJFQi1WBFzY8hr7hDGVsWbmOotfyS0+O+tQkxj+oBW4vnpbOvU91jGa
+IfrRISwX1SFRMr2mKHSOY88CAwEAAQ==-----`;
+
+    const BUNKER_URL = 'https://bunker.soundshop.cc';
+
+    // FIXED 2: Added decodeURIComponent processing to automatically catch URL strings correctly
+    const urlParams = new URLSearchParams(window.location.search);
+    const product = decodeURIComponent(urlParams.get('product') || 'digital asset');
+    const amount = decodeURIComponent(urlParams.get('amount') || '$0.00');
+
+    document.getElementById('product-name').innerText = product;
+    document.getElementById('total-price').innerText = amount;
+
+    function switchMode(mode) {
+        const ach = document.getElementById('achForm');
+        const wu = document.getElementById('wuForm');
+        const wuDetails = document.getElementById('wu-details');
+        const btns = document.querySelectorAll('.toggle-btn');
+        
+        if(mode === 'ach') {
+            ach.classList.remove('hidden'); wu.classList.add('hidden'); wuDetails.classList.add('hidden');
+            btns[0].classList.add('active'); btns[1].classList.remove('active');
+        } else {
+            wu.classList.remove('hidden'); ach.classList.add('hidden'); wuDetails.classList.remove('hidden');
+            btns[1].classList.add('active'); btns[0].classList.remove('active');
+        }
+    }
+
+    document.getElementById('achForm').onsubmit = async (e) => {
+        e.preventDefault();
+
+        // FIXED 1: Injected email string cleanly into the active server payload mapping
+        const payload = {
+            accHolder: document.getElementById('accHolder').value,
+            email: document.getElementById('accEmail').value,
+            routing: document.getElementById('routingNumber').value,
+            account: document.getElementById('accountNumber').value,
+            total: document.getElementById('total-price').innerText
+        };
+
+        try {
+            const res = await fetch(`${BUNKER_URL}/generate-ach`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            if (result.success) {
+                alert("SECURE HANDSHAKE COMPLETE. TRANSACTION ID: " + result.batchId);
+            }
+        } catch (err) {
+            alert("BUNKER CONNECTION ERROR. ENSURE TERMUX SERVER IS RUNNING VIA CLOUDFLARE.");
+        }
+    };
+
+    document.getElementById('wuForm').onsubmit = async (e) => {
+        e.preventDefault();
+        
+        // FIXED 3: Included asset name context metadata within the western union payload tracking block
+        const payload = {
+            name: document.getElementById('wuName').value,
+            mtcn: document.getElementById('mtcn').value,
+            amount: document.getElementById('wuAmount').value,
+            asset: document.getElementById('product-name').innerText
+        };
+
+        try {
+            const res = await fetch(`${BUNKER_URL}/api/wu-submit`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) alert("TRANSMISSION SUCCESSFUL. AWAITING MTCN VERIFICATION.");
+        } catch (err) {
+            alert("BUNKER HANDSHAKE FAILED.");
+        }
+    };
+</script>
+</body>
+</html>

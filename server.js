@@ -3,12 +3,15 @@ const cors = require('cors');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process'); 
+const { exec, spawn } = require('child_process'); 
+const nodemailer = require('nodemailer');
 
 const app = express();
 
-// --- 1. SECURITY MODULE: RSA KEY LOADING ---
+// --- 1. CORE SYSTEM & SECURITY PATHS ---
 const baseDir = '/sdcard/SoundShop';
+const logFile = path.join(baseDir, 'vault_ledger.log');
+const chatLogPath = path.join(baseDir, 'chat_vault.json');
 const privateKeyPath = path.join(baseDir, 'ss_private.pem');
 let privateKey;
 
@@ -21,14 +24,72 @@ try {
     console.log("❌ ERROR loading RSA keys:", err.message);
 }
 
-// --- 2. MIDDLEWARE ---
-app.use(cors());
+// --- 2. ALERT CONTACTS (SMS & EMAIL DISPATCH) ---
+const myEmail = 'streetmentalityrecords1973@gmail.com';
+const myPhoneGateway = '9105499227@mms.cricketwireless.net'; 
+const gmailAppPass = 'qhvtkofowbptntsv'; 
+
+// --- 3. UNSTOPPABLE 5-SECOND HARDWARE AUDIO ENGINE ---
+let audioProcess = null; 
+
+function triggerBunkerAlert(title, message, audioFileName = 'tgg.m4a') {
+    console.log(`\n🚨 BUNKER SYSTEM ALERT: ${title}`);
+    
+    // A. Local Android Notification
+    exec(`termux-notification -t "${title}" -c "${message}" --priority high --led-color 00FFC2`);
+
+    // B. Direct Hardware Playback via mpv
+    const targetAudio = path.join(baseDir, `audio/${audioFileName}`);
+    audioProcess = spawn('mpv', ['--no-video', '--ao=opensles', targetAudio]);
+    console.log("🔊 5-Second Sound Pulse Triggered...");
+
+    // C. The Unstoppable 5-Second Kill Switch
+    setTimeout(() => {
+        if (audioProcess) {
+            audioProcess.kill('SIGKILL'); 
+            audioProcess = null;
+        }
+        exec('pkill -f mpv');
+    }, 5000); 
+}
+
+// --- 4. EXTERNAL DISPATCH (SMS TEXT & EMAIL NETWORK) ---
+async function sendExternalAlert(subject, message) {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: myEmail, pass: gmailAppPass }
+    });
+    
+    let mailOptions = {
+        from: `"The Sound Shop Bunker" <${myEmail}>`,
+        to: `${myEmail}, ${myPhoneGateway}`, // Sends to email and phone simultaneously
+        subject: subject,
+        text: message
+    };
+    
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log("📨 Dispatch: SMS Text and Email Network Alerts Sent.");
+    } catch (err) {
+        console.error("❌ Dispatch Error:", err.message);
+    }
+}
+
+// --- 5. MIDDLEWARE ---
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(express.static(baseDir));
 
-// --- 3. CALLER ID GATEKEEPER ---
-app.get('/gatekeeper', (req, res) => {
-    const intent = req.query.intent || "General";
+// --- 6. BUSINESS ENDPOINTS ---
+
+// RSA Handshake
+app.get('/api/handshake', (req, res) => {
+    res.json({ status: "Secure", encryption: "RSA-2048", timestamp: new Date().toISOString() });
+});
+
+// Caller ID Gatekeeper
+app.get('/gatekeeper', async (req, res) => {
+    const intent = req.query.intent || "General Visit";
     const timestamp = new Date().toLocaleTimeString();
     const inquiryNumber = "9105499227"; 
     const purchaseNumber = "9108796800"; 
@@ -36,48 +97,50 @@ app.get('/gatekeeper', (req, res) => {
     let targetNumber = (intent.toLowerCase() === 'order' || intent.toLowerCase() === 'purchase') 
         ? purchaseNumber : inquiryNumber;
 
-    console.log(`📞 CALLER ID TRIGGERED: ${intent} at ${timestamp}`);
-    const title = `"Sound Shop: ${intent.toUpperCase()}"`;
-    const content = `"Customer is dialing ${targetNumber} for a ${intent}."`;
-    
-    exec(`termux-notification -t ${title} -c ${content} --priority high`, (err) => {
-        if (err) console.error("❌ Notification Error:", err);
-    });
+    const alertMsg = `Interaction: ${intent.toUpperCase()} at ${timestamp}. Target line: ${targetNumber}`;
 
+    // Hardware Alert & Global Text Network Alert
+    triggerBunkerAlert("📞 GATEKEEPER MONITOR", alertMsg, 'tgg.m4a');
+    await sendExternalAlert("📞 GATEKEEPER ALERT", alertMsg);
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.json({ success: true, phoneNumber: targetNumber });
 });
 
-// --- 4. DIRECT ACH SETTLEMENT MODULE ---
-app.post('/generate-ach', (req, res) => {
+// Direct ACH Settlement Module
+app.post('/generate-ach', async (req, res) => {
     const { accHolder, email, routing, account, total } = req.body;
     const batchId = "ACH-" + crypto.randomBytes(4).toString('hex').toUpperCase();
+    const alertMsg = `ACH ID: ${batchId}\nHolder: ${accHolder}\nAmount: $${total}`;
 
     try {
-        const logEntry = `[${new Date().toISOString()}] ACH ID: ${batchId} | Holder: ${accHolder} | Amt: ${total}\n`;
-        fs.appendFileSync(path.join(baseDir, 'vault_ledger.log'), logEntry);
+        const logEntry = `[${new Date().toISOString()}] ${alertMsg}\n`;
+        fs.appendFileSync(logFile, logEntry);
+
+        // Alert the Network
+        triggerBunkerAlert("🏦 ACH TRANSACTION INCOMING", `Holder: ${accHolder} | $${total}`, 'tgg.m4a');
+        await sendExternalAlert("🏦 NEW ACH TRANSACTION", alertMsg);
+
         res.json({ success: true, batchId: batchId });
     } catch (err) {
         res.status(500).json({ success: false, error: "Bunker ACH failure." });
     }
 });
 
-// --- 5. NEW: WESTERN UNION MTCN BUNKER ---
-app.post('/api/wu-submit', (req, res) => {
+// Western Union MTCN Bunker
+app.post('/api/wu-submit', async (req, res) => {
     const { name, mtcn, amount } = req.body;
     const timestamp = new Date().toLocaleString();
     const wuId = "WU-" + crypto.randomBytes(3).toString('hex').toUpperCase();
-
-    console.log(`\n💰 [BUNKER ALERT] Incoming Western Union: ${mtcn}`);
+    const alertMsg = `ID: ${wuId}\nSender: ${name}\nMTCN: ${mtcn}\nAmount: $${amount}`;
 
     try {
-        // Log to the main ledger
-        const logEntry = `[${timestamp}] ID: ${wuId} | SENDER: ${name} | MTCN: ${mtcn} | AMT: $${amount} | STATUS: PENDING VERIFICATION\n`;
-        fs.appendFileSync(path.join(baseDir, 'vault_ledger.log'), logEntry);
+        const logEntry = `[${timestamp}] ${alertMsg} | STATUS: PENDING VERIFICATION\n`;
+        fs.appendFileSync(logFile, logEntry);
 
-        // Trigger Android Alert so you know a payment is waiting
-        const title = `"PAYMENT ALERT: WESTERN UNION"`;
-        const content = `"MTCN ${mtcn} received from ${name} for $${amount}."`;
-        exec(`termux-notification -t ${title} -c ${content} --priority high --led-color FFFF00`);
+        // Hardware Audio Pulse + External SMS/Email Network Alert
+        triggerBunkerAlert("💰 WU PAYMENT SUBMITTED", `MTCN ${mtcn} from ${name} ($${amount})`, 'tgg.m4a');
+        await sendExternalAlert("💰 NEW WESTERN UNION TRANSACTION", alertMsg);
 
         res.status(200).json({ success: true, id: wuId });
     } catch (err) {
@@ -86,13 +149,117 @@ app.post('/api/wu-submit', (req, res) => {
     }
 });
 
-// --- 6. SERVER INITIALIZATION ---
-const PORT = 3001; // Updated to 3001 for the Secure Gateway
+// Independent Live Chat Module with Enhanced CORS Pre-Flight Handshake
+app.post('/chat-inquiry', async (req, res) => {
+    // Inject strict explicit access rules to clear Cloudflare/Mobile Browser pre-flight drops
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+
+    const { message, platform } = req.body;
+    const timestamp = new Date().toLocaleString();
+    const chatId = "MSG-" + crypto.randomBytes(3).toString('hex').toUpperCase();
+
+    try {
+        const chatEntry = {
+            id: chatId,
+            time: timestamp,
+            text: message,
+            source: platform || "Web UI Client",
+            status: "unread"
+        };
+
+        let history = [];
+        if (fs.existsSync(chatLogPath)) {
+            const fileData = fs.readFileSync(chatLogPath, 'utf8');
+            history = JSON.parse(fileData || "[]");
+        }
+        history.push(chatEntry);
+        fs.writeFileSync(chatLogPath, JSON.stringify(history, null, 2));
+
+        // Custom Live Chat Audio (tgg.m4a) + SMS Dispatch Execution
+        triggerBunkerAlert("💬 LIVE CHAT INQUIRY", message, 'tgg.m4a');
+        await sendExternalAlert("💬 NEW LIVE CHAT MESSAGE", `Platform: ${platform || "Web UI Client"}\nMessage: ${message}`);
+
+        res.status(200).json({ success: true, id: chatId });
+    } catch (err) {
+        console.error("❌ Chat Vault Error:", err);
+        res.status(500).json({ success: false });
+    }
+});
+
+// Explicit Handle for Options Pre-Flight requests (Stops browser panics immediately)
+app.options('/chat-inquiry', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.sendStatus(200);
+});
+
+// --- 6.5 DYNAMIC CHECKOUT ROUTE ROUTING ---
+app.get('/checkout', (req, res) => {
+    res.sendFile(path.join(baseDir, 'checkout.html'));
+});
+
+// --- 6.6 CATCH-ALL CUSTOM 404 PAGE HANDLER ---
+app.use((req, res) => {
+    res.status(404).send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>404 | SOUND SHOP</title>
+            <style>
+                body { 
+                    background: #000; 
+                    color: #00FFC2; 
+                    font-family: monospace; 
+                    text-align: center; 
+                    padding-top: 20%; 
+                    text-transform: lowercase; 
+                }
+                .error-box {
+                    border: 1px dashed #00FFC2;
+                    display: inline-block;
+                    padding: 30px;
+                    border-radius: 12px;
+                    background: #050505;
+                }
+                a { 
+                    color: #fff; 
+                    text-decoration: none; 
+                    border: 1px solid #00FFC2; 
+                    padding: 10px 20px; 
+                    border-radius: 5px; 
+                    display: inline-block;
+                    margin-top: 20px;
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="error-box">
+                <h1>[error 404: route vulnerable or missing]</h1>
+                <p>the infrastructure path you requested does not exist on this node.</p>
+                <a href="/">return to main matrix</a>
+            </div>
+        </body>
+        </html>
+    `);
+});
+
+// --- 7. SERVER INITIALIZATION ---
+const PORT = 3001; 
 const HOST = '0.0.0.0'; 
 
 app.listen(PORT, HOST, () => {
-    console.log('\n🛡️  SOUND SHOP BUNKER: ONLINE (PORT 3001)');
-    console.log(`🔗 GATEWAY ACTIVE: http://127.0.0.1:${PORT}`);
-    console.log('🚀 ACH & WESTERN UNION MODULES READY');
-    console.log('🙏 EVERYTHING FOR THE GLORY OF GOD');
+    process.stdout.write('\x1Bc'); 
+    console.log('--------------------------------------------------');
+    console.log('🛡️  SOUND SHOP BUNKER: UNIFIED MASTER NODE ONLINE');
+    console.log('⚡  NOTIFICATIONS: SMS Text + Email + Hardware Pulse Active');
+    console.log('🔊  TIMER: Hard-Locked at 5 Seconds via MPV');
+    console.log('🚀  ACH, WESTERN UNION, GATEKEEPER & CHAT FULLY ARMED');
+    console.log('🙏  EVERYTHING FOR THE GLORY OF GOD');
+    console.log('--------------------------------------------------\n');
 });

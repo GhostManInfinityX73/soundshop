@@ -151,7 +151,7 @@
             overflow: hidden;
             z-index: 9998;
             font-family: sans-serif;
-            text-transform: none;
+            text-transform: none; /* Keep text standard inside chat box */
         }
         .chat-header {
             background: rgba(0, 0, 0, 0.4);
@@ -177,8 +177,7 @@
 
     <div class="notification-bar">network status: secure (rsa-4096)</div>
 
-    <!-- Fixed path routing link below -->
-    <a href="/checkout?product=custom%20licensing%20deal&amount=$450.00" class="wu-main-cta">
+    <a href="checkout-wu.html" class="wu-main-cta">
         <i class="fa-solid fa-money-bill-transfer"></i>
         western union checkout - active live
     </a>
@@ -216,14 +215,13 @@
     </div>
 
     <div class="track-list">
-        <!-- Track Cards pointing directly to server /checkout paths -->
         <div class="track-card" id="card-botrix">
             <div class="track-info">
                 <h3>BOTRIX</h3>
                 <div class="controls">
                     <button class="btn-play" onclick="toggleAudio('./audio/botrix.m4a', 'card-botrix')">play / pause</button>
                     <button class="btn-stop" onclick="stopAudio()"><i class="fa-solid fa-stop"></i></button>
-                    <a href="/checkout?product=botrix%20license&amount=$350.00" class="btn-buy">license</a>
+                    <a href="checkout-wu.html?track=botrix" class="btn-buy">license</a>
                 </div>
             </div>
         </div>
@@ -233,7 +231,7 @@
                 <div class="controls">
                     <button class="btn-play" onclick="toggleAudio('./audio/tgg.m4a', 'card-tgg')">play / pause</button>
                     <button class="btn-stop" onclick="stopAudio()"><i class="fa-solid fa-stop"></i></button>
-                    <a href="/checkout?product=grudge%20gobbler%20license&amount=$350.00" class="btn-buy">license</a>
+                    <a href="checkout-wu.html?track=tgg" class="btn-buy">license</a>
                 </div>
             </div>
         </div>
@@ -243,7 +241,7 @@
                 <div class="controls">
                     <button class="btn-play" onclick="toggleAudio('./audio/electro.m4a', 'card-electro')">PLAY / PAUSE</button>
                     <button class="btn-stop" onclick="stopAudio()"><i class="fa-solid fa-stop"></i></button>
-                    <a href="/checkout?product=electro%20vise%20license&amount=$350.00" class="btn-buy">LICENSE</a>
+                    <a href="checkout-wu.html?track=electro" class="btn-buy">LICENSE</a>
                 </div>
             </div>
         </div>
@@ -252,9 +250,9 @@
     <div class="payment-vault">
         <div class="vault-header">accepted infrastructure</div>
         <div class="payment-grid">
-            <a href="/checkout?product=vault%20allocation&amount=$150.00" class="payment-tile">
+            <a href="checkout-wu.html" class="payment-tile">
                 <div class="tile-top"><i class="fa-solid fa-building-columns"></i><span class="status-badge badge-active">active</span></div>
-                <div class="method-name">western union / ach</div>
+                <div class="method-name">western union</div>
             </a>
             <div class="payment-tile">
                 <div class="tile-top"><i class="fa-brands fa-cc-visa"></i><span class="status-badge badge-soon">soon</span></div>
@@ -365,12 +363,14 @@
             draw();
         }
 
+        // Fixed Connection: Unified Master Node Gatekeeper Route Check
         function triggerGatekeeper(type) {
             fetch(`https://bunker.soundshop.cc/gatekeeper?intent=${type}`, {
                 method: 'GET'
             }).catch(err => console.error("Gatekeeper alert network drop:", err));
         }
 
+        // Live Chat Widget Interaction Logic
         const chatTrigger = document.getElementById('chat-bubble-trigger');
         const chatWindow = document.getElementById('chat-bunker-window');
         const chatInput = document.getElementById('chat-input-field');
@@ -381,13 +381,6 @@
             if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
                 chatWindow.style.display = 'flex';
                 chatInput.focus();
-                
-                // Front-end interactive confirmation audio pulse
-                initAudio();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                audio.src = './audio/tgg.m4a';
-                audio.play().catch(e => console.log("Bypassing mobile interface autoplay limits:", e));
-                
             } else {
                 chatWindow.style.display = 'none';
             }
@@ -403,11 +396,15 @@
             try {
                 const response = await fetch('https://bunker.soundshop.cc/chat-inquiry', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: rawText, platform: 'Web Client' })
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: rawText,
+                        platform: 'Web Client'
+                    })
                 });
 
-                if (!response.ok) throw new Error(`Bunker Status: ${response.status}`);
                 const data = await response.json();
 
                 if (data.success) {
@@ -430,7 +427,11 @@
         }
 
         chatSendBtn.addEventListener('click', dispatchChatMessage);
-        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') dispatchChatMessage(); });
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                dispatchChatMessage();
+            }
+        });
     </script>
 </body>
 </html>

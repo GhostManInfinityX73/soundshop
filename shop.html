@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>360° GLOBE VAULT | SOUND SHOP</title>
+    <title>360° GEAR VAULT | SOUND SHOP</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root { --teal: #00e5ff; --dark: #050505; --gold: #ffd700; --glass: rgba(255, 255, 255, 0.05); }
@@ -14,96 +14,92 @@
             color: #fff; 
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            perspective: 1200px; /* Reduced perspective for tighter mobile feel */
+            perspective: 2000px; /* Deeper perspective for 360 motion */
         }
 
-        .shop-header { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,229,255,0.1); }
-        .logo { font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 3px; }
+        .shop-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); position: relative; z-index: 1000; border-bottom: 1px solid rgba(0,229,255,0.1); }
+        .logo { font-family: 'Syncopate'; font-size: 0.9rem; letter-spacing: 4px; }
         .logo span { color: var(--teal); }
 
-        .category-header { text-align: center; font-family: 'Syncopate'; font-size: 0.5rem; color: var(--teal); letter-spacing: 3px; margin-top: 20px; text-transform: uppercase; }
+        .category-header { text-align: center; font-family: 'Syncopate'; font-size: 0.7rem; color: var(--teal); letter-spacing: 5px; margin-top: 60px; text-transform: uppercase; }
 
-        /* DOWNSIZED STAGE */
+        /* 360° ORBIT STAGE */
         .stage { 
-            height: 280px; /* Reduced from 400px to fit mobile screen */
+            height: 400px; 
             width: 100%; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             position: relative; 
             transform-style: preserve-3d;
+            margin-bottom: 40px;
         }
-
-        .globe-wrap-top { transform: rotateX(15deg); transform-style: preserve-3d; }
-        .globe-wrap-bottom { transform: rotateX(-15deg); transform-style: preserve-3d; }
 
         .carousel { 
             position: relative; 
-            width: 120px; /* Shorter width */
-            height: 180px; /* Shorter height */
+            width: 180px; 
+            height: 260px; 
             transform-style: preserve-3d; 
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); 
         }
         
         .item { 
             position: absolute; 
-            width: 120px; 
-            height: 180px; 
+            width: 180px; 
+            height: 260px; 
             background: var(--glass); 
             border: 1px solid rgba(0, 229, 255, 0.15); 
-            border-radius: 10px; 
+            border-radius: 15px; 
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            padding: 5px; 
-            backface-visibility: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
+            padding: 10px; 
+            cursor: pointer;
+            backface-visibility: hidden; /* Keeps the 'back' of the circle clean */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            transition: 0.3s;
         }
 
-        .item img { width: 100%; height: 110px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; background: #111; }
-        .item h3 { font-size: 0.45rem; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); text-align: center; }
-        .item .price { color: var(--gold); font-weight: 900; font-size: 0.6rem; margin-top: 2px; }
+        /* Front-facing item highlight */
+        .item:hover { border-color: var(--teal); box-shadow: 0 0 20px var(--teal); }
 
-        /* ACCESSIBLE BUTTONS */
-        .nav-btns { display: flex; justify-content: center; gap: 15px; margin-top: 5px; margin-bottom: 30px; position: relative; z-index: 500; }
+        .item img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
+        .item h3 { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); text-align: center; }
+        .item .price { color: var(--gold); font-weight: 900; font-size: 0.8rem; margin-top: 5px; }
+
+        .nav-btns { display: flex; justify-content: center; gap: 25px; margin-top: -40px; margin-bottom: 60px; position: relative; z-index: 500; }
         .nav-btns button { 
-            background: rgba(0,0,0,0.7); border: 1px solid var(--teal); color: var(--teal); 
-            padding: 8px 18px; border-radius: 50px; font-weight: 900; font-size: 0.6rem; 
+            background: rgba(0,0,0,0.6); border: 1px solid var(--teal); color: var(--teal); 
+            padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 0.75rem; 
             cursor: pointer; backdrop-filter: blur(5px);
         }
 
-        #product-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 80vh; background: #0a0a0a; border-top: 3px solid var(--teal); border-radius: 20px 20px 0 0; z-index: 2000; padding: 20px; overflow-y: auto; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1500; backdrop-filter: blur(10px); }
-        .modal-img { width: 100%; max-height: 250px; object-fit: contain; border-radius: 10px; border: 1px solid #333; margin-bottom: 15px; }
-        .buy-btn { width: 100%; padding: 15px; background: var(--teal); color: #000; border: none; border-radius: 10px; font-weight: 900; text-transform: uppercase; margin-top: 15px; letter-spacing: 1px; }
+        /* MODAL */
+        #product-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 80vh; background: #0a0a0a; border-top: 3px solid var(--teal); border-radius: 30px 30px 0 0; z-index: 2000; padding: 30px; overflow-y: auto; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1500; backdrop-filter: blur(8px); }
+        .modal-img { width: 100%; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
+        .buy-btn { width: 100%; padding: 20px; background: var(--teal); color: #000; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 20px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
     <header class="shop-header">
         <div class="logo">SOUND<span>SHOP</span></div>
-        <div style="color: var(--teal); font-weight: 900; font-size: 0.4rem; letter-spacing: 1px;">GLOBAL INFRASTRUCTURE</div>
+        <div style="color: var(--teal); font-weight: 900; font-size: 0.7rem; letter-spacing: 2px;">360° INFRASTRUCTURE</div>
     </header>
 
-    <div class="category-header">CLOTHING (NORTH)</div>
-    <div class="stage">
-        <div class="globe-wrap-top">
-            <div class="carousel" id="clothing-carousel"></div>
-        </div>
-    </div>
+    <!-- CLOTHING ORBIT -->
+    <div class="category-header">CLOTHING & HEADWEAR</div>
+    <div class="stage"><div class="carousel" id="clothing-carousel"></div></div>
     <div class="nav-btns">
         <button onclick="rotate('clothing', -1)">PREV</button>
         <button onclick="rotate('clothing', 1)">NEXT</button>
     </div>
 
-    <div class="category-header">FOOTWEAR (SOUTH)</div>
-    <div class="stage">
-        <div class="globe-wrap-bottom">
-            <div class="carousel" id="footwear-carousel"></div>
-        </div>
-    </div>
+    <!-- FOOTWEAR ORBIT -->
+    <div class="category-header">FOOTWEAR  STEP</div>
+    <div class="stage"><div class="carousel" id="footwear-carousel"></div></div>
     <div class="nav-btns">
         <button onclick="rotate('footwear', -1)">PREV</button>
         <button onclick="rotate('footwear', 1)">NEXT</button>
@@ -112,49 +108,53 @@
     <div class="modal-overlay" id="overlay" onclick="closeProduct()"></div>
     <div id="product-modal">
         <img src="" id="m-img" class="modal-img">
-        <h2 id="m-title" style="font-family: 'Syncopate'; font-size: 0.9rem; color: var(--teal);"></h2>
-        <p id="m-price" style="color: var(--gold); font-weight: 900; font-size: 1.2rem; margin: 8px 0;"></p>
-        <p id="m-desc" style="font-size: 0.75rem; color: #aaa; line-height: 1.5;"></p>
+        <h2 id="m-title" style="font-family: 'Syncopate'; font-size: 1.1rem; color: var(--teal);"></h2>
+        <p id="m-price" style="color: var(--gold); font-weight: 900; font-size: 1.4rem; margin: 10px 0;"></p>
+        <p id="m-desc" style="font-size: 0.85rem; color: #aaa; line-height: 1.6;"></p>
+        
+        <label style="color: var(--teal); font-size: 0.6rem; font-weight: 900; margin-top: 20px; display: block;">CHOOSE YOUR SIZE</label>
+        <select id="size-select" style="width:100%; padding:15px; background:#151515; color:white; border:1px solid #333; margin-top:10px; border-radius: 10px;"></select>
+        
         <button class="buy-btn" onclick="processOrder()">BUY VIA WESTERN UNION</button>
+        <button onclick="closeProduct()" style="width:100%; background:transparent; border:none; color:#555; margin-top:20px; font-size:0.7rem;">BACK TO SHOP</button>
     </div>
 
     <script>
+        // Full Dataset with Fixed Paths
         const products = {
             clothing: [
-                { name: "NJJC Hoodie", price: 75, img: "images/njjc.jpg", desc: "Official NJJC street-grade heavy hoodie." },
-                { name: "SMR Showcase", price: 65, img: "images/smrshowcase.jpg", desc: "Limited edition SMR Showcase series." },
-                { name: "Black TNW Beanie", price: 35, img: "images/blktbnw.jpg", desc: "High-profile 'That Shit Don't Hold No Weight' beanie." }, 
-                { name: "White TNW Beanie", price: 35, img: "images/whttbnw.jpg", desc: "White embroidery street beanie." },
-                { name: "SMR Black Cap", price: 40, img: "images/smrblkcpsg.jpg", desc: "Sound Shop Records structured cap." },
-                { name: "SMR White Cap", price: 40, img: "images/smrwhtcp.jpg", desc: "Clean white edition SMR headwear." }
+                { name: "NJJC Hoodie", price: 75, img: "images/njjc.jpg", sizes: ["S","M","L","XL","2XL"], desc: "Official NJJC street-grade heavy hoodie." },
+                { name: "SMR Showcase", price: 65, img: "images/smrshowcase.jpg", sizes: ["S","M","L","XL"], desc: "Limited edition SMR Showcase series." },
+                { name: "Black TNW Beanie", price: 35, img: "images/blktbnw.jpg", sizes: ["One Size"], desc: "High-profile 'That Shit Don't Hold No Weight' beanie." }, 
+                { name: "White TNW Beanie", price: 35, img: "images/whttbnw.jpg", sizes: ["One Size"], desc: "Premium White embroidery street beanie." },
+                { name: "SMR Black Cap", price: 40, img: "images/smrblkcpsg.jpg", sizes: ["Adjustable"], desc: "Official Sound Shop Records structured cap." },
+                { name: "SMR White Cap", price: 40, img: "images/smrwhtcp.jpg", sizes: ["Adjustable"], desc: "Clean white edition SMR headwear." }
             ],
             footwear: [
-                { name: "SMR CS Black", price: 130, img: "images/smrcsblk.jpg", desc: "SMR Clean Black Court Shoes." },
-                { name: "SMR CS White", price: 130, img: "images/smrcs.jpg", desc: "SMR Clean White Court Shoes." },
-                { name: "SMR Black Gold", price: 155, img: "images/smrfgblkgld.jpg", desc: "Elite Fashion Sneaker with Gold hardware." },
-                { name: "Shadow Runner", price: 140, img: "images/smrtr.jpg", desc: "Performance runner." },
-                { name: "J-Z Beach Boot", price: 165, img: "images/j_zbeach.jpg", desc: "J-Z urban tactical boot." }
+                { name: "SMR CS Black", price: 130, img: "images/smrcsblk.jpg", sizes: ["8","9","10","11","12"], desc: "SMR Clean Black Court Shoes." },
+                { name: "SMR CS White", price: 130, img: "images/smrcs.jpg", sizes: ["8","9","10","11","12"], desc: "SMR Clean White Court Shoes." },
+                { name: "SMR Black Gold", price: 155, img: "images/smrfgblkgld.jpg", sizes: ["9","10","11","12"], desc: "Elite Fashion Sneaker with Gold hardware." },
+                { name: "Shadow Runner", price: 140, img: "images/smrtr.jpg", sizes: ["8.5","10","11"], desc: "Dynamic shadow-mesh performance runner." },
+                { name: "J-Z Beach Boot", price: 165, img: "images/j_zbeach.jpg", sizes: ["9","10","11","12"], desc: "All-terrain J-Z urban tactical boot." }
             ]
         };
 
         let angles = { clothing: 0, footwear: 0 };
+        let activeProduct = null;
 
+        // 360° MATH: We use a larger radius (300px) to complete the circle
         function initCarousel(type) {
             const container = document.getElementById(`${type}-carousel`);
             const items = products[type];
             const angleStep = 360 / items.length;
-            const radius = 220; // Reduced radius for mobile
-
+            
             items.forEach((p, i) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'item';
-                itemDiv.style.transform = `rotateY(${i * angleStep}deg) translateZ(${radius}px)`;
-                itemDiv.innerHTML = `
-                    <img src="${p.img}" onerror="this.src='https://via.placeholder.com/120x110/050505/00e5ff?text=SOUND+SHOP'">
-                    <h3>${p.name}</h3>
-                    <div class="price">$${p.price}</div>
-                `;
+                // Each item is placed at a specific degree in the 360 orbit
+                itemDiv.style.transform = `rotateY(${i * angleStep}deg) translateZ(300px)`;
                 itemDiv.onclick = () => openProduct(p);
+                itemDiv.innerHTML = `<img src="${p.img}"><h3>${p.name}</h3><div class="price">$${p.price}</div>`;
                 container.appendChild(itemDiv);
             });
         }
@@ -167,10 +167,13 @@
         }
 
         function openProduct(p) {
+            activeProduct = p;
             document.getElementById('m-img').src = p.img;
             document.getElementById('m-title').innerText = p.name;
             document.getElementById('m-price').innerText = `$${p.price}`;
             document.getElementById('m-desc').innerText = p.desc;
+            const s = document.getElementById('size-select');
+            s.innerHTML = p.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
             document.getElementById('product-modal').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
         }
@@ -181,8 +184,13 @@
         }
 
         function processOrder() {
-            const item = document.getElementById('m-title').innerText;
-            alert(`ORDER LOGGED: ${item}. Call (910) 549-9227 for Western Union verification.`);
+            const size = document.getElementById('size-select').value;
+            localStorage.setItem('wu_order', JSON.stringify({
+                item: activeProduct.name,
+                price: activeProduct.price,
+                size: size
+            }));
+            window.location.href = 'checkout.html';
         }
 
         window.onload = () => { initCarousel('clothing'); initCarousel('footwear'); };

@@ -13,3 +13,4 @@ package-lock.json
 # Environment & System
 .env
 .DS_Store
+node_modules/
