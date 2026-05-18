@@ -1,44 +1,43 @@
-/**
- * SOUND SHOP - Unified Infrastructure
- * FULL DRIVER SCRIPT: V1.7 (Gatekeeper Spam-Shield & Bunker Sync)
- */
-
-const audioTracks = [
-    { id: "5", name: "Grudge Gobbler", price: "19.99", sku: "SKU-TGG", file: "audio/tgg.m4a" },
-    { id: "8", name: "Electro", price: "24.99", sku: "SKU-ELE", file: "audio/electro.m4a" },
-    { id: "2", name: "Holding Heavy Weight", price: "29.99", sku: "SKU-HHW", file: "audio/holdenhw.m4a" }
-];
-
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
-let cart = JSON.parse(localStorage.getItem('soundshop_cart')) || [];
-
 // --- 1. UPDATED CALLER ID GATEKEEPER LOGIC ---
 /**
- * Handshakes with the Bunker to get a unique Access Token.
- * Displays the token to the user to filter out spam calls.
+ * Prompts user for identification, handshakes with the Bunker to whitelist them,
+ * and displays an Access Token to filter out spam calls.
  */
 async function identifyAndCall(intent) {
     console.log(`🚀 Initiating Secure Handshake: ${intent}`);
+    
+    // Prompt for identification to prevent spam callers
+    const name = prompt("To protect our lines from spam, please enter your name:");
+    const phone = prompt("Please enter your phone number:");
+
+    if (!name || !phone) {
+        alert("Verification required to connect to support lines.");
+        return;
+    }
+
     try {
         // Ping the updated local Termux server (server.js)
-        const response = await fetch(`http://localhost:3000/gatekeeper?intent=${intent}`);
+        // Passing intent, name, and phone directly to the server
+        const response = await fetch(`http://localhost:3000/gatekeeper?intent=${intent}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`);
         const data = await response.json();
 
         if (data.success) {
-            // NEW FEATURE: Secret Handshake Token
-            // This alerts the user to their unique code before dialing.
+            // Secret Handshake Token
             alert(`--- SOUND SHOP SECURE LINE ---\n\nYOUR ACCESS CODE: ${data.token}\n\nPlease mention this code when Zander answers to verify your inquiry.`);
             
-            // Trigger the device's native dialer with the routed number.
-            window.location.href = `tel:${data.phoneNumber}`;
+            // Trigger the device's native action (dialer or routing page)
+            if (intent === 'Live Chat') {
+                window.location.href = data.phoneNumber; // Or your chat room URL path
+            } else {
+                window.location.href = `tel:${data.phoneNumber}`;
+            }
         }
     } catch (err) {
         console.error("❌ Bunker Offline: Ensure node server.js is running in Termux.", err);
-        // Fallback for when the local server isn't active
         alert("Secure line currently unavailable. Please try again in a moment.");
     }
 }
+
 
 // --- 2. CORE AUDIO ENGINE ---
 function formatTime(seconds) {
