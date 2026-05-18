@@ -87,24 +87,57 @@ app.get('/api/handshake', (req, res) => {
     res.json({ status: "Secure", encryption: "RSA-2048", timestamp: new Date().toISOString() });
 });
 
-// Caller ID Gatekeeper
+// Caller ID Gatekeeper (UPDATED WITH AUTOMATIC CALLER IDENTIFICATION)
 app.get('/gatekeeper', async (req, res) => {
     const intent = req.query.intent || "General Visit";
+    const name = req.query.name || "Unknown Caller";
+    const phone = req.query.phone || "No Number Provided";
     const timestamp = new Date().toLocaleTimeString();
+    
     const inquiryNumber = "9105499227"; 
     const purchaseNumber = "9108796800"; 
     
     let targetNumber = (intent.toLowerCase() === 'order' || intent.toLowerCase() === 'purchase') 
         ? purchaseNumber : inquiryNumber;
 
-    const alertMsg = `Interaction: ${intent.toUpperCase()} at ${timestamp}. Target line: ${targetNumber}`;
+    // Channels incoming data directly into a local verified contacts log
+    if (req.query.phone) {
+        const whitelistPath = path.join(baseDir, 'verified_contacts.json');
+        const cleanPhone = phone.replace(/\D/g, ''); // Keep only numeric digits
 
-    // Hardware Alert & Global Text Network Alert
-    triggerBunkerAlert("📞 GATEKEEPER MONITOR", alertMsg, 'tgg.m4a');
-    await sendExternalAlert("📞 GATEKEEPER ALERT", alertMsg);
+        let whitelist = {};
+        if (fs.existsSync(whitelistPath)) {
+            try {
+                whitelist = JSON.parse(fs.readFileSync(whitelistPath, 'utf8'));
+            } catch (e) {
+                console.log("⚠️ Creating fresh verified_contacts.json structure.");
+            }
+        }
+
+        // Add or update the user record details inside the contact matrix
+        whitelist[cleanPhone] = {
+            name: name,
+            originalInput: phone,
+            verifiedAt: new Date().toLocaleString(),
+            status: `Inquiry via ${intent}`
+        };
+
+        fs.writeFileSync(whitelistPath, JSON.stringify(whitelist, null, 2), 'utf8');
+        console.log(`👤 [GATEKEEPER WHITELIST] Verified: ${name} (${cleanPhone})`);
+    }
+
+    // Generate a secure single-use access code string
+    const secureToken = crypto.randomBytes(2).toString('hex').toUpperCase();
+
+    // Upgraded alert messages displaying exactly WHO is contacting you
+    const alertMsg = `Caller: ${name.toUpperCase()}\nPhone: ${phone}\nIntent: ${intent.toUpperCase()}\nAccess Code: ${secureToken}\nTime: ${timestamp}`;
+
+    // Hardware Audio Pulse & Global Text Network Alert
+    triggerBunkerAlert("📞 GATEKEEPER MONITOR", `Call from ${name} (${phone})`, 'tgg.m4a');
+    await sendExternalAlert(`📞 GATEKEEPER ALERT: ${name.toUpperCase()}`, alertMsg);
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.json({ success: true, phoneNumber: targetNumber });
+    res.json({ success: true, phoneNumber: targetNumber, token: secureToken });
 });
 
 // Direct ACH Settlement Module
@@ -151,7 +184,6 @@ app.post('/api/wu-submit', async (req, res) => {
 
 // Independent Live Chat Module with Enhanced CORS Pre-Flight Handshake
 app.post('/chat-inquiry', async (req, res) => {
-    // Inject strict explicit access rules to clear Cloudflare/Mobile Browser pre-flight drops
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
