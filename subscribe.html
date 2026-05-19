@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Subscribe | Sound Shop</title>
     
     <link rel="stylesheet" href="./style.css">
@@ -13,13 +13,20 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-CQ81083J1M');
-    </script> <style>
+    </script> 
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;700&display=swap');
         
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body { 
-            background: #020202; color: #fff; font-family: 'Inter', sans-serif;
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
-            margin: 0; overflow: hidden;
+            background: #020202; 
+            color: #fff; 
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            margin: 0; 
+            overflow: hidden; 
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Matches your Shop background */
@@ -30,25 +37,50 @@
             background-size: 50px 50px; z-index: -1;
         }
 
+        /* DEAD CENTER VIEWPORT ANCHOR */
+        #subscription-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center; /* True Horizontal Center */
+            align-items: center;     /* True Vertical Center */
+            padding: 20px;
+            z-index: 10;
+        }
+
         .form-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(0, 255, 204, 0.2);
-            padding: 40px; border-radius: 30px; backdrop-filter: blur(20px);
-            width: 100%; max-width: 400px; text-align: center;
+            padding: 40px 30px; 
+            border-radius: 30px; 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
         }
 
         .input-group { margin-bottom: 20px; text-align: left; }
         input[type="text"], input[type="email"] {
-            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333;
-            background: #111; color: #fff; margin-top: 5px;
+            width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #222;
+            background: #0d0d0f; color: #fff; margin-top: 5px; outline: none; transition: 0.3s ease;
+            font-size: 0.95rem;
         }
+        input:focus { border-color: #00ffcc; background: rgba(0, 255, 204, 0.01); box-shadow: 0 0 10px rgba(0, 255, 204, 0.1); }
 
         .submit-btn {
-            background: #00ffcc; color: #000; border: none; padding: 15px 30px;
+            background: #00ffcc; color: #000; border: none; padding: 16px 30px;
             border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%;
             transition: 0.3s; box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+            text-transform: uppercase; letter-spacing: 2px;
+            font-size: 0.85rem;
         }
-        .submit-btn:hover { transform: scale(1.05); }
+        .submit-btn:hover { transform: scale(1.02); background: #fff; box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); }
+        .submit-btn:disabled { background: #333; color: #666; cursor: not-allowed; box-shadow: none; transform: none; }
     </style>
 </head>
 <body>
@@ -57,8 +89,8 @@
 
 <section id="subscription-container">
     <div class="form-card">
-        <h2 style="font-weight: 100; letter-spacing: 5px;">THE INNER CIRCLE</h2>
-        <p style="color: #666; font-size: 0.8rem; margin-bottom: 30px;">GET THE DROP ON GEAR & SOUNDTRACKS</p>
+        <h2 style="font-weight: 100; letter-spacing: 5px; text-transform: uppercase; font-size: 1.5rem; margin-bottom: 5px;">THE INNER CIRCLE</h2>
+        <p style="color: #666; font-size: 0.7rem; margin-bottom: 30px; letter-spacing: 1px;">GET THE DROP ON GEAR & SOUNDTRACKS</p>
         
         <form id="sub-form">
             <div class="input-group">
@@ -69,23 +101,96 @@
                 <input type="email" id="user-email" name="email" placeholder="Email Address" required>
             </div>
 
-            <button type="submit" class="submit-btn">KEEP ME POSTED</button>
+            <button type="submit" class="submit-btn" id="subBtn">KEEP ME POSTED</button>
         </form>
     </div>
 </section>
 
 <script>
-    document.getElementById('sub-form').addEventListener('submit', function(e) {
+    // System Network Architecture Matrix Connection
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
+    // Central telemetry pipeline linking straight to your Termux node instance
+    async function transmitSubscriptionTelemetry(actionTag, eventDetails) {
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({
+                    item: actionTag,
+                    amount: eventDetails
+                })
+            });
+        } catch (err) {
+            console.error("⚠️ Local telemetry drop:", err);
+        }
+    }
+
+    // Capture entry behaviors to spot active leads
+    document.getElementById('user-name').addEventListener('focus', () => {
+        transmitSubscriptionTelemetry("Inner Circle Interaction", "User initialized text inputs inside subscription matrix.");
+    });
+
+    // Form submission sequence wired directly into your custom tunnel route
+    document.getElementById('sub-form').addEventListener('submit', async function(e) {
         e.preventDefault();
+        
         const formContainer = document.querySelector('.form-card');
         const name = document.getElementById('user-name').value;
+        const email = document.getElementById('user-email').value;
+        const btn = document.getElementById('subBtn');
 
-        formContainer.innerHTML = `
-            <h2 style="color: #00ffcc;">LOCKED IN, ${name.toUpperCase()}!</h2>
-            <p style="color: #888; margin-top: 10px;">Check your inbox for the next drop.</p>
-            <button onclick="location.reload()" class="submit-btn" style="margin-top: 20px;">BACK</button>
-        `;
+        btn.innerText = "TRANSMITTING TO CORE...";
+        btn.disabled = true;
+
+        await transmitSubscriptionTelemetry("Subscription Pipeline Attempt", `Processing data stack for: [Name: ${name}] [Email: ${email}]`);
+
+        fetch(`${CONFIG.TUNNEL_URL}/subscribe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors',
+            body: JSON.stringify({ 
+                first_name: name,
+                email: email 
+            })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error(`Server returned network layer failure: ${res.status}`);
+            return res.json();
+        })
+        .then(async (data) => {
+            if (data.success) {
+                await transmitSubscriptionTelemetry("Subscription Approved", `Clean write executed for Inner Circle cluster node: [${email}]`);
+                
+                formContainer.innerHTML = `
+                    <h2 style="color: #00ffcc; font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 2px; font-size: 1.4rem;">LOCKED IN, ${name.toUpperCase()}!</h2>
+                    <p style="color: #888; margin-top: 15px; font-size: 0.85rem; line-height: 1.5;">Check your inbox for the next drop.</p>
+                    <button onclick="location.reload()" class="submit-btn" style="margin-top: 30px;">RETURN TO NET</button>
+                `;
+            } else {
+                const errorLog = data.error || "Verification rejected by application gateway.";
+                await transmitSubscriptionTelemetry("Subscription Rejected By Node", `Reason: ${errorLog}`);
+                alert("Subscription Error: " + errorLog);
+                btn.innerText = "KEEP ME POSTED";
+                btn.disabled = false;
+            }
+        })
+        .catch(async (err) => {
+            console.error(err);
+            await transmitSubscriptionTelemetry("Subscription Intercept Dropout", `Network layer failed handshake: ${err.message}`);
+            alert("Engine Offline. Confirm that your back-end node configuration is running active ports inside Termux.");
+            btn.innerText = "KEEP ME POSTED";
+            btn.disabled = false;
+        });
     });
+
+    // Fire network mounting confirmation metrics
+    window.onload = () => {
+        transmitSubscriptionTelemetry("Subscription View Mounted", "Inner Circle acquisition vector online.");
+    };
 </script>
 
 </body>
