@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Order Confirmed | Sound Shop</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;700&display=swap');
@@ -12,35 +12,52 @@
         body { 
             margin: 0; padding: 0; font-family: 'Inter', sans-serif; 
             background: #020202; color: #ffffff; 
-            display: flex; align-items: center; justify-content: center;
-            height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Animated Glow Background */
         .bg-glow {
-            position: absolute;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.08) 0%, transparent 70%);
             filter: blur(80px);
             z-index: -1;
             animation: pulse 4s infinite alternate;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.2); opacity: 0.8; }
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        /* ABSOLUTE CENTER MOBILE LOCKING GRID */
+        #thank-you-viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
         }
 
         .success-card {
             text-align: center;
-            padding: 60px;
+            padding: 60px 35px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(0, 255, 204, 0.2);
             border-radius: 40px;
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             max-width: 500px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            z-index: 1;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
 
         .icon-circle {
@@ -52,18 +69,20 @@
             color: #00ffcc;
             font-size: 2rem;
             text-shadow: 0 0 15px #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
         }
 
-        h1 { font-weight: 100; letter-spacing: 10px; margin-bottom: 20px; text-transform: uppercase; }
-        p { color: #888; font-weight: 300; margin-bottom: 20px; line-height: 1.6; }
+        h1 { font-weight: 100; letter-spacing: 10px; margin-bottom: 20px; text-transform: uppercase; font-size: 2rem; }
+        p { color: #888; font-weight: 300; margin-bottom: 20px; line-height: 1.6; font-size: 0.95rem; }
         
         /* Transaction ID Styling */
         #order-meta {
             margin-bottom: 40px;
             font-size: 0.85rem;
             color: #00ffcc;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 700;
         }
 
         .btn-group { display: flex; flex-direction: column; gap: 15px; }
@@ -71,48 +90,119 @@
         .btn {
             padding: 18px; border-radius: 50px; border: none;
             font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-            cursor: pointer; transition: 0.3s; text-decoration: none;
+            cursor: pointer; transition: 0.3s ease; text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-size: 0.85rem;
         }
 
         .btn-primary { background: #00ffcc; color: #000; }
-        .btn-primary:hover { box-shadow: 0 0 25px rgba(0, 255, 204, 0.5); transform: translateY(-3px); }
+        .btn-primary:hover { box-shadow: 0 0 25px rgba(0, 255, 204, 0.5); transform: translateY(-2px); }
 
-        .btn-outline { background: transparent; color: #666; border: 1px solid #333; }
-        .btn-outline:hover { border-color: #00ffcc; color: #00ffcc; }
+        .btn-outline { background: transparent; color: #555; border: 1px solid #222; }
+        .btn-outline:hover { border-color: #00ffcc; color: #00ffcc; background: rgba(0, 255, 204, 0.01); }
     </style>
 </head>
 <body>
 
     <div class="bg-glow"></div>
 
-    <div class="success-card">
-        <div class="icon-circle">✓</div>
-        <h1>SUCCESS</h1>
-        <p>Your order has been logged in the vault. A confirmation and download link has been sent to: <br><strong id="display-email" style="color:#fff;"></strong></p>
-        
-        <div id="order-meta"></div>
-        
-        <div class="btn-group">
-            <a href="index.html" class="btn btn-primary">GO TO DASHBOARD</a>
-            <a href="shop.html" class="btn btn-outline">BACK TO SHOP</a>
+    <section id="thank-you-viewport">
+        <div class="success-card">
+            <div class="icon-circle" id="status-icon">✓</div>
+            <h1 id="status-headline">Success</h1>
+            <p id="status-text">Synchronizing order credentials with the secure vault data line...</p>
+            
+            <div id="order-meta">Verifying Session...</div>
+            
+            <div class="btn-group">
+                <a href="index.html" class="btn btn-primary">GO TO DASHBOARD</a>
+                <a href="shop.html" class="btn btn-outline">BACK TO SHOP</a>
+            </div>
         </div>
-    </div>
+    </section>
 
     <script>
-        // Get data from URL parameters
-        const params = new URLSearchParams(window.location.search);
-        const email = params.get('email') || 'your inbox';
-        const transId = params.get('id');
+        // System Network Architecture Matrix Connection
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
 
-        // Display the email
-        document.getElementById('display-email').textContent = email;
-
-        // Display the Trans ID if it exists
-        if (transId) {
-            document.getElementById('order-meta').innerHTML = `Vault ID: ${transId}`;
+        // Central telemetry pipeline linking straight to your Termux node instance
+        async function transmitThankYouTelemetry(actionTag, eventDetails) {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: actionTag,
+                        amount: eventDetails
+                    })
+                });
+            } catch (err) {
+                console.error("⚠️ Local telemetry drop:", err);
+            }
         }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const email = params.get('email');
+            const transId = params.get('id');
+
+            const metaElem = document.getElementById('order-meta');
+            const textElem = document.getElementById('status-text');
+            const headlineElem = document.getElementById('status-headline');
+            const iconElem = document.getElementById('status-icon');
+
+            await transmitThankYouTelemetry(
+                "Thank You Gate Mounted", 
+                `Client checking entry nodes. URL Stack data -> [ID Present: ${!!transId}] [Email Present: ${!!email}]`
+            );
+
+            // If we have an active transaction context, run live server check
+            if (transId && email) {
+                try {
+                    // Query backend to verify order authenticity
+                    const response = await fetch(`${CONFIG.TUNNEL_URL}/verify-order`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        mode: 'cors',
+                        body: JSON.stringify({ transId: transId, email: email })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.valid) {
+                        await transmitThankYouTelemetry("Order Handshake Confirmed", `Vault validation match found for Order: [${transId}] associated with user: [${email}]`);
+                        
+                        metaElem.innerHTML = `Vault ID: ${transId}`;
+                        textElem.innerHTML = `Your order has been logged in the vault. A confirmation and download link has been sent to: <br><strong style="color:#fff;">${email}</strong>`;
+                    } else {
+                        throw new Error(data.reason || "Order lookup mismatch in transaction ledger.");
+                    }
+
+                } catch (err) {
+                    console.error("Bunker Order Audit Flagged:", err);
+                    await transmitThankYouTelemetry("Order Verification Exception", `Handshake denied. Reason: ${err.message}`);
+                    
+                    // Subtle change for a failed verification link
+                    iconElem.innerText = "✕";
+                    iconElem.style.color = "#ff4444";
+                    iconElem.style.borderColor = "#ff4444";
+                    iconElem.style.textShadow = "0 0 15px #ff4444";
+                    headlineElem.innerText = "Audit Halt";
+                    metaElem.innerHTML = "Verification Failure";
+                    textElem.innerHTML = "We couldn't verify this order session automatically. Please check your email receipt directly for files, or drop a line to support.";
+                }
+            } else {
+                // System fallback handling standard site routing links (e.g. general signups or visitors clicking manually)
+                await transmitThankYouTelemetry("General Thank You View", "User navigated to page via secondary site tunnel without order specific strings.");
+                
+                metaElem.innerHTML = "Portal Connected";
+                textElem.innerHTML = "Thank you for connecting with the network. Check your inbox for updates, downloads, or studio access configurations.";
+            }
+        });
     </script>
 </body>
 </html>
