@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Refund Policy - Sound Shop</title>
     <style>
         /* Sound Shop Studio Aesthetic */
@@ -14,6 +14,7 @@
             padding: 40px 20px; 
             max-width: 850px; 
             margin: auto; 
+            overflow-x: hidden;
         }
 
         h1 { 
@@ -70,6 +71,17 @@
             margin-left: -1em;
         }
 
+        .support-link {
+            color: #00ffc3;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(0, 255, 195, 0.4);
+            transition: 0.2s ease;
+        }
+        .support-link:hover {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+
         footer { 
             margin-top: 50px; 
             font-size: 0.85em; 
@@ -83,6 +95,7 @@
         @media (max-width: 600px) {
             body { padding: 20px; }
             h1 { font-size: 1.8rem; }
+            .container { padding: 25px; }
         }
     </style>
 </head>
@@ -110,12 +123,57 @@
 
         <h3>Support</h3>
         <p>To start a return or cancel a membership, contact us at: <br>
-           <strong>ZanderJade@soundshop.cc</strong></p>
+           <strong><a href="mailto:ZanderJade@soundshop.cc" class="support-link" onclick="interceptSupportClick(event)">ZanderJade@soundshop.cc</a></strong></p>
 
         <footer>
             &copy; 2026 Sound Shop. Precision Sound. Fair Terms.
         </footer>
     </div>
+
+<script>
+    // Infrastructure Tunnel Target Context Matrix
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
+    // Global background logging transmitter
+    async function reportPolicyActivity(actionLabel, telemetryDetail) {
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({
+                    item: actionLabel,
+                    amount: telemetryDetail
+                })
+            });
+        } catch (err) {
+            console.error("⚠️ Local tracking detached from Security Bunker:", err);
+        }
+    }
+
+    // Intercept helpdesk mailto link click to fire telemetry before context shift
+    async function interceptSupportClick(event) {
+        event.preventDefault(); // Pause href execution briefly
+        const targetMail = event.target.href;
+
+        await reportPolicyActivity(
+            "Refund Ticket Initialization Intent", 
+            "User clicked administrative support mailto link inside refund.html layout."
+        );
+
+        // Resume standard browser execution loop
+        window.location.href = targetMail;
+    }
+
+    // Capture baseline page load metrics to analyze consumer policy drop rates
+    window.onload = function() {
+        reportPolicyActivity(
+            "Legal Policy Audit Matrix Rendered", 
+            "Client opened refund.html viewport layer."
+        );
+    };
+</script>
 </body>
 </html>
-
