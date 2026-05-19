@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sound Shop | Official Licensing Portal</title>
     <style>
         :root {
@@ -12,13 +12,14 @@
             --border-glow: rgba(0, 243, 255, 0.3);
         }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             background: radial-gradient(circle at top right, #002b36, #000000);
             color: #ffffff;
             font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
             padding: 20px;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Professional Header */
@@ -55,6 +56,7 @@
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .license-card::before {
@@ -68,10 +70,11 @@
             pointer-events: none;
         }
 
-        .license-card:hover {
+        .license-card:hover, .license-card.selected-tier {
             transform: translateY(-10px);
             box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
             border-color: var(--cyan);
+            background: rgba(0, 243, 255, 0.02);
         }
 
         .tier-title {
@@ -84,7 +87,12 @@
             font-size: 1.2rem;
             opacity: 0.8;
             margin: 10px 0 20px 0;
+            font-weight: bold;
         }
+
+        ul { list-style-type: none; padding: 0; }
+        ul li { font-size: 0.9rem; margin-bottom: 8px; color: #ccc; }
+        ul li::before { content: "✓ "; color: var(--cyan); }
 
         /* Contract & Signature Section */
         .execution-zone {
@@ -117,15 +125,30 @@
             border-radius: 8px;
             font-size: 1rem;
         }
+        .input-field:focus { outline: none; border-color: var(--cyan); }
 
+        .canvas-container { position: relative; width: 100%; margin: 20px 0; }
         #sig-canvas {
             width: 100%;
             height: 200px;
             background: #000;
             border: 1px solid var(--cyan);
             border-radius: 10px;
-            margin: 20px 0;
             touch-action: none;
+        }
+        .clear-canvas-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.65rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
         .submit-btn {
@@ -140,7 +163,9 @@
             cursor: pointer;
             text-transform: uppercase;
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+            transition: 0.3s;
         }
+        .submit-btn:hover { background: #fff; box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); }
     </style>
 </head>
 <body>
@@ -151,8 +176,7 @@
     </header>
 
     <div class="tier-container">
-        <!-- Standard -->
-        <div class="license-card">
+        <div class="license-card selected-tier" id="tier-standard" onclick="selectLicenseTier('Standard Lease', '$29.99 USD', 'tier-standard')">
             <h3 class="tier-title">Standard Lease</h3>
             <p class="price-tag">$29.99 USD</p>
             <ul>
@@ -162,8 +186,7 @@
             </ul>
         </div>
 
-        <!-- Commercial -->
-        <div class="license-card">
+        <div class="license-card" id="tier-commercial" onclick="selectLicenseTier('Commercial License', '$149.99 USD', 'tier-commercial')">
             <h3 class="tier-title">Commercial</h3>
             <p class="price-tag">$149.99 USD</p>
             <ul>
@@ -173,8 +196,7 @@
             </ul>
         </div>
 
-        <!-- Exclusive -->
-        <div class="license-card">
+        <div class="license-card" id="tier-exclusive" onclick="selectLicenseTier('Exclusive Ownership Deal', 'Custom Quote Request', 'tier-exclusive')">
             <h3 class="tier-title">Exclusive Ownership</h3>
             <p class="price-tag">Contact for Quote</p>
             <ul>
@@ -189,37 +211,58 @@
         <h2>License Execution</h2>
         <div class="contract-text">
             <h4>TERMS OF SERVICE & PRIVACY POLICY</h4>
-            <p>1. <strong>Licensing:</strong> Upon verification of the MTCN, Sound Shop grants a non-transferable license to the user.</p>
-            <p>2. <strong>Privacy:</strong> All transaction data is processed via the Security Bunker. We do not store personal details beyond verification needs.</p>
-            <p>3. <strong>Payment:</strong> Western Union MTCN must be valid and verifiable within 24 hours of submission.</p>
+            <p style="margin: 10px 0;">1. <strong>Licensing:</strong> Upon verification of the MTCN, Sound Shop grants a non-transferable right to the targeted audio asset under the selected category specs.</p>
+            <p style="margin: 10px 0;">2. <strong>Privacy:</strong> All contract data and handshakes are written into the local Security Bunker. We completely eliminate the usage of third-party middleman processors.</p>
+            <p style="margin: 10px 0;">3. <strong>Payment:</strong> Western Union MTCN codes must be valid, verifiable, and uploaded with absolute matching signature authority credentials.</p>
         </div>
 
-        <input type="text" class="input-field" placeholder="Full Legal Name" id="userName">
-        <input type="text" class="input-field" placeholder="Western Union MTCN (10 Digits)" id="mtcnNumber">
+        <input type="text" class="input-field" placeholder="Full Legal Name" id="userName" required>
+        <input type="text" class="input-field" placeholder="Western Union MTCN (10 Digits)" id="mtcnNumber" required>
 
-        <h3>Digital Signature</h3>
-        <canvas id="sig-canvas"></canvas>
+        <h3 style="margin-top: 25px;">Digital Signature</h3>
+        <div class="canvas-container">
+            <canvas id="sig-canvas"></canvas>
+            <button type="button" class="clear-canvas-btn" onclick="clearSignatureCanvas()">Clear Signature</button>
+        </div>
 
-        <button class="submit-btn" onclick="processOrder()">Authorize & Secure Purchase</button>
+        <button class="submit-btn" id="executionBtn" onclick="processOrder()">Authorize & Secure Purchase</button>
     </div>
 
     <script>
+        // Infrastructure Tunnel Target Context Matrix
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
+
+        // Active State Holders
+        let chosenLicenseType = "Standard Lease";
+        let chosenPriceMetric = "$29.99 USD";
+
         const canvas = document.getElementById('sig-canvas');
         const ctx = canvas.getContext('2d');
         let drawing = false;
 
-        // Mobile Responsive Setup
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        // Auto-correct layout sizing parameters
+        function scaleCanvasLayout() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            ctx.strokeStyle = '#00f3ff';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+        }
+        
+        window.addEventListener('load', scaleCanvasLayout);
+        window.addEventListener('resize', scaleCanvasLayout);
 
         function getMousePos(e) {
             const rect = canvas.getBoundingClientRect();
             return {
-                x: (e.clientX || e.touches[0].clientX) - rect.left,
-                y: (e.clientY || e.touches[0].clientY) - rect.top
+                x: (e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0)) - rect.left,
+                y: (e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0)) - rect.top
             };
         }
 
+        // Draw Interceptions (Supports Mouse & Touch Inputs)
         canvas.addEventListener('touchstart', (e) => { e.preventDefault(); drawing = true; ctx.beginPath(); });
         canvas.addEventListener('mousedown', () => { drawing = true; ctx.beginPath(); });
         
@@ -232,24 +275,72 @@
         function draw(e) {
             if (!drawing) return;
             const pos = getMousePos(e);
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = '#00f3ff';
             ctx.lineTo(pos.x, pos.y);
             ctx.stroke();
         }
 
-        function processOrder() {
-            const name = document.getElementById('userName').value;
-            const mtcn = document.getElementById('mtcnNumber').value;
+        function clearSignatureCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Monitors user selection highlights across cards
+        function selectLicenseTier(tierName, priceVal, activeElementId) {
+            chosenLicenseType = tierName;
+            chosenPriceMetric = priceVal;
             
-            if(!name || !mtcn) {
-                alert("Please complete all professional fields.");
+            document.querySelectorAll('.license-card').forEach(card => {
+                card.classList.remove('selected-tier');
+            });
+            document.getElementById(activeElementId).classList.add('selected-tier');
+        }
+
+        // Transmits signed data block to your Terminal System
+        async function processOrder() {
+            const name = document.getElementById('userName').value.trim();
+            const mtcn = document.getElementById('mtcnNumber').value.trim();
+            const submitBtn = document.getElementById('executionBtn');
+
+            if (!name || !mtcn) {
+                alert("CRITICAL ERROR: Complete all legal credential fields for contract execution.");
                 return;
             }
-            // Logic to send to your Security Bunker
-            console.log("Transmitting to Bunker...");
-            alert("Authorization received. Verification in progress.");
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = "TRANSMITTING SIGNED CONTRACT...";
+
+            // Pack signature canvas data directly into a transportable string frame
+            const signatureDataUrl = canvas.toDataURL();
+
+            const payload = {
+                item: `Signed Contract Execution: ${chosenLicenseType}`,
+                amount: `Signee Name: ${name} | Target Matrix: ${chosenPriceMetric} | MTCN: ${mtcn} | Vault Sign-Off Asset: ${signatureDataUrl.substring(0, 80)}... [Serialized]`
+            };
+
+            try {
+                const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`--- CONTRACT EXECUTED SECURELY ---\n\nThank you, ${name}.\nYour digital agreement has been logged into the Bunker.\nLedger Token: ${result.orderID}\n\nSoundtrack stem downloads will unlock inside your Portal once our administrative ledger verifies your 10-digit transaction block.`);
+                    clearSignatureCanvas();
+                    document.getElementById('userName').value = "";
+                    document.getElementById('mtcnNumber').value = "";
+                } else {
+                    alert("Security firewall rejected validation parameters.");
+                }
+            } catch (err) {
+                console.error("❌ Tunnel Pipeline Failure:", err);
+                alert("Local communication interface error. Your contract signature telemetry remains local. Please notify administration.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Authorize & Secure Purchase";
+            }
         }
     </script>
 </body>
