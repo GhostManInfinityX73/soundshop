@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THE VAULT | PRO AUDIO ASSETS</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;700;900&display=swap');
@@ -24,6 +24,7 @@
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* HIGH-COLOR BACKGROUND SYSTEM */
@@ -126,7 +127,7 @@
             background: rgba(0,0,0,0.7);
             backdrop-filter: blur(10px);
             transition: 0.4s;
-            cursor: pointer;
+            text-align: center;
         }
         .checkout-notice:hover { border-color: var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.3); }
         .checkout-notice a { text-decoration: none; color: var(--teal); font-size: 0.7rem; letter-spacing: 3px; font-weight: 900; display: block; }
@@ -139,27 +140,41 @@
             display:grid; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
             gap:35px; 
+            z-index: 20;
+            position: relative;
         }
         .file-card { 
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.1); 
             padding: 50px 35px; 
-            transition: 0.3s;
+            transition: 0.3s ease;
         }
         .file-card:hover { border-color: var(--teal); background: rgba(0, 255, 204, 0.05); transform: scale(1.02); }
         
         .file-type { color: var(--teal); font-size:0.55rem; font-weight: 900; text-transform:uppercase; letter-spacing:4px; margin-bottom: 20px; display: block; }
-        .file-name { font-family: 'Syncopate'; font-weight:700; font-size:0.85rem; letter-spacing: 2px; color: #fff; }
+        .file-name { font-family: 'Syncopate'; font-weight:700; font-size:0.85rem; letter-spacing: 2px; color: #fff; display: block; margin-bottom: 10px; }
         
         .dl-btn { 
             display:block; width: 100%; text-align: center; margin-top: 40px; padding: 20px; 
-            background: var(--teal); color: #000; text-decoration:none; font-weight:900; 
+            background: var(--teal); color: #000; font-weight:900; 
             font-size:0.75rem; letter-spacing: 4px; text-transform: uppercase; border: none; 
+            cursor: pointer; transition: 0.3s ease;
         }
+        .dl-btn:hover { background: #fff; box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+        .dl-btn:disabled { background: #222; color: #555; cursor: not-allowed; box-shadow: none; }
 
         footer { text-align: center; padding: 100px; opacity: 0.2; font-size: 0.6rem; letter-spacing: 5px; }
     </style>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CQ81083J1M');
+    </script>
 </head>
 <body>
 
@@ -190,27 +205,103 @@
     <footer>SOUND SHOP DIGITAL INFRASTRUCTURE // SECURE TERMINAL</footer>
 
     <script>
+        // System Network Architecture Matrix Tunnel Destination
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
+
         const urlParams = new URLSearchParams(window.location.search);
         const userEmail = urlParams.get('email') || "AUTHORIZED_CLIENT";
         document.getElementById('session-id').innerText = `SESSION_ID: ${userEmail.toUpperCase()}`;
 
-        // Your specific licensed soundtracks
+        // Central backend telemetry pipeline logging access matrices directly to your Termux node
+        async function transmitVaultTelemetry(actionTag, eventDetails) {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: actionTag,
+                        amount: eventDetails
+                    })
+                });
+            } catch (err) {
+                console.error("⚠️ Vault background metrics unmounted:", err);
+            }
+        }
+
+        // Custom audio environment inventory matrix
         const library = [
             { name: "GRUDGE GOBBLER", type: "MASTER WAV / LICENSED", file: "grudge_gobbler.zip" },
             { name: "THE RUMBLER", type: "MASTER WAV / LICENSED", file: "the_rumbler.zip" },
             { name: "ELECTRO", type: "MASTER WAV / LICENSED", file: "electro.zip" }
         ];
 
+        // Dynamically print cards with interception functions for secure file routing handshakes
         const container = document.getElementById('file-container');
-        library.forEach(item => {
+        library.forEach((item, index) => {
             container.innerHTML += `
                 <div class="file-card">
                     <span class="file-type">${item.type}</span>
                     <span class="file-name">${item.name}</span>
-                    <a href="downloads/${item.file}" class="dl-btn">DOWNLOAD ASSET</a>
+                    <button id="dl-btn-${index}" class="dl-btn" onclick="secureDownloadHandshake('${item.file}', ${index})">DOWNLOAD ASSET</button>
                 </div>
             `;
         });
+
+        // Intercept action sequence to prevent direct directory file-scraping
+        async function secureDownloadHandshake(filename, elementId) {
+            const currentBtn = document.getElementById(`dl-btn-${elementId}`);
+            const originalText = currentBtn.innerText;
+            
+            currentBtn.innerText = "REQUESTING TOKEN...";
+            currentBtn.setAttribute('disabled', 'true');
+
+            await transmitVaultTelemetry("Vault Download Triggered", `User session [${userEmail}] requested secure download token for asset: [${filename}]`);
+
+            try {
+                // Request a dynamic temporary download token directly from the node.js application pipeline
+                const tokenRequest = await fetch(`${CONFIG.TUNNEL_URL}/request-vault-download`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        email: userEmail,
+                        targetFile: filename
+                    })
+                });
+
+                const accessPackage = await tokenRequest.json();
+
+                if (accessPackage.authorized && accessPackage.secureLink) {
+                    await transmitVaultTelemetry("Vault Access Token Authorized", `Clean session confirmation mapping for track asset line: [${filename}]`);
+                    
+                    currentBtn.innerText = "DISPATCHING DOWNLOAD...";
+                    
+                    // Route browser context dynamically to your secure node file pipeline bucket location
+                    window.location.href = accessPackage.secureLink;
+                } else {
+                    throw new Error(accessPackage.reason || "Session lack required database file license parameters.");
+                }
+
+            } catch (error) {
+                console.error("Vault Security Intercept Flagged:", error);
+                await transmitVaultTelemetry("Vault Handshake Refused", `Reason: ${error.message} on asset: [${filename}]`);
+                alert(`Security Halt: ${error.message}. Please verify your access status or refresh your storefront portal session.`);
+            } finally {
+                // Reset button context gracefully after verification attempts process
+                setTimeout(() => {
+                    currentBtn.innerText = originalText;
+                    currentBtn.removeAttribute('disabled');
+                }, 3000);
+            }
+        }
+
+        // Fire initialization metrics right on template load
+        window.onload = () => {
+            transmitVaultTelemetry("Vault Module Mounted", `Client grid interface viewed under credentials record link: [${userEmail}]`);
+        };
     </script>
 </body>
 </html>
