@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Free Vault Access | Sound Shop</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: #020202; color: #fff; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: #020202; color: #fff; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; }
 
         .grid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px); background-size: 50px 50px; transform: perspective(500px) rotateX(60deg) translateY(-100px); transform-origin: top; animation: gridMove 20s linear infinite; z-index: -2; }
         @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 100%; } }
@@ -74,42 +74,87 @@
     </div>
 
     <script>
-        // Emergency fallback to ensure the link works in any environment
-        function forceHome(e) {
+        // System Network Matrix Target Context
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
+
+        // Core background logging pipeline linking directly into the terminal shell
+        async function transmitVaultTelemetry(actionTag, eventPayload) {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: actionTag,
+                        amount: eventPayload
+                    })
+                });
+            } catch (err) {
+                console.error("⚠️ Local telemetry pipeline decoupled:", err);
+            }
+        }
+
+        // Emergency fallback to ensure home link bypasses frame lockouts
+        async function forceHome(e) {
             e.preventDefault();
+            await transmitVaultTelemetry("Vault Navigation Retreat", "User abandoned signup form and clicked Return to Shop.");
             window.location.href = 'index.html';
         }
 
-        document.getElementById('freeSignupForm').addEventListener('submit', function(e) {
+        // Captured Input Interactive Telemetry Trigger
+        document.getElementById('freeEmail').addEventListener('focus', function() {
+            transmitVaultTelemetry("Vault Signup Activity", "User focused input field and is preparing email data entry.");
+        });
+
+        // Safe Intercept Form Handler
+        document.getElementById('freeSignupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('freeEmail').value;
             const btn = document.getElementById('signupBtn');
+            
             btn.innerText = "OPENING VAULT...";
             btn.disabled = true;
 
-            fetch('http://localhost:3000/free-signup', {
+            await transmitVaultTelemetry("Vault Access Request", `Form submitted. Executing pipeline check for email node: [${email}]`);
+
+            // Secure cross-origin routing targeting your active node server layout via Cloudflare
+            fetch(`${CONFIG.TUNNEL_URL}/free-signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
                 body: JSON.stringify({ email: email })
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP network engine drop status: ${res.status}`);
+                return res.json();
+            })
+            .then(async (data) => {
                 if(data.success) {
-                    // Corrected path for thank-you page
+                    await transmitVaultTelemetry("Vault Verification Approved", `Database written cleanly for node: [${email}]. Re-routing to thank-you gate.`);
                     window.location.href = "thank-you.html?email=" + encodeURIComponent(email) + "&status=free";
                 } else {
-                    alert("Vault Error: " + (data.error || "Please try again later."));
+                    const errorMsg = data.error || "Verification rejected by database layer.";
+                    await transmitVaultTelemetry("Vault Engine Validation Rejected", `Server responded false. Reason: ${errorMsg}`);
+                    alert("Vault Error: " + errorMsg);
                     btn.innerText = "CLAIM FREE ACCESS";
                     btn.disabled = false;
                 }
             })
-            .catch(err => {
+            .catch(async (err) => {
                 console.error(err);
-                alert("Engine Offline. Ensure your Node.js server is running in Termux.");
+                await transmitVaultTelemetry("Vault Core Failure Intercept", `Network error occurred during submission: ${err.message}`);
+                alert("Engine Offline. Ensure your Node.js application server and Cloudflare tunnels are actively operational in Termux.");
                 btn.innerText = "CLAIM FREE ACCESS";
                 btn.disabled = false;
             });
         });
+
+        // Initialize connection footprint logs on window load
+        window.onload = () => {
+            transmitVaultTelemetry("Vault Gateway Online", "Free access portal view layer successfully established.");
+        };
     </script>
 </body>
 </html>
