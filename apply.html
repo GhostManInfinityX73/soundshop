@@ -21,6 +21,7 @@
             --dark: #050505; 
             --glass: rgba(255, 255, 255, 0.05); 
             --neon-pink: #ff00ff; 
+            --neon-teal: #00ffcc;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--dark); color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
@@ -47,10 +48,10 @@
         .nav-links a.active { color: var(--teal); opacity: 1; border-bottom: 1px solid var(--teal); }
 
         .contact-bar { display: flex; justify-content: center; gap: 10px; padding: 15px; background: rgba(0, 255, 204, 0.05); }
-        .call-btn { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 5px; font-weight: 800; font-size: 0.7rem; letter-spacing: 1px; }
+        .call-btn { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 5px; font-weight: 800; font-size: 0.7rem; letter-spacing: 1px; cursor: pointer; background: none; }
         .btn-order { background: var(--teal); color: #000; }
 
-        /* FORM CONTAINER - BLENDED THEME */
+        /* FORM CONTAINER */
         .form-wrapper { padding: 40px 20px; display: flex; justify-content: center; align-items: center; min-height: 80vh; }
         .form-container {
             background: var(--glass);
@@ -58,7 +59,7 @@
             border-radius: 20px;
             max-width: 600px;
             width: 100%;
-            border: 1px solid rgba(253, 187, 45, 0.2); /* Gold Border */
+            border: 1px solid rgba(253, 187, 45, 0.2); 
             backdrop-filter: blur(15px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
@@ -125,19 +126,19 @@
     <div class="logo">SOUND SHOP</div>
     <div class="nav-links">
            <a href="index.html" style="border-bottom: 2px solid var(--neon-teal); padding-bottom: 2px;">HOME</a>
-            <a href="studio.html">STUDIO<span class="soon-tag">SOON</span></a>
+            <a href="studio.html">STUDIO</a>
             <a href="catalog.html">SOUNDTRACKS</a>
             <a href="lab.html"> SHOWCASE</a>
             <a href="nexus.html">PODCASTING</a>
             <a href="vault.html">VAULT</a>
             <a href="portal.html">PORTAL</a>
-            <a href="chat-preview.html">CHAT<span class="soon-tag">SOON</span></a>
+            <a href="chat-preview.html">CHAT</a>
     </div>
 </nav>
 
 <div class="contact-bar">
-    <a href="tel:19105499227" class="call-btn" onclick="showToast('Connecting to Office...')">OFFICE</a>
-    <a href="tel:19108796800" class="call-btn btn-order" onclick="showToast('Direct Ordering Line...')">PLACE ORDER</a>
+    <button class="call-btn" onclick="dispatchNavigationHandshake('Office Call Intercept', 'Direct Navigation Dial Event', 'tel:19105499227')">OFFICE</button>
+    <button class="call-btn btn-order" onclick="dispatchNavigationHandshake('Direct Order Line Intercept', 'Direct Navigation Order Event', 'tel:19108796800')">PLACE ORDER</button>
 </div>
 
 <div class="form-wrapper">
@@ -145,7 +146,7 @@
         <h2>CLEARANCE</h2>
         <p class="form-desc">Provide your details for Nexus Administrative review.</p>
         
-        <form action="https://formspree.io/f/mnjokkrv" method="POST">
+        <form id="clearanceForm" onsubmit="dispatchApplicationPayload(event)">
             
             <label for="full-name">Full Name</label>
             <input type="text" id="full-name" name="Full_Name" placeholder="ENTER NAME" required>
@@ -167,8 +168,6 @@
 
             <label for="intent">Purpose of Broadcast</label>
             <textarea id="intent" name="Broadcast_Intent" rows="4" placeholder="WHAT KNOWLEDGE DO YOU INTEND TO SHARE?" required></textarea>
-
-            <input type="hidden" name="_subject" value="URGENT: New Nexus Broadcast Application!">
 
             <button type="submit" class="submit-btn">Submit for Review</button>
         </form>
@@ -213,10 +212,78 @@
 <div id="toast"></div>
 
 <script>
+    // Infrastructure Tunnel Target Context Matrix
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
     function showToast(msg) {
         const t = document.getElementById("toast");
         t.innerText = msg; t.className = "show";
         setTimeout(() => t.className = "", 3000);
+    }
+
+    // Handles Top Contact Bar Shakes and Direct Redirection
+    async function dispatchNavigationHandshake(contextItem, dataAmount, targetDialString) {
+        showToast(contextItem.includes('Office') ? 'Connecting to Office...' : 'Direct Ordering Line...');
+        
+        const payload = {
+            item: contextItem,
+            amount: dataAmount
+        };
+
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+                body: JSON.stringify(payload)
+            });
+        } catch (err) {
+            console.error("⚠️ Security Bunker offline or network interface decoupled.", err);
+        } finally {
+            window.location.href = targetDialString;
+        }
+    }
+
+    // Submits Form Content Straight into the Security Node Matrix
+    async function dispatchApplicationPayload(event) {
+        event.preventDefault();
+        
+        const nameVal = document.getElementById('full-name').value;
+        const emailVal = document.getElementById('email').value;
+        const phoneVal = document.getElementById('phone').value;
+        const catVal = document.getElementById('expertise').value;
+        const intentVal = document.getElementById('intent').value;
+
+        showToast("Processing clearance payload...");
+
+        const payload = {
+            item: `Nexus Broadcast Application: ${nameVal}`,
+            amount: `Email: ${emailVal} | Phone: ${phoneVal} | Category: ${catVal} | Intent: ${intentVal}`
+        };
+
+        try {
+            const res = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                showToast("Payload secure. Admin tracking logged.");
+                alert(`--- NEXUS BROADCAST HANDSHAKE COMPLETE ---\n\nApplication submitted successfully.\nTracking Token: ${data.orderID}\n\nOur administrative network will review your submission details shortly.`);
+                document.getElementById('clearanceForm').reset();
+            } else {
+                showToast("Security firewall dropped payload verification.");
+            }
+        } catch (err) {
+            console.error("❌ Application Dispatch Failure:", err);
+            showToast("Bunker connection fault. Retrying internally...");
+            alert("Secure transmission interrupted. Please verify your terminal network connection and try again.");
+        }
     }
 </script>
 </body>
