@@ -24,7 +24,7 @@
             background-color: var(--bg-dark);
             color: #e0e0e0;
             line-height: 1.7;
-            overflow-x: hidden; /* Prevents side-scrolling on mobile */
+            overflow-x: hidden;
         }
 
         /* STICKY CONTACT BAR */
@@ -43,8 +43,11 @@
         }
         .contact-group span { display: block; font-size: 0.5rem; letter-spacing: 2px; color: var(--accent-gold); text-transform: uppercase; text-align: center; font-weight: bold; }
         .story-call-link {
+            background: none;
+            cursor: pointer;
             text-decoration: none;
             color: #fff;
+            font-family: 'Inter', sans-serif;
             font-weight: bold;
             font-size: 0.7rem;
             border: 1px solid rgba(253, 187, 45, 0.3);
@@ -81,14 +84,14 @@
             text-transform: uppercase; 
             font-size: 0.75rem; 
             text-decoration: none;
-            flex-shrink: 0; /* Prevents logo from squishing */
+            flex-shrink: 0;
         }
         .logo span { color: var(--teal); }
         
         .nav-links { 
             display: flex; 
             gap: 10px; 
-            flex-wrap: nowrap; /* Forces links to stay in one line */
+            flex-wrap: nowrap; 
             align-items: center;
         }
         .nav-links a { 
@@ -99,7 +102,7 @@
             letter-spacing: 1px; 
             transition: 0.3s; 
             font-weight: 700; 
-            white-space: nowrap; /* Prevents single links from breaking into two lines */
+            white-space: nowrap;
         }
         .nav-links a:hover, .nav-links a.active { color: var(--teal); }
 
@@ -156,6 +159,9 @@
             margin-top: 15px;
             width: 100%;
             text-align: center;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
         }
 
         /* STATUS DOT */
@@ -181,11 +187,11 @@
 <div class="story-contact-bar">
     <div class="contact-group">
         <span>Nexus Admin</span>
-        <a href="tel:19105499227" class="story-call-link">Call Office</a>
+        <button onclick="dispatchNexusIntercept('Nexus Admin Office Call Request', 'Sticky Call Link Activated', 'tel:19105499227')" class="story-call-link">Call Office</button>
     </div>
     <div class="contact-group">
         <span>Nexus Merchant</span>
-        <a href="tel:19108796800" class="story-call-link order-glow">Place Order</a>
+        <button onclick="dispatchNexusIntercept('Nexus Merchant Desk Order Request', 'Glowing Call Link Activated', 'tel:19108796800')" class="story-call-link order-glow">Place Order</button>
     </div>
 </div>
 
@@ -208,7 +214,7 @@
 <div class="container">
     <div class="av-preview">
         <h3 style="color: var(--accent-gold); margin-bottom: 15px; font-family: 'Syncopate'; font-size: 0.7rem;">Nexus Broadcast Preview</h3>
-        <video controls poster="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=800" style="width: 100%; border-radius: 8px;">
+        <video id="nexus-video" controls poster="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=800" style="width: 100%; border-radius: 8px;">
             <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         </video>
     </div>
@@ -224,25 +230,25 @@
                 <div style="background: #000; padding: 12px; border-radius: 6px; margin: 15px 0; border: 1px dashed var(--accent-gold);">
                     <p style="font-size: 0.7rem; color: var(--accent-gold); margin: 0; font-family: 'Courier New', monospace;">[ACCESS LEVEL: RESTRICTED]<br>Admin Approval Required</p>
                 </div>
-                <a href="mailto:admin@soundshop.cc" class="btn" style="background-color: var(--accent-gold); color: #000;">Apply for Clearance</a>
+                <button onclick="applyForClearance()" class="btn" style="background-color: var(--accent-gold); color: #000;">Apply for Clearance</button>
             </div>
         </div>
 
         <div class="card">
-            <img src="guitar.jpg" alt="Creative Pulse" class="card-img">
+            <img src="guitar.jpg" alt="Creative Pulse" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800'">
             <div class="card-content">
                 <h3>The Creative Pulse</h3>
                 <p style="font-size: 0.85rem; color: #aaa;">Essential roadmaps for the independent creator.</p>
-                <a href="https://online.berklee.edu/takenote" target="_blank" class="btn">Berklee: Industry Hub</a>
+                <button onclick="dispatchNexusIntercept('External Outbound Navigation', 'Berklee Industry Hub Link clicked', 'https://online.berklee.edu/takenote')" class="btn">Berklee: Industry Hub</button>
             </div>
         </div>
 
         <div class="card">
-            <img src="ny.jpg" alt="Market Intel" class="card-img">
+            <img src="ny.jpg" alt="Market Intel" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800'">
             <div class="card-content">
                 <h3>Market Intelligence</h3>
                 <p style="font-size: 0.85rem; color: #aaa;">Global trends in music tech and professional design.</p>
-                <a href="https://www.billboard.com/pro/" target="_blank" class="btn">Industry Analysis</a>
+                <button onclick="dispatchNexusIntercept('External Outbound Navigation', 'Billboard Pro Trend Analysis clicked', 'https://www.billboard.com/pro/')" class="btn">Industry Analysis</button>
             </div>
         </div>
     </div>
@@ -252,10 +258,10 @@
         <div class="card wellness-card">
             <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800" alt="Mindfulness" class="card-img wellness-img">
             <div class="card-content">
-                <img src="stoneglo.jpg" style="width: 40px; height: 40px; border-radius: 50%; float: right; border: 1px solid var(--accent-emerald); margin-left: 10px;">
+                <img src="stoneglo.jpg" onerror="this.style.display='none'" style="width: 40px; height: 40px; border-radius: 50%; float: right; border: 1px solid var(--accent-emerald); margin-left: 10px;">
                 <h3>Digital Detox Guide</h3>
                 <p style="font-size: 0.85rem; color: #aaa;">Reclaim your focus from the attention economy. Expert strategies for tech-life balance.</p>
-                <a href="https://www.humanetech.com/take-control" target="_blank" class="btn" style="background-color: var(--accent-emerald);">Start Detoxing</a>
+                <button onclick="dispatchNexusIntercept('External Outbound Navigation', 'Humane Tech Digital Detox Triggered', 'https://www.humanetech.com/take-control')" class="btn" style="background-color: var(--accent-emerald);">Start Detoxing</button>
             </div>
         </div>
 
@@ -263,7 +269,7 @@
             <div class="card-content">
                 <h3>Informed Living</h3>
                 <p style="font-size: 0.85rem; color: #aaa;">Stay informed about what you buy. Access health impact data on everyday products.</p>
-                <a href="https://www.ewg.org/skindeep/" target="_blank" class="btn" style="background-color: var(--accent-emerald);">Consumer Safety Data</a>
+                <button onclick="dispatchNexusIntercept('External Outbound Navigation', 'EWG SkinDeep Consumer Safety Data clicked', 'https://www.ewg.org/skindeep/')" class="btn" style="background-color: var(--accent-emerald);">Consumer Safety Data</button>
             </div>
         </div>
     </div>
@@ -272,6 +278,81 @@
 <footer>
     &copy; 2026 | THE MODERN EXPLORER | <a href="index.html">EXIT TO MAIN</a>
 </footer>
+
+<script>
+    // Infrastructure Tunnel Target Context Matrix
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
+    // Tracks outbound link forwarding loops or direct hardware dial tasks via server ledger
+    async function dispatchNexusIntercept(contextItem, dataAmount, targetDestinationUrl) {
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({ item: contextItem, amount: dataAmount })
+            });
+        } catch (err) {
+            console.error("⚠️ Security Bunker offline or network interface decoupled.", err);
+        } finally {
+            // Unpack location window redirect after safe transmission pass
+            window.open(targetDestinationUrl, targetDestinationUrl.startsWith('tel:') ? '_self' : '_blank');
+        }
+    }
+
+    // Handles the Restricted Studio Admin registration pipeline manually
+    async function applyForClearance() {
+        const emailInput = prompt("ENTER OFFICIAL VALID EMAIL FOR VERIFICATION HANDSHAKE:");
+        
+        if (!emailInput || !emailInput.includes('@')) {
+            alert("VALID EMAIL SPECIFICATION MANDATORY.");
+            return;
+        }
+
+        const payload = {
+            item: "Nexus Studio Restricted Clearance Application",
+            amount: `Applicant Identity Pool: ${emailInput} | Verification Status: PENDING_ADMIN_REVIEW`
+        };
+
+        try {
+            const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify(payload)
+            });
+            
+            if (response.ok) {
+                alert(`APPLICATION LOGGED INTO THE BUNKER.\n\nIdentity verification tokens are running background cross-checks for: ${emailInput}.\nAn administrator will manually verify compliance configurations via voice loop.`);
+            }
+        } catch (err) {
+            console.error("❌ Clearance pipeline drop event:", err);
+            alert("Transmission channel timeout. Call administrative logistics line to deliver verification data tokens manually.");
+        }
+    }
+
+    // Capture explicit HTML5 video layout interactions for real-time terminal telemetry updates
+    const videoElement = document.getElementById('nexus-video');
+    if (videoElement) {
+        videoElement.addEventListener('play', async () => {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: "Nexus Broadcast Engagement Stream",
+                        amount: "User initialized primary video preview presentation playback loop."
+                    })
+                });
+            } catch (e) {
+                console.error("Telemetry offline.");
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
