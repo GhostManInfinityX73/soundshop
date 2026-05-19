@@ -6,7 +6,12 @@
     <title>360° GEAR VAULT | SOUND SHOP</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --teal: #00e5ff; --dark: #050505; --gold: #ffd700; --glass: rgba(255, 255, 255, 0.05); }
+        :root { 
+            --teal: #00e5ff; 
+            --dark: #050505; 
+            --gold: #ffd700; 
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
@@ -14,72 +19,165 @@
             color: #fff; 
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            perspective: 2000px; /* Deeper perspective for 360 motion */
+            /* Aggressive perspective to force the deep spherical 360 curve */
+            perspective: 800px; 
+            -webkit-font-smoothing: antialiased;
         }
 
-        .shop-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); position: relative; z-index: 1000; border-bottom: 1px solid rgba(0,229,255,0.1); }
+        .shop-header { 
+            padding: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: rgba(0,0,0,0.95); 
+            position: relative; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(0,229,255,0.1); 
+        }
         .logo { font-family: 'Syncopate'; font-size: 0.9rem; letter-spacing: 4px; }
         .logo span { color: var(--teal); }
 
-        .category-header { text-align: center; font-family: 'Syncopate'; font-size: 0.7rem; color: var(--teal); letter-spacing: 5px; margin-top: 60px; text-transform: uppercase; }
+        .category-header { 
+            text-align: center; 
+            font-family: 'Syncopate'; 
+            font-size: 0.7rem; 
+            color: var(--teal); 
+            letter-spacing: 5px; 
+            margin-top: 50px; 
+            text-transform: uppercase; 
+        }
 
-        /* 360° ORBIT STAGE */
+        /* 360° DEEP ORBIT STAGE */
         .stage { 
-            height: 400px; 
+            height: 420px; 
             width: 100%; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             position: relative; 
             transform-style: preserve-3d;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         .carousel { 
             position: relative; 
-            width: 180px; 
-            height: 260px; 
+            width: 160px; 
+            height: 240px; 
             transform-style: preserve-3d; 
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
         }
         
         .item { 
             position: absolute; 
-            width: 180px; 
-            height: 260px; 
+            width: 160px; 
+            height: 240px; 
             background: var(--glass); 
-            border: 1px solid rgba(0, 229, 255, 0.15); 
-            border-radius: 15px; 
+            border: 1px solid rgba(0, 229, 255, 0.12); 
+            border-radius: 16px; 
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            padding: 10px; 
+            padding: 12px; 
             cursor: pointer;
-            backface-visibility: hidden; /* Keeps the 'back' of the circle clean */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            transition: 0.3s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+            transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
+            backface-visibility: hidden;
         }
 
-        /* Front-facing item highlight */
-        .item:hover { border-color: var(--teal); box-shadow: 0 0 20px var(--teal); }
+        .item:hover { 
+            border-color: var(--teal); 
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3); 
+        }
 
-        .item img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
-        .item h3 { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); text-align: center; }
-        .item .price { color: var(--gold); font-weight: 900; font-size: 0.8rem; margin-top: 5px; }
+        .item img { 
+            width: 100%; 
+            height: 140px; 
+            object-fit: cover; 
+            border-radius: 10px; 
+            margin-bottom: 12px; 
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .item h3 { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); text-align: center; line-height: 1.3; height: 30px; display: flex; align-items: center; }
+        .item .price { color: var(--gold); font-weight: 900; font-size: 0.85rem; margin-top: 4px; }
 
-        .nav-btns { display: flex; justify-content: center; gap: 25px; margin-top: -40px; margin-bottom: 60px; position: relative; z-index: 500; }
+        .nav-btns { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            margin-bottom: 50px; 
+            position: relative; 
+            z-index: 500; 
+        }
         .nav-btns button { 
-            background: rgba(0,0,0,0.6); border: 1px solid var(--teal); color: var(--teal); 
-            padding: 12px 25px; border-radius: 50px; font-weight: 900; font-size: 0.75rem; 
-            cursor: pointer; backdrop-filter: blur(5px);
+            background: rgba(5, 5, 5, 0.8); 
+            border: 1px solid rgba(0, 229, 255, 0.4); 
+            color: var(--teal); 
+            padding: 10px 24px; 
+            border-radius: 50px; 
+            font-weight: 900; 
+            font-size: 0.7rem; 
+            cursor: pointer; 
+            backdrop-filter: blur(10px);
+            letter-spacing: 1px;
+            transition: 0.2s;
+        }
+        .nav-btns button:hover {
+            background: var(--teal);
+            color: #000;
+            border-color: var(--teal);
         }
 
-        /* MODAL */
-        #product-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 80vh; background: #0a0a0a; border-top: 3px solid var(--teal); border-radius: 30px 30px 0 0; z-index: 2000; padding: 30px; overflow-y: auto; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1500; backdrop-filter: blur(8px); }
-        .modal-img { width: 100%; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
-        .buy-btn { width: 100%; padding: 20px; background: var(--teal); color: #000; border: none; border-radius: 12px; font-weight: 900; text-transform: uppercase; margin-top: 20px; letter-spacing: 2px; }
+        /* HARDWARE SYSTEM MODAL */
+        #product-modal { 
+            display: none; 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 85vh; 
+            background: #070708; 
+            border-top: 2px solid var(--teal); 
+            border-radius: 24px 24px 0 0; 
+            z-index: 2000; 
+            padding: 30px; 
+            overflow-y: auto; 
+            box-shadow: 0 -15px 40px rgba(0,0,0,0.9);
+        }
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            z-index: 1500; 
+            backdrop-filter: blur(12px); 
+        }
+        .modal-img { 
+            width: 100%; 
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 16px; 
+            border: 1px solid rgba(0, 229, 255, 0.2); 
+            margin-bottom: 20px; 
+        }
+        .buy-btn { 
+            width: 100%; 
+            padding: 20px; 
+            background: var(--teal); 
+            color: #000; 
+            border: none; 
+            border-radius: 14px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            margin-top: 24px; 
+            letter-spacing: 2px; 
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .buy-btn:hover { background: var(--gold); }
     </style>
 </head>
 <body>
@@ -89,7 +187,6 @@
         <div style="color: var(--teal); font-weight: 900; font-size: 0.7rem; letter-spacing: 2px;">360° INFRASTRUCTURE</div>
     </header>
 
-    <!-- CLOTHING ORBIT -->
     <div class="category-header">CLOTHING & HEADWEAR</div>
     <div class="stage"><div class="carousel" id="clothing-carousel"></div></div>
     <div class="nav-btns">
@@ -97,8 +194,7 @@
         <button onclick="rotate('clothing', 1)">NEXT</button>
     </div>
 
-    <!-- FOOTWEAR ORBIT -->
-    <div class="category-header">FOOTWEAR  STEP</div>
+    <div class="category-header">FOOTWEAR ENGINE</div>
     <div class="stage"><div class="carousel" id="footwear-carousel"></div></div>
     <div class="nav-btns">
         <button onclick="rotate('footwear', -1)">PREV</button>
@@ -112,15 +208,19 @@
         <p id="m-price" style="color: var(--gold); font-weight: 900; font-size: 1.4rem; margin: 10px 0;"></p>
         <p id="m-desc" style="font-size: 0.85rem; color: #aaa; line-height: 1.6;"></p>
         
-        <label style="color: var(--teal); font-size: 0.6rem; font-weight: 900; margin-top: 20px; display: block;">CHOOSE YOUR SIZE</label>
-        <select id="size-select" style="width:100%; padding:15px; background:#151515; color:white; border:1px solid #333; margin-top:10px; border-radius: 10px;"></select>
+        <label style="color: var(--teal); font-size: 0.6rem; font-weight: 900; margin-top: 20px; display: block; letter-spacing: 1px;">CHOOSE YOUR SIZE SPECIFICATION</label>
+        <select id="size-select" style="width:100%; padding:18px; background:#121214; color:white; border:1px solid rgba(0,229,255,0.2); margin-top:10px; border-radius: 12px; outline:none; font-weight:bold;"></select>
         
         <button class="buy-btn" onclick="processOrder()">BUY VIA WESTERN UNION</button>
-        <button onclick="closeProduct()" style="width:100%; background:transparent; border:none; color:#555; margin-top:20px; font-size:0.7rem;">BACK TO SHOP</button>
+        <button onclick="closeProduct()" style="width:100%; background:transparent; border:none; color:#555; margin-top:20px; font-size:0.7rem; letter-spacing:1px; cursor:pointer; text-transform:uppercase;">BACK TO INFRASTRUCTURE</button>
     </div>
 
     <script>
-        // Full Dataset with Fixed Paths
+        // System Network Matrix Target Context
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
+
         const products = {
             clothing: [
                 { name: "NJJC Hoodie", price: 75, img: "images/njjc.jpg", sizes: ["S","M","L","XL","2XL"], desc: "Official NJJC street-grade heavy hoodie." },
@@ -142,18 +242,38 @@
         let angles = { clothing: 0, footwear: 0 };
         let activeProduct = null;
 
-        // 360° MATH: We use a larger radius (300px) to complete the circle
+        // Background logging transmitter connecting directly into Security Bunker shell
+        async function transmitStorefrontTelemetry(actionTag, payloadDetails) {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: actionTag,
+                        amount: payloadDetails
+                    })
+                });
+            } catch (err) {
+                console.error("⚠️ Local data tracking stream decoupled from Bunker logs:", err);
+            }
+        }
+
+        // DEEP DYNAMIC SPATIAL CURVE CALCULATOR
         function initCarousel(type) {
             const container = document.getElementById(`${type}-carousel`);
             const items = products[type];
-            const angleStep = 360 / items.length;
+            const itemCount = items.length;
+            const angleStep = 360 / itemCount;
             
+            const itemWidth = 160; 
+            const calculatedRadius = Math.round((itemWidth / 2) / Math.tan(Math.PI / itemCount)) + 40; 
+
             items.forEach((p, i) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'item';
-                // Each item is placed at a specific degree in the 360 orbit
-                itemDiv.style.transform = `rotateY(${i * angleStep}deg) translateZ(300px)`;
-                itemDiv.onclick = () => openProduct(p);
+                itemDiv.style.transform = `rotateY(${i * angleStep}deg) translateZ(${calculatedRadius}px)`;
+                itemDiv.onclick = () => openProduct(p, type);
                 itemDiv.innerHTML = `<img src="${p.img}"><h3>${p.name}</h3><div class="price">$${p.price}</div>`;
                 container.appendChild(itemDiv);
             });
@@ -164,36 +284,80 @@
             const step = 360 / products[type].length;
             angles[type] -= (dir * step);
             container.style.transform = `rotateY(${angles[type]}deg)`;
+
+            transmitStorefrontTelemetry("Storefront Deck Shift", `User rotated ${type} wheel carousel array [Target Sector Angle: ${angles[type]}deg]`);
         }
 
-        function openProduct(p) {
+        function openProduct(p, type) {
             activeProduct = p;
             document.getElementById('m-img').src = p.img;
             document.getElementById('m-title').innerText = p.name;
             document.getElementById('m-price').innerText = `$${p.price}`;
             document.getElementById('m-desc').innerText = p.desc;
+            
             const s = document.getElementById('size-select');
             s.innerHTML = p.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
+            
             document.getElementById('product-modal').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
+
+            transmitStorefrontTelemetry("Storefront Item Opened", `Client activated modal drawer for: ${p.name} inside category cluster: ${type}`);
         }
 
         function closeProduct() {
+            if (activeProduct) {
+                transmitStorefrontTelemetry("Storefront Item Retracted", `Client folded item detail panel for: ${activeProduct.name}`);
+            }
             document.getElementById('product-modal').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
         }
 
-        function processOrder() {
+        async function processOrder() {
             const size = document.getElementById('size-select').value;
-            localStorage.setItem('wu_order', JSON.stringify({
+            const orderPayload = {
                 item: activeProduct.name,
                 price: activeProduct.price,
                 size: size
-            }));
+            };
+            
+            localStorage.setItem('wu_order', JSON.stringify(orderPayload));
+
+            await transmitStorefrontTelemetry(
+                "Storefront Transaction Redirect", 
+                `User checkout trigger committed for: ${activeProduct.name} (Size: ${size}) totaling $${activeProduct.price}.00 via Western Union.`
+            );
+
             window.location.href = 'checkout.html';
         }
 
-        window.onload = () => { initCarousel('clothing'); initCarousel('footwear'); };
+        // ECHO KILLER & COMPONENT INITIALIZATION MATRIX
+        window.onload = () => { 
+            try {
+                // Instantly scrub any rogue audio or video elements cached by QuickEdit's preview compiler
+                const strayMediaNodes = document.querySelectorAll('audio, video');
+                strayMediaNodes.forEach(node => {
+                    node.pause();
+                    node.currentTime = 0;
+                    node.src = "";
+                    node.load();
+                    node.remove();
+                });
+
+                // Terminate background audio pipelines to secure zero-echo performance
+                if (window.AudioContext || window.webkitAudioContext) {
+                    const trackingCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    if (trackingCtx.state === 'running') trackingCtx.close();
+                }
+            } catch (error) {
+                console.log("Pre-render environment media flush complete.");
+            }
+
+            // Build shop layouts cleanly
+            initCarousel('clothing'); 
+            initCarousel('footwear'); 
+            
+            transmitStorefrontTelemetry("Storefront Core Online", "360 Gear Vault viewport module successfully initialized and audio layers sandboxed.");
+        };
     </script>
 </body>
 </html>
