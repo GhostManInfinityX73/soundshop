@@ -73,7 +73,6 @@
 </div>
 
 <div class="tier-container">
-    <!-- FREE TIER -->
     <div class="tier-card">
         <div class="tier-name">FREE PASS</div>
         <div class="tier-price">$0<span>/FOREVER</span></div>
@@ -85,7 +84,6 @@
         <button class="cta" onclick="joinFree()">GET STARTED</button>
     </div>
 
-    <!-- PRO TIER -->
     <div class="tier-card premium">
         <div class="tier-name">PRO SOUNDTRACKER</div>
         <div class="tier-price">$49<span>/MONTH</span></div>
@@ -98,11 +96,10 @@
         <div class="button-stack">
             <button class="cta btn-order" onclick="openCheckout(49, 'PRO_MEMBERSHIP')">ORDER NOW</button>
             <button class="cta" onclick="openCheckout(49, 'PRO_MEMBERSHIP')">WESTERN UNION CHECKOUT</button>
-            <button class="cta btn-call" onclick="window.location.href='tel:9105499227'">CALL FOR INQUIRY</button>
+            <button class="cta btn-call" onclick="dispatchCallIntercept('Pro Inquiry Line Triggered', 'Customer Dial Request', 'tel:9105499227')">CALL FOR INQUIRY</button>
         </div>
     </div>
 
-    <!-- STUDIO TIER (MIXING & MASTERING) -->
     <div class="tier-card studio">
         <div class="tier-name">MIXING & MASTERING</div>
         <div class="tier-price">$350<span>/STARTING</span></div>
@@ -115,12 +112,11 @@
         
         <div class="button-stack">
             <button class="cta btn-order" onclick="openCheckout(350, 'STUDIO_SERVICE')">RESERVE STUDIO TIME</button>
-            <button class="cta btn-call" onclick="window.location.href='tel:9105499227'">DISCUSS PROJECT</button>
+            <button class="cta btn-call" onclick="dispatchCallIntercept('Studio Session Consultation Triggered', 'Customer Dial Request', 'tel:9105499227')">DISCUSS PROJECT</button>
         </div>
     </div>
 </div>
 
-<!-- WU CHECKOUT MODAL -->
 <div class="modal-overlay" id="overlay" onclick="closeCheckout()"></div>
 <div id="checkout-modal">
     <div class="wu-title">WU TRANSFER PROTOCOL</div>
@@ -136,10 +132,17 @@
 </div>
 
 <script>
+    // Infrastructure Tunnel Target Context Matrix
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
     let currentServiceType = 'PRO_MEMBERSHIP';
+    let currentPriceValue = 49;
 
     function openCheckout(price, service) {
         currentServiceType = service;
+        currentPriceValue = price;
         document.getElementById('modal-price').innerText = `$${price}.00 USD`;
         document.getElementById('checkout-modal').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
@@ -150,38 +153,79 @@
         document.getElementById('overlay').style.display = 'none';
     }
 
-    function submitMTCN() {
+    // Intercept outbound direct dials to track inquiries on backend console
+    async function dispatchCallIntercept(contextItem, dataAmount, targetDialString) {
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({ item: contextItem, amount: dataAmount })
+            });
+        } catch (err) {
+            console.error("⚠️ Security Bunker offline or network interface decoupled.", err);
+        } finally {
+            window.location.href = targetDialString;
+        }
+    }
+
+    // Connects checkout modal MTCN verification straight to the server ledger
+    async function submitMTCN() {
         const mtcn = document.getElementById('mtcn-input').value;
         if (!mtcn || mtcn.length < 8) {
             alert("VALID MTCN REQUIRED FOR SECURITY BUNKER LOGGING.");
             return;
         }
 
-        // Logic for your Node.js/Termux backend notification system
-        fetch('http://localhost:3001/order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                service: currentServiceType,
-                mtcn: mtcn,
-                status: 'PENDING_VERIFICATION'
-            })
-        }).then(() => {
-            alert("MTCN LOGGED. Redirecting. Call (910) 549-9227 to finalize Identity Verification.");
-            window.location.href = "portal.html";
-        }).catch(err => {
-            alert("Local Server Offline. Please call to provide MTCN manually.");
-        });
-    }
+        const payload = {
+            item: `Service Order: ${currentServiceType}`,
+            amount: `Price: $${currentPriceValue}.00 | Verified MTCN Submission: ${mtcn}`
+        };
 
-    function joinFree() {
-        const email = prompt("ENTER EMAIL FOR VAULT ACCESS:");
-        if (email) {
-            fetch('http://localhost:3001/subscribe', {
+        try {
+            const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, tier: 'FREE' })
+                mode: 'cors',
+                body: JSON.stringify(payload)
             });
+            const data = await response.json();
+
+            if (data.success) {
+                alert(`MTCN SECURELY LOGGED.\nTracking ID: ${data.orderID}\n\nRedirecting. Call (910) 549-9227 to finalize Identity Verification.`);
+                window.location.href = "portal.html";
+            } else {
+                alert("Security firewall rejected data stream synchronization validation.");
+            }
+        } catch (err) {
+            console.error("❌ Checkout Transmission Fault:", err);
+            alert("Local communication barrier detected. Please call (910) 549-9227 to provide MTCN manually.");
+        }
+    }
+
+    // Maps free vault registration directly through the unified ledger API
+    async function joinFree() {
+        const email = prompt("ENTER EMAIL FOR VAULT ACCESS:");
+        if (!email || !email.includes('@')) {
+            alert("VALID EMAIL SPECIFICATION MANDATORY.");
+            return;
+        }
+
+        const payload = {
+            item: "Vault Subscription Sign-up",
+            amount: `User Email: ${email} | Tier Allotment: FREE`
+        };
+
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify(payload)
+            });
+        } catch (err) {
+            console.error("❌ Registration Pipeline Failure:", err);
+        } finally {
             window.location.href = "vault.html";
         }
     }
