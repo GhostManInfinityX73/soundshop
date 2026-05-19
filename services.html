@@ -6,14 +6,21 @@
     <title>SERVICES | SOUND SHOP PROFESSIONAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --teal: #00ffcc; --brand-yellow: #ffcc00; --dark: #050505; --glass: rgba(255, 255, 255, 0.05); }
+        :root { 
+            --teal: #00ffcc; 
+            --brand-yellow: #ffcc00; 
+            --dark: #050505; 
+            --glass: rgba(255, 255, 255, 0.05); 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; line-height: 1.6; }
+        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
         
         /* STICKY CONTACT BAR */
         .contact-bar { width: 100%; display: flex; justify-content: center; gap: 15px; padding: 15px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--teal); position: sticky; top: 0; z-index: 1000; }
-        .call-btn { text-decoration: none; color: var(--teal); border: 1px solid var(--teal); padding: 8px 16px; border-radius: 5px; font-weight: 900; font-size: 0.7rem; letter-spacing: 1px; }
+        .call-btn { text-decoration: none; color: var(--teal); border: 1px solid var(--teal); padding: 8px 16px; border-radius: 5px; font-weight: 900; font-size: 0.7rem; letter-spacing: 1px; transition: 0.2s ease; cursor: pointer; background: transparent; }
         .order-btn { border-color: var(--brand-yellow); color: var(--brand-yellow); }
+        .call-btn:hover { background: rgba(0, 255, 204, 0.1); }
+        .order-btn:hover { background: rgba(255, 204, 0, 0.1); }
 
         /* HERO MARKETING */
         .hero { text-align: center; padding: 60px 20px; text-transform: uppercase; }
@@ -36,10 +43,20 @@
         
         .feat-list { list-style: none; margin: 20px 0; }
         .feat-item { font-size: 0.8rem; margin-bottom: 10px; color: #bbb; display: flex; align-items: center; gap: 10px; }
-        .feat-item::before { content: ''; color: var(--teal); font-weight: 900; }
+        
+        /* High-tech custom indicator to replace broken character glyphs */
+        .feat-item::before { 
+            content: ">>"; 
+            color: var(--teal); 
+            font-family: 'Courier New', monospace; 
+            font-weight: 900; 
+            font-size: 0.75rem; 
+        }
+        .featured .feat-item::before { color: var(--brand-yellow); }
 
-        .book-btn { width: 100%; padding: 18px; border-radius: 10px; border: none; background: #1a1a1a; color: #fff; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; }
+        .book-btn { width: 100%; padding: 18px; border-radius: 10px; border: none; background: #1a1a1a; color: #fff; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.2s ease; }
         .featured .book-btn { background: var(--brand-yellow); color: #000; }
+        .book-btn:hover { background: #fff; color: #000; transform: scale(1.01); }
 
         /* FOUNDER'S PLEDGE */
         .founder-section { background: #0a0a0a; padding: 50px 20px; margin-top: 40px; border-top: 1px solid #1a1a1a; }
@@ -51,8 +68,8 @@
 <body>
 
     <div class="contact-bar">
-        <a href="tel:19105499227" class="call-btn">CALL OFFICE</a>
-        <a href="tel:19108796800" class="call-btn order-btn">PLACE ORDER</a>
+        <button class="call-btn" onclick="interceptCommunication('Office Line Hotwire', 'tel:19105499227')">CALL OFFICE</button>
+        <button class="call-btn order-btn" onclick="interceptCommunication('Order Desk Hotwire', 'tel:19108796800')">PLACE ORDER</button>
     </div>
 
     <div class="hero">
@@ -61,11 +78,10 @@
     </div>
 
     <div class="guarantee-box">
-        <!-- SVG Shield instead of Emoji to prevent broken characters -->
         <svg class="shield-svg" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
         <div class="guarantee-text">
             <h3>100% SATISFACTION PROTOCOL</h3>
-            <p>At Sound Shop, we don't just "mix audio"�we craft your legacy. Every project includes unlimited revisions until it hits the weight your music deserves.</p>
+            <p>At Sound Shop, we don't just "mix audio"—we craft your legacy. Every project includes unlimited revisions until it hits the weight your music deserves.</p>
         </div>
     </div>
 
@@ -79,7 +95,7 @@
                 <li class="feat-item">High-Fidelity WAV + MP3</li>
                 <li class="feat-item">Precision EQ & Compression</li>
             </ul>
-            <button class="book-btn" onclick="location.href='tel:19105499227'">BOOK SESSION</button>
+            <button class="book-btn" onclick="interceptCommunication('Mix & Master Booking', 'tel:19105499227')">BOOK SESSION</button>
         </div>
 
         <div class="card featured">
@@ -91,7 +107,7 @@
                 <li class="feat-item">Full Stem Delivery</li>
                 <li class="feat-item">RSA-4096 Secure Delivery</li>
             </ul>
-            <button class="book-btn" onclick="location.href='tel:19105499227'">INQUIRE NOW</button>
+            <button class="book-btn" onclick="interceptCommunication('Custom Scoring Inquiry', 'tel:19105499227')">INQUIRE NOW</button>
         </div>
 
         <div class="card">
@@ -102,7 +118,7 @@
                 <li class="feat-item">Custom Background Beds</li>
                 <li class="feat-item">Fast 48-Hour Turnaround</li>
             </ul>
-            <button class="book-btn" onclick="location.href='tel:19105499227'">GET QUOTE</button>
+            <button class="book-btn" onclick="interceptCommunication('Digital Media Suite Request', 'tel:19105499227')">GET QUOTE</button>
         </div>
     </div>
 
@@ -110,9 +126,49 @@
         <h2>A PLEDGE FROM THE FOUNDER</h2>
         <div class="founder-text">
             "I've spent over 25 years in this industry, and I've seen it all. I didn't build Sound Shop just to make a dollar; I built it to ensure that independent creators have access to high-impact, professional audio without the corporate middleman. If you aren't 100% satisfied with the soul of your soundtrack, we aren't finished. Period."
-            <div class="founder-sig">� ZANDER, SOUND SHOP FOUNDER</div>
+            <div class="founder-sig">— ZANDER, SOUND SHOP FOUNDER</div>
         </div>
     </div>
 
+<script>
+    // System Network Architecture Setup
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
+    // Central background logging transmitter targeting Security Bunker logs
+    async function transmitServiceTelemetry(actionTag, eventDetails) {
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({
+                    item: actionTag,
+                    amount: eventDetails
+                })
+            });
+        } catch (err) {
+            console.error("⚠️ Telemetry transmission bypass:", err);
+        }
+    }
+
+    // Capture communications links cleanly, logging intent data before firing standard phone clients
+    async function interceptCommunication(serviceName, nativeTelUri) {
+        // Execute background log asynchronously so the network drop doesn't freeze the client browser trigger
+        await transmitServiceTelemetry(
+            `Service Lead Captured: ${serviceName}`, 
+            `Client initiated a direct dial sequence targeting: ${nativeTelUri}`
+        );
+
+        // Instantly execute the localized call handler
+        window.location.href = nativeTelUri;
+    }
+
+    // Register active page hit baseline metrics on launch
+    window.onload = function() {
+        transmitServiceTelemetry("Services Module Mounted", "Client entered the services.html pricing matrix layer.");
+    };
+</script>
 </body>
 </html>
