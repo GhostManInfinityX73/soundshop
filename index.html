@@ -198,8 +198,8 @@
     </header>
 
     <div class="contact-row">
-        <button type="button" class="btn-contact" onclick="event.preventDefault(); triggerGatekeeper('call')"><i class="fa-solid fa-phone"></i> call shop</button>
-        <button type="button" class="btn-contact" onclick="event.preventDefault(); triggerGatekeeper('message')"><i class="fa-solid fa-comment"></i> message</button>
+        <button class="btn-contact" onclick="triggerGatekeeper('call')"><i class="fa-solid fa-phone"></i> call shop</button>
+        <button class="btn-contact" onclick="triggerGatekeeper('message')"><i class="fa-solid fa-comment"></i> message</button>
     </div>
 
     <div class="video-container">
@@ -378,12 +378,17 @@
             }
 
             try {
-                const response = await fetch(`https://bunker.soundshop.cc/gatekeeper?intent=${type}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`);
+                // Change 'your-active-tunnel' to your live cloudflared string
+                const response = await fetch(`https://your-active-tunnel.trycloudflare.com/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item: `Support Verification for ${name}`, amount: phone })
+                });
                 const data = await response.json();
 
-                if (data.success) {
-                    alert(`--- SOUND SHOP SECURE LINE ---\n\nYOUR ACCESS CODE: ${data.token}\n\nPlease mention this code when Zander answers to verify your inquiry.`);
-                    window.location.href = `tel:${data.phoneNumber}`;
+                if (data.orderID) {
+                    alert(`--- SOUND SHOP SECURE LINE ---\n\nYOUR ACCESS CODE: ${data.orderID}\n\nPlease mention this code when Zander answers to verify your inquiry.`);
+                    window.location.href = `tel:9105499227`;
                 }
             } catch (err) {
                 console.error("❌ Gatekeeper interface alert network drop:", err);
@@ -402,7 +407,6 @@
                 chatWindow.style.display = 'flex';
                 chatInput.focus();
                 
-                // Front-end interactive confirmation audio pulse
                 initAudio();
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 audio.src = './audio/tgg.m4a';
@@ -421,16 +425,17 @@
             chatInput.value = '';
 
             try {
-                const response = await fetch('https://bunker.soundshop.cc/chat-inquiry', {
+                // Change 'your-active-tunnel' to your live cloudflared string
+                const response = await fetch('https://your-active-tunnel.trycloudflare.com/log-payment', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: rawText, platform: 'Web Client' })
+                    body: JSON.stringify({ item: 'Bunker Chat: ' + rawText, amount: 'PENDING CHAT LOG' })
                 });
 
                 if (!response.ok) throw new Error(`Bunker Status: ${response.status}`);
                 const data = await response.json();
 
-                if (data.success) {
+                if (data.orderID) {
                     appendMessageElement("Sent successfully. A sound pulse alert has caught the bunker's attention.", 'system');
                 } else {
                     appendMessageElement("Message logged, but validation returned an error code.", 'system');
