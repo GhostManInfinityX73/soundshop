@@ -114,11 +114,8 @@ app.post('/chat-inquiry', transmissionLimiter, async (req, res) => { res.json({ 
 // --- 7. FALLBACK ---
 app.use((req, res) => res.status(404).send("404 - Node Offline"));
 
-// --- 8. STARTUP (Fixed for Tunnel Integration) ---
-const PORT = 8080;
-const HOST = '0.0.0.0';
-
-app.listen(PORT, HOST, () => {
+// --- 8. STARTUP ---
+app.listen(8080, '0.0.0.0', () => {
     console.log('🛡️ SOUND SHOP MASTER NODE ONLINE');
-    console.log(`🚀 Listening on http://${HOST}:${PORT}`);
+    console.log('🚀 Listening on http://0.0.0.0:8080');
 });
