@@ -10,7 +10,8 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 
 // --- 1. CORE SYSTEM & SECURITY PATHS ---
-const baseDir = '/sdcard/SoundShop';
+// Updated to process.cwd() to match the directory you are running from
+const baseDir = process.cwd(); 
 const logFile = path.join(baseDir, 'vault_ledger.log');
 const chatLogPath = path.join(baseDir, 'chat_vault.json');
 const privateKeyPath = path.join(baseDir, 'ss_private.pem');
