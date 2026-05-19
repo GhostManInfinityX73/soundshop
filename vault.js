@@ -60,7 +60,8 @@ const server = http.createServer((req, res) => {
 });
 
 const PORT = 3001;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`SOUND SHOP VAULT: Active on Port ${PORT}`);
     console.log(`Documentation will be saved to ledger.txt`);
 });
+
