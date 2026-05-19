@@ -13,6 +13,7 @@
             --brand-yellow: #ffd700;
             --midnight: #0a0b0c;
             --card-bg: rgba(255, 255, 255, 0.03);
+            --neon-teal: #00ffcc;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,7 +30,7 @@
         .nav-links a { text-decoration: none; color: #fff; font-size: 0.55rem; letter-spacing: 1px; font-weight: 700; opacity: 0.6; }
 
         .contact-bar { display: flex; justify-content: center; gap: 10px; padding: 15px; }
-        .call-btn { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 5px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+        .call-btn { flex: 1; text-align: center; padding: 12px; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 5px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; cursor: pointer; background: none; }
 
         .category-title { font-family: 'Syncopate'; color: var(--teal); padding: 40px 20px 10px; letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; }
         .slider-container { display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px; scroll-snap-type: x mandatory; scrollbar-width: none; }
@@ -45,7 +46,7 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 5000; backdrop-filter: blur(25px); overflow-y: auto; }
         .modal-content { max-width: 450px; margin: 40px auto; padding: 30px; text-align: center; }
         .modal-img { width: 100%; border-radius: 15px; border: 1px solid var(--teal); margin-bottom: 20px; }
-        .cta-pay-btn { display: block; width: 100%; padding: 18px; background: var(--teal); color: #000; text-decoration: none; font-weight: 900; border-radius: 8px; font-size: 0.75rem; text-transform: uppercase; }
+        .cta-pay-btn { display: block; width: 100%; padding: 18px; background: var(--teal); color: #000; text-decoration: none; font-weight: 900; border-radius: 8px; font-size: 0.75rem; text-transform: uppercase; border: none; text-align: center; cursor: pointer; }
 
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 100%; } }
@@ -68,13 +69,13 @@
             <a href="nexus.html">PODCASTING</a>
             <a href="vault.html">VAULT</a>
             <a href="portal.html">PORTAL</a>
-            <a href="chat-preview.html">CHAT<span class="soon-tag">SOON</span></a>
+            <a href="chat-preview.html">CHAT</a>
     </div>
 </nav>
 
 <div class="contact-bar">
-    <a href="tel:19105499227" class="call-btn">LOGISTICS</a>
-    <a href="tel:19108796800" class="call-btn" style="border-color:var(--brand-yellow); color:var(--brand-yellow);">ORDER LINE</a>
+    <button class="call-btn" onclick="dispatchLogisticsIntercept('Logistics Desk Call Intercept', 'Showcase Dashboard Dial Event', 'tel:19105499227')">LOGISTICS</button>
+    <button class="call-btn" style="border-color:var(--brand-yellow); color:var(--brand-yellow);" onclick="dispatchLogisticsIntercept('Direct Order Line Call Intercept', 'Showcase Dashboard Order Event', 'tel:19108796800')">ORDER LINE</button>
 </div>
 
 <h2 class="category-title">Virtual Showroom</h2>
@@ -82,7 +83,6 @@
     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/GjZ_59hCrx0" frameborder="0" allowfullscreen></iframe>
 </div>
 
-<!-- FOOT GEAR (FIXED BROKEN LINK) -->
 <h2 class="category-title" style="color:var(--brand-yellow);">Foot Gear [Swipe]</h2>
 <div class="slider-container">
     <div class="item" onclick="openProduct('Court Shoe White', 'images/smrcs.jpg', '$145.00')"><img src="images/smrcs.jpg"><p>Court Shoe White</p><span class="price-tag">$145.00</span></div>
@@ -93,7 +93,6 @@
     <div class="item" onclick="openProduct('Skate Black', 'images/blkltps.jpg', '$145.00')"><img src="images/blkltps.jpg"><p>Skate Black</p><span class="price-tag">$145.00</span></div>
 </div>
 
-<!-- CLOTHING GEAR (ADDED BLACK HOODIE) -->
 <h2 class="category-title">Sound Shop Clothing [Swipe]</h2>
 <div class="slider-container">
     <div class="item" onclick="openProduct('A Good High - Black', 'images/blkh.jpg', '$135.00')"><img src="images/blkh.jpg"><p>A Good High (Black)</p><span class="price-tag">$135.00</span></div>
@@ -128,28 +127,84 @@
         <img id="modalImg" src="" class="modal-img">
         <h2 id="modalTitle" style="font-family:Syncopate; color:var(--teal);"></h2>
         <p id="modalPrice" style="color:var(--brand-yellow); margin: 15px 0; font-weight: 900;"></p>
-        <a href="checkout.html" class="cta-pay-btn">SECURE CHECKOUT</a>
+        <button class="cta-pay-btn" id="modalCheckoutBtn">SECURE CHECKOUT</button>
         <p onclick="closeProduct()" style="margin-top:20px; cursor:pointer; font-size:0.6rem; opacity:0.5;">[ CLOSE ]</p>
     </div>
 </div>
 
 <script>
+    // Infrastructure Tunnel Target Context Matrix
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
     const rimSlider = document.getElementById('rim-slider');
     'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter => {
         const div = document.createElement('div');
         div.className = 'item';
         const imgPath = `images/rimz_${letter.toLowerCase()}.jpg`;
-        div.onclick = () => openProduct(`RIM: ${letter}`, imgPath, '$1,500/EA');
+        div.onclick = () => openProduct(`RIM COLLECTION: LETTER ${letter}`, imgPath, '$1,500.00/EA');
         div.innerHTML = `<img src="${imgPath}" onerror="this.src='images/rimz_a.jpg'"><p>LETTER ${letter}</p><span class="price-tag">$1,500/EA</span>`;
         rimSlider.appendChild(div);
     });
 
-    function openProduct(name, img, price) {
+    // Intercept navigation dials and write tracking records to the Termux backend
+    async function dispatchLogisticsIntercept(contextItem, dataAmount, targetDialString) {
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({ item: contextItem, amount: dataAmount })
+            });
+        } catch (err) {
+            console.error("⚠️ Security Bunker offline or network interface decoupled.", err);
+        } finally {
+            window.location.href = targetDialString;
+        }
+    }
+
+    // Connect product selection clicks straight to live telemetry logging
+    async function openProduct(name, img, price) {
         document.getElementById('modalImg').src = img;
         document.getElementById('modalTitle').innerText = name;
         document.getElementById('modalPrice').innerText = price;
         document.getElementById('productOverlay').style.display = 'block';
         document.body.style.overflow = 'hidden';
+
+        // Bind dynamic checkout routing action directly to current selection data layout
+        document.getElementById('modalCheckoutBtn').onclick = async () => {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: `Checkout Gateway Initialized: ${name}`,
+                        amount: `Target Price Vector: ${price}`
+                    })
+                });
+            } catch (err) {
+                console.error("❌ Tunnel handshaking dropped product logging parameters.", err);
+            } finally {
+                window.location.href = "checkout.html";
+            }
+        };
+
+        // Fire background alert telemetry notifying the terminal room that an item is actively being inspected
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({
+                    item: `Virtual Showroom Inspection`,
+                    amount: `User viewed item: ${name} (${price})`
+                })
+            });
+        } catch (err) {
+            console.error("Telemetry offline.", err);
+        }
     }
 
     function closeProduct() {
