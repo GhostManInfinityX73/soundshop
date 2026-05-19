@@ -2,114 +2,255 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Purchase Confirmed | Sound Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { 
             background: #050505; 
             color: #fff; 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
+            font-family: 'Inter', sans-serif; 
+            min-height: 100vh; 
             margin: 0;
-            text-align: center;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
+
+        /* Matches global Sound Shop background infrastructure */
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px; z-index: -1;
+        }
+
+        /* Absolute Center Locking Grid */
+        #success-viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+        }
+
         .container {
             background: rgba(10, 10, 10, 0.95);
-            padding: 50px;
-            border-radius: 20px;
+            padding: 50px 35px;
+            border-radius: 30px;
             border: 2px solid #00ffcc;
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.25);
             max-width: 500px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
-        h1 { color: #00ffcc; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
-        .ethic-tag { color: #28a745; font-style: italic; font-size: 0.9rem; margin-bottom: 20px; }
-        p { color: #ccc; line-height: 1.6; }
+
+        h1 { 
+            font-family: 'Syncopate'; 
+            color: #00ffcc; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+            margin-bottom: 12px; 
+            font-size: 1.4rem;
+        }
+        
+        .ethic-tag { 
+            color: #28a745; 
+            font-style: italic; 
+            font-size: 0.85rem; 
+            margin-bottom: 25px; 
+            letter-spacing: 1px;
+        }
+        
+        p { 
+            color: #aaa; 
+            line-height: 1.6; 
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+        
         .download-btn {
             display: inline-block;
-            margin-top: 25px;
+            margin-top: 30px;
             background: linear-gradient(90deg, #00ffcc, #00c6ff);
             color: #000;
-            padding: 15px 40px;
+            padding: 16px 40px;
             text-decoration: none;
             font-weight: 900;
             border-radius: 50px;
             text-transform: uppercase;
-            transition: 0.3s;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            transition: 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
         }
+        
         .download-btn:hover {
-            box-shadow: 0 0 20px #00ffcc;
-            transform: scale(1.05);
+            box-shadow: 0 0 25px #00ffcc;
+            transform: scale(1.02);
         }
-        #status-msg { font-size: 0.85rem; color: #00ffcc; margin-top: 15px; font-weight: bold; }
-        #order-id { font-size: 0.75rem; color: #444; margin-top: 20px; font-family: monospace; }
-        .back-home { display: block; margin-top: 30px; color: #00ffcc; text-decoration: none; font-size: 0.8rem; opacity: 0.6; }
-        .back-home:hover { opacity: 1; }
-    </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-CQ81083J1M');
-</script>
+        .download-btn:disabled {
+            background: #222;
+            color: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #status-msg { font-size: 0.85rem; color: #00ffcc; margin-top: 20px; font-weight: bold; letter-spacing: 0.5px; line-height: 1.5; }
+        #order-id { font-size: 0.75rem; color: #333; margin-top: 25px; font-family: monospace; letter-spacing: 1px; }
+        
+        .back-home { 
+            display: block; 
+            margin-top: 35px; 
+            color: #00ffcc; 
+            text-decoration: none; 
+            font-size: 0.8rem; 
+            opacity: 0.6; 
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.2s ease;
+        }
+        .back-home:hover { opacity: 1; letter-spacing: 3px; }
+    </style>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CQ81083J1M');
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Payment Verified</h1>
-        <div class="ethic-tag">"Good business is the only business we do."</div>
-        
-        <p>Your transaction was successful. Your high-quality audio file is being prepared for download.</p>
-        
-        <a href="#" id="downloadLink" class="download-btn">Preparing Download...</a>
-        
-        <div id="status-msg"></div>
-        <p id="order-id"></p>
-        
-        <a href="index.html" class="back-home">Return to Sound Shop Home</a>
-    </div>
+
+    <div class="grid-bg"></div>
+
+    <section id="success-viewport">
+        <div class="container">
+            <h1>Payment Verified</h1>
+            <div class="ethic-tag">"Good business is the only business we do."</div>
+            
+            <p>Your transaction handshake has successfully cleared. Your high-fidelity audio environment asset is validated and packing for transmission.</p>
+            
+            <button id="downloadLink" class="download-btn" disabled>Securing Data Line...</button>
+            
+            <div id="status-msg">Initializing core validation protocol...</div>
+            <p id="order-id"></p>
+            
+            <a href="index.html" class="back-home">Return to Sound Shop Home</a>
+        </div>
+    </section>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // System Network Architecture Matrix Target Context
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
+
+        // Central background logging transmitter connecting directly into Security Bunker shell
+        async function transmitSuccessTelemetry(actionTag, payloadDetails) {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: actionTag,
+                        amount: payloadDetails
+                    })
+                });
+            } catch (err) {
+                console.error("⚠️ Telemetry transmission bypass:", err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            
-            // 1. Grab the secure Download URL (from our checkout redirect)
             const downloadUrl = urlParams.get('downloadUrl');
-            
-            // 2. Grab the Transaction ID (just for display purposes)
             const transId = urlParams.get('transId');
 
             const linkElem = document.getElementById('downloadLink');
             const statusElem = document.getElementById('status-msg');
+
+            await transmitSuccessTelemetry(
+                "Verification Landing Mounted", 
+                `Client reached success landing terminal. Parsing incoming stack parameters [TransID Present: ${!!transId}] [Url Present: ${!!downloadUrl}]`
+            );
 
             if (transId) {
                 document.getElementById('order-id').innerText = "TRANS_ID: " + transId;
             }
 
             if (downloadUrl) {
-                // Set the link manually just in case they need to click it
-                linkElem.href = downloadUrl;
-                linkElem.innerText = "Download Track";
-                
-                statusElem.innerText = "ðŸ“¥ Your download will start automatically in a moment...";
+                try {
+                    statusElem.innerText = "Verifying cryptographic download token with server...";
+                    statusElem.style.color = "#00ffcc";
+                    
+                    // Cross-reference token authentication directly with your Node backend pipeline
+                    const verifyResponse = await fetch(`${CONFIG.TUNNEL_URL}/verify-download`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        mode: 'cors',
+                        body: JSON.stringify({ transId: transId, linkCheck: downloadUrl })
+                    });
 
-                // 3. Automatic Trigger: Wait 2.5 seconds then start download
-                setTimeout(() => {
-                    window.location.href = downloadUrl;
-                }, 2500);
+                    const verification = await verifyResponse.json();
+
+                    if (verification.authorized) {
+                        await transmitSuccessTelemetry("Token Authentication Passed", `Secure download cleared for TransID: [${transId}]. Dispatching asset stream.`);
+                        
+                        // Activate button fully now that handshake is confirmed true
+                        linkElem.removeAttribute('disabled');
+                        linkElem.innerText = "Download Track File";
+                        linkElem.onclick = () => {
+                            transmitSuccessTelemetry("Manual Download Triggered", `User explicitly tapped the download node link for asset path.`);
+                            window.location.href = downloadUrl;
+                        };
+                        
+                        statusElem.innerText = "Asset sequence confirmed. Launching delivery stream automatically...";
+
+                        // Automated transaction dispatch execution after 2.5 second buffer
+                        setTimeout(() => {
+                            transmitSuccessTelemetry("Automated Download Fired", "Dispatch counter cleared. Executing localized location redirection.");
+                            window.location.href = downloadUrl;
+                        }, 2500);
+
+                    } else {
+                        throw new Error(verification.reason || "Token blacklisted or forged by client browser layout context.");
+                    }
+
+                } catch (error) {
+                    console.error("Bunker Validation Flagged:", error);
+                    await transmitSuccessTelemetry("Bunker Verification Exception", `Handshake halted. Reason: ${error.message}`);
+                    
+                    linkElem.innerText = "Verification Failed";
+                    statusElem.innerText = `Security Check: ${error.message}`;
+                    statusElem.style.color = "#ff4444"; // Keeps critical security breaches clear for backend testing logs
+                }
             } else {
-                linkElem.innerText = "Check Email for Link";
-                linkElem.style.opacity = "0.5";
-                statusElem.innerText = "No secure token detected.";
-                statusElem.style.color = "#ff4444";
+                // HIDES ERRORS FROM CLIENTS: If parameters are completely absent (like local app previews)
+                await transmitSuccessTelemetry("Null Gateway Violation", "Client loaded success page shell without a dynamic purchase token string.");
+                
+                linkElem.innerText = "Check Your Mailbox";
+                linkElem.setAttribute('disabled', 'true');
+                
+                statusElem.innerText = "Your secure download link has been dispatched to your email address. Please check your inbox or spam folder to claim your file.";
+                statusElem.style.color = "#888888"; // Changed from scary red to subtle, elegant brand gray
             }
         });
     </script>
 </body>
 </html>
-
