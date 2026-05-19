@@ -50,23 +50,6 @@ function getBanRegistry() {
     return JSON.parse(fs.readFileSync(banRegistryPath, 'utf8'));
 }
 
-function isPermanentlyBanned(email, ip, userAgent) {
-    const vault = getBanRegistry();
-    if (email && vault.emails.includes(email.toLowerCase().trim())) return true;
-    if (ip && vault.ips.includes(ip)) return true;
-    if (userAgent && vault.devices.includes(userAgent)) return true;
-    return false;
-}
-
-function executePermanentExile(email, ip, userAgent, username = "Unknown") {
-    const vault = getBanRegistry();
-    if (email && !vault.emails.includes(email.toLowerCase().trim())) vault.emails.push(email.toLowerCase().trim());
-    if (ip && !vault.ips.includes(ip)) vault.ips.push(ip);
-    if (userAgent && !vault.devices.includes(userAgent)) vault.devices.push(userAgent);
-    fs.writeFileSync(banRegistryPath, JSON.stringify(vault, null, 4));
-    fs.appendFileSync(logFile, `[${new Date().toISOString()}] [EXILE] User: ${username} | Email: ${email} | IP: ${ip}\n`);
-}
-
 // --- 5. MIDDLEWARE & ANTI-SPAM ---
 app.disable('x-powered-by');
 app.use(cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'], credentials: true }));
@@ -76,7 +59,6 @@ app.use(express.static(baseDir));
 const transmissionLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, handler: (req, res) => res.status(403).json({ error: "Rate limit breached." }) });
 
 // --- 6. UNIFIED BUSINESS & PORTAL ENDPOINTS ---
-
 app.post('/log-payment', (req, res) => {
     const { item, amount } = req.body;
     fs.appendFileSync(logFile, `[${new Date().toISOString()}] [TELEMETRY] ${item} | ${amount}\n`);
@@ -105,17 +87,31 @@ app.post('/request-vault-download', (req, res) => {
     }
 });
 
-// Legacy Payment/Chat Routes
-app.get('/gatekeeper', async (req, res) => { res.json({ success: true }); });
-app.post('/generate-ach', async (req, res) => { res.json({ success: true }); });
-app.post('/api/wu-submit', async (req, res) => { res.json({ success: true }); });
-app.post('/chat-inquiry', transmissionLimiter, async (req, res) => { res.json({ success: true }); });
+app.post('/chat-inquiry', transmissionLimiter, async (req, res) => {
+    const { username, message } = req.body;
+    let chatData = fs.existsSync(chatLogPath) ? JSON.parse(fs.readFileSync(chatLogPath, 'utf8')) : [];
+    chatData.push({ timestamp: new Date().toISOString(), username, message });
+    fs.writeFileSync(chatLogPath, JSON.stringify(chatData, null, 4));
+    triggerBunkerAlert("New Inquiry", `From: ${username}`);
+    sendExternalAlert("New Bunker Inquiry", `User: ${username}\nMsg: ${message}`);
+    res.json({ success: true });
+});
+
+app.post('/api/wu-submit', async (req, res) => {
+    const { sender, amount, controlNumber } = req.body;
+    fs.appendFileSync(logFile, `[${new Date().toISOString()}] [WU-SUBMIT] Sender: ${sender} | Amt: ${amount} | MTCN: ${controlNumber}\n`);
+    triggerBunkerAlert("WU Payment Received", `Amt: ${amount}`);
+    res.json({ success: true });
+});
 
 // --- 7. FALLBACK ---
 app.use((req, res) => res.status(404).send("404 - Node Offline"));
 
 // --- 8. STARTUP ---
-app.listen(8080, '0.0.0.0', () => {
+const PORT = 8080;
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
     console.log('🛡️ SOUND SHOP MASTER NODE ONLINE');
-    console.log('🚀 Listening on http://0.0.0.0:8080');
+    console.log(`🚀 Listening on http://${HOST}:${PORT}`);
 });
