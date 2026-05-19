@@ -1,4 +1,9 @@
-// --- 1. UPDATED CALLER ID GATEKEEPER LOGIC ---
+// Infrastructure Configuration Mapping
+const CONFIG = {
+    TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+};
+
+// --- 1. CALLER ID GATEKEEPER LOGIC ---
 /**
  * Prompts user for identification, handshakes with the Bunker to whitelist them,
  * and displays an Access Token to filter out spam calls.
@@ -15,25 +20,41 @@ async function identifyAndCall(intent) {
         return;
     }
 
+    // Prepare payload formatting to match unified backend ledger ingestion standards
+    const payload = {
+        item: `Support Verification Request (${intent})`,
+        amount: `Caller Name: ${name} | Contact Line: ${phone}`
+    };
+
     try {
-        // Ping the updated local Termux server (server.js)
-        // Passing intent, name, and phone directly to the server
-        const response = await fetch(`http://localhost:3000/gatekeeper?intent=${intent}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`);
+        // Handshake directly with your active Cloudflare tunnel endpoint
+        const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            mode: 'cors',
+            body: JSON.stringify(payload)
+        });
         const data = await response.json();
 
-        if (data.success) {
-            // Secret Handshake Token
-            alert(`--- SOUND SHOP SECURE LINE ---\n\nYOUR ACCESS CODE: ${data.token}\n\nPlease mention this code when Zander answers to verify your inquiry.`);
+        if (data.success && data.orderID) {
+            // Secret Handshake Token matching generated orderID
+            alert(`--- SOUND SHOP SECURE LINE ---\n\nYOUR ACCESS CODE: ${data.orderID}\n\nPlease mention this code when Zander answers to verify your inquiry.`);
+            
+            // Fixed hardcoded fallbacks to handle dynamic target line assignments
+            const supportLine = "9105499227";
             
             // Trigger the device's native action (dialer or routing page)
             if (intent === 'Live Chat') {
-                window.location.href = data.phoneNumber; // Or your chat room URL path
+                // Point this to your standard relative site layout path
+                window.location.href = "/chat"; 
             } else {
-                window.location.href = `tel:${data.phoneNumber}`;
+                window.location.href = `tel:${supportLine}`;
             }
+        } else {
+            alert("Handshake passed firewall but ledger processing validation dropped.");
         }
     } catch (err) {
-        console.error("❌ Bunker Offline: Ensure node server.js is running in Termux.", err);
+        console.error("❌ Bunker Offline: Ensure node server.js is running in Termux via Cloudflare.", err);
         alert("Secure line currently unavailable. Please try again in a moment.");
     }
 }
@@ -72,6 +93,7 @@ function renderCatalog() {
 }
 
 function setupStudioEngine(track) {
+    let audioCtx;
     const audio = new Audio(track.file);
     const playBtn = document.getElementById(`play-${track.id}`);
     const clock = document.getElementById(`clock-${track.id}`);
@@ -83,7 +105,7 @@ function setupStudioEngine(track) {
     audio.ontimeupdate = () => { clock.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`; };
 
     playBtn.onclick = function() {
-        if (!audioCtx) audioCtx = new AudioContext();
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audio.paused) {
             if (!source) {
                 source = audioCtx.createMediaElementSource(audio);
@@ -114,6 +136,7 @@ function drawVisuals(analyser, ctx, canvas, audio) {
 }
 
 // --- 3. COMMERCE & NAVIGATION ---
+let cart = [];
 function addToCart(name, price) {
     if (typeof openPaymentModal === "function") {
         openPaymentModal(name, price);
