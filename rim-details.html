@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>INITIALIZED SERIES // DESIGN DETAILS</title>
     <style>
         body { 
@@ -14,6 +14,8 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
         header { padding: 40px; text-align: center; width: 100%; border-bottom: 1px solid #222; }
         h1 { color: #ffd700; letter-spacing: 8px; font-size: 1.8rem; margin: 0; }
@@ -46,6 +48,8 @@
             border: 1px solid #ffd700; 
             padding: 25px; 
             border-radius: 4px;
+            display: flex;
+            flex-direction: column;
         }
 
         label { color: #ffd700; font-size: 0.8rem; letter-spacing: 2px; display: block; margin-bottom: 10px; }
@@ -59,7 +63,9 @@
             margin-bottom: 25px; 
             font-family: 'Courier New', monospace;
             cursor: pointer;
+            outline: none;
         }
+        select:focus { border-color: #ffd700; }
 
         .buy-now { 
             display: block; 
@@ -74,6 +80,9 @@
             border: none;
             width: 100%;
             box-sizing: border-box;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
         }
         .buy-now:hover { background: #fff; transform: scale(1.02); }
 
@@ -112,32 +121,104 @@
         </div>
 
         <div class="config-box">
-            <h3 style="text-align: center; margin-top: 0;">CONFIGURE SET</h3>
+            <h3 style="text-align: center; margin-top: 0; color: #ffd700; letter-spacing: 2px; font-size: 1.1rem; margin-bottom: 25px;">CONFIGURE SET</h3>
             
-            <label>SELECT RIM SIZE</label>
-            <select id="size">
-                <option>18" - 20" Set ($5,000.00)</option>
-                <option>22" - 24" Set ($7,000.00)</option>
-                <option>26"+ Show Size ($9,000.00)</option>
+            <label for="size">SELECT RIM SIZE</label>
+            <select id="size" onchange="updateConfiguration()">
+                <option value="5000">18" - 20" Set ($5,000.00)</option>
+                <option value="7000">22" - 24" Set ($7,000.00)</option>
+                <option value="9000">26"+ Show Size ($9,000.00)</option>
             </select>
 
-            <label>CHOOSE INITIAL</label>
-            <select id="letter">
-                <option>Letter A</option>
-                <option>Letter B</option>
-                <option>Letter C</option>
-                <option>Letter D</option>
-                <option>Letter E</option>
-                <option>Letter F</option>
-                <option>Letter G</option>
-            </select>
+            <label for="letter">CHOOSE INITIAL</label>
+            <select id="letter" onchange="updateConfiguration()">
+                </select>
 
-            <a href="checkout.html" class="buy-now">PROCEED TO CHECKOUT</a>
+            <button onclick="executeCheckoutIntent()" class="buy-now">PROCEED TO CHECKOUT</button>
         </div>
     </div>
 
     <a href="lab.html" class="back-link">← RETURN TO THE LAB SHOWCASE</a>
 </div>
 
+<script>
+    // System Infrastructure Network Matrix
+    const CONFIG = {
+        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+    };
+
+    // Central telemetry transmitter targeting the Bunker shell log
+    async function transmitLabTelemetry(actionTag, logData) {
+        try {
+            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({
+                    item: actionTag,
+                    amount: logData
+                })
+            });
+        } catch (err) {
+            console.error("⚠️ Background telemetry system offline:", err);
+        }
+    }
+
+    // Initialize layout options, filling out letters A-Z dynamically
+    function setupLabConfigurator() {
+        const letterSelect = document.getElementById('letter');
+        letterSelect.innerHTML = ''; // Clear stub entries
+        
+        // Loop through character ASCII maps to mount every letter of the alphabet
+        for (let i = 65; i <= 90; i++) {
+            const letter = String.fromCharCode(i);
+            const opt = document.createElement('option');
+            opt.value = letter;
+            opt.textContent = `Letter ${letter}`;
+            letterSelect.appendChild(opt);
+        }
+
+        // Send initialization pulse down the proxy tunnel pipeline
+        transmitLabTelemetry("Lab Configurator Mounted", "User accessed the Initialized Series design layer.");
+    }
+
+    // Monitor changes to sizes or letters and log live adjustments
+    function updateConfiguration() {
+        const sizeMenu = document.getElementById('size');
+        const letterMenu = document.getElementById('letter');
+        
+        const selectedSizeLabel = sizeMenu.options[sizeMenu.selectedIndex].text;
+        const selectedLetter = letterMenu.value;
+
+        transmitLabTelemetry(
+            "Lab Hardware Configuration Shift", 
+            `User adjusted targets to: ${selectedSizeLabel} // Design Initialized: [${selectedLetter}]`
+        );
+    }
+
+    // Package the selected design choices and route out to checkout
+    async function executeCheckoutIntent() {
+        const sizeMenu = document.getElementById('size');
+        const letterMenu = document.getElementById('letter');
+
+        const finalPrice = sizeMenu.value;
+        const finalSizeLabel = sizeMenu.options[sizeMenu.selectedIndex].text;
+        const finalLetter = letterMenu.value;
+        
+        const targetSku = `RIM-${finalLetter}-${finalPrice}`;
+
+        // Commit telemetry packet before jumping page contexts
+        await transmitLabTelemetry(
+            "Lab Forging Intent Transmitted", 
+            `Checkout initiated for SKU: ${targetSku} (${finalSizeLabel})`
+        );
+
+        // Hand off tracking variables cleanly via browser address parameters to your gateway layer
+        window.location.href = `vault.html?id=${encodeURIComponent(targetSku)}&option=${encodeURIComponent(finalSizeLabel)}&gateway=WU`;
+    }
+
+    // Execute dynamic construction routines on layout mount
+    window.onload = setupLabConfigurator;
+</script>
 </body>
 </html>
