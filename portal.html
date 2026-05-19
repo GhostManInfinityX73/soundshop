@@ -61,19 +61,19 @@
         .nav-links { 
             display: flex; 
             gap: 10px; 
-            flex-wrap: nowrap; /* FORCES ONE LINE - NO STACKING */
+            flex-wrap: nowrap; 
             justify-content: flex-end;
             align-items: center;
         }
         .nav-links a { 
-            font-size: 0.52rem; /* Adjusted for better mobile fit */
+            font-size: 0.52rem; 
             color: #888; 
             text-decoration: none; 
             text-transform: uppercase; 
             letter-spacing: 1px; 
             transition: 0.3s; 
             font-weight: 700; 
-            white-space: nowrap; /* Prevents text wrap inside links */
+            white-space: nowrap;
         }
         .nav-links a:hover, .nav-links a.active { color: var(--teal); }
         
@@ -145,6 +145,7 @@
             background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(0, 255, 204, 0.2); 
             color: #fff; padding: 12px; border-radius: 8px; font-size: 0.6rem; 
             text-transform: uppercase; cursor: pointer; transition: 0.3s; font-weight: bold;
+            display: inline-block; text-align: center; font-family: 'Inter', sans-serif;
         }
         .game-btn:hover { background: var(--teal); color: #000; }
         
@@ -173,7 +174,6 @@
     <p class="sub-header">System: Entertainment & Media</p>
 
     <div class="grid-container">
-        <!-- Arcade Section -->
         <div class="portal-card">
             <h3 style="font-family: 'Syncopate'; font-size: 0.8rem; color: var(--teal); margin-bottom: 15px; letter-spacing: 2px;">ARCADE TERMINAL</h3>
             <div class="emulator-container" id="terminal">
@@ -187,16 +187,15 @@
             <div class="game-menu" id="roster"></div>
         </div>
 
-        <!-- Cinema Section -->
         <div class="portal-card">
             <h3 style="font-family: 'Syncopate'; font-size: 0.8rem; color: var(--teal); margin-bottom: 15px; letter-spacing: 2px;">CINEMA LOUNGE</h3>
             <div class="content-box">
                 <iframe id="cinema-player" width="100%" height="100%" src="https://www.youtube.com/embed/GjZ_59hCrx0" frameborder="0" allowfullscreen></iframe>
             </div>
             <div style="display:grid; grid-template-columns: 1fr; gap: 10px;">
-                <button class="game-btn" onclick="switchVideo('GjZ_59hCrx0')">Studio Vision Reel</button>
-                <button class="game-btn" onclick="switchVideo('dQw4w9WgXcQ')">Producer Showcase</button>
-                <a href="catalog.html" class="game-btn" style="text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center;">View Beat Catalog</a>
+                <button class="game-btn" onclick="switchVideo('Studio Vision Reel', 'GjZ_59hCrx0')">Studio Vision Reel</button>
+                <button class="game-btn" onclick="switchVideo('Producer Showcase', 'dQw4w9WgXcQ')">Producer Showcase</button>
+                <button class="game-btn" onclick="handleCatalogRoute()">View Beat Catalog</button>
             </div>
         </div>
     </div>
@@ -204,6 +203,11 @@
     <footer>&copy; 2026 SOUND SHOP // FAYETTEVILLE NC // SECURED BY RSA-2048</footer>
 
     <script>
+        // Infrastructure Tunnel Target Context Matrix
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
+
         const games = [
             { n: "Mario Bros", id: "9676-mario-bros-us-rev-f" }, 
             { n: "Donkey Kong", id: "9158-donkey-kong-us-set-2" },
@@ -215,6 +219,23 @@
             { n: "Frogger", id: "9253-frogger" }
         ];
 
+        // Background logging telemetry transmitter to Security Bunker interface
+        async function reportPortalActivity(activityType, telemetryDetail) {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: activityType,
+                        amount: telemetryDetail
+                    })
+                });
+            } catch (err) {
+                console.error("⚠️ Local console telemetry detached from Bunker:", err);
+            }
+        }
+
         function initializeMenu() {
             const rosterDiv = document.getElementById('roster');
             rosterDiv.innerHTML = ''; 
@@ -222,21 +243,36 @@
                 const btn = document.createElement('button');
                 btn.className = 'game-btn';
                 btn.textContent = g.n;
-                btn.onclick = () => loadGame(g.id);
+                btn.onclick = () => loadGame(g.n, g.id);
                 rosterDiv.appendChild(btn);
             });
+            
+            // Log portal entryway baseline load event
+            reportPortalActivity("Portal Gateway Session Initialized", "User successfully entered portal.html workspace layer.");
         }
 
-        function loadGame(id) {
+        function loadGame(gameName, id) {
             const gameFrame = document.getElementById('game-frame');
             const overlay = document.getElementById('terminal-overlay');
             gameFrame.style.display = 'block'; 
             overlay.style.display = 'none'; 
             gameFrame.src = `https://www.retrogames.cc/embed/${id}.html`;
+
+            // Ship execution notice to terminal shell log
+            reportPortalActivity("Arcade Kernel Boot Sequence", `User loaded emulator instance for game: ${gameName} [ROM ID: ${id}]`);
         }
 
-        function switchVideo(id) {
+        function switchVideo(titleLabel, id) {
             document.getElementById('cinema-player').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+            
+            // Document target feed switch inside tracking logs
+            reportPortalActivity("Cinema Lounge Vector Adjustment", `User shifted feed monitoring projection to: ${titleLabel} [ID: ${id}]`);
+        }
+
+        async function handleCatalogRoute() {
+            // Log conversion pathway intercept before releasing browser context frame
+            await reportPortalActivity("Cinema Navigation Intent Intercept", "User targeted deep-link catalog conversion button from portal panel.");
+            window.location.href = "catalog.html";
         }
 
         window.onload = initializeMenu;
