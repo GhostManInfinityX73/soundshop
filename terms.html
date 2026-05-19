@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Terms of Service | Sound Shop</title>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ81083J1M"></script>
@@ -11,15 +11,19 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-CQ81083J1M');
-    </script> <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;700&display=swap');
+    </script> 
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap');
         
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body { 
-            font-family: 'Inter', sans-serif; line-height: 1.8; padding: 40px 20px; 
+            font-family: 'Inter', sans-serif; line-height: 1.8; padding: 60px 20px; 
             color: #ccc; background: #020202; max-width: 800px; margin: auto; 
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Neon Grid Background to match the Shop */
+        /* Neon Grid Background matching core storefront design */
         .grid-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: linear-gradient(rgba(0, 255, 204, 0.02) 1px, transparent 1px),
@@ -27,29 +31,31 @@
             background-size: 60px 60px; z-index: -1;
         }
 
-        h1 { font-weight: 100; letter-spacing: 10px; color: #fff; text-align: center; margin-bottom: 50px; text-transform: uppercase; }
-        h2 { color: #00ffcc; font-weight: 300; letter-spacing: 3px; border-bottom: 1px solid #222; padding-bottom: 10px; margin-top: 40px; text-transform: uppercase; font-size: 1.1rem; }
+        h1 { font-weight: 100; letter-spacing: 10px; color: #fff; text-align: center; margin-bottom: 50px; text-transform: uppercase; font-size: 2rem; }
+        h2 { color: #00ffcc; font-weight: 300; letter-spacing: 3px; border-bottom: 1px solid #111; padding-bottom: 10px; margin-top: 40px; text-transform: uppercase; font-size: 1.1rem; }
         
         .ethic-statement { 
             font-style: italic; color: #fff; border-left: 2px solid #00ffcc; 
-            padding: 25px; background: rgba(0, 255, 204, 0.05); 
+            padding: 25px; background: rgba(0, 255, 204, 0.03); 
             margin: 40px 0; border-radius: 0 15px 15px 0;
-            line-height: 1.6;
+            line-height: 1.6; font-size: 0.95rem;
         }
 
-        p, li { font-size: 0.95rem; color: #999; }
+        p { font-size: 0.95rem; color: #8a8a8a; margin-top: 15px; font-weight: 300; }
         strong { color: #fff; font-weight: 700; }
 
+        .back-link-wrapper { text-align: center; margin-top: 60px; }
         .back-link { 
-            display: inline-block; margin-top: 60px; color: #00ffcc; 
+            display: inline-block; color: #00ffcc; 
             text-decoration: none; font-weight: 100; letter-spacing: 3px;
-            border: 1px solid #00ffcc; padding: 10px 25px; border-radius: 50px;
-            transition: 0.3s;
+            border: 1px solid #00ffcc; padding: 12px 30px; border-radius: 50px;
+            transition: 0.3s ease; font-size: 0.85rem; background: transparent;
+            cursor: pointer;
         }
-        .back-link:hover { background: #00ffcc; color: #000; box-shadow: 0 0 20px rgba(0, 255, 204, 0.4); }
+        .back-link:hover { background: #00ffcc; color: #000; box-shadow: 0 0 25px rgba(0, 255, 204, 0.4); }
 
         /* Branding Footer */
-        .legal-footer { text-align: center; margin-top: 80px; font-size: 0.7rem; letter-spacing: 2px; color: #444; }
+        .legal-footer { text-align: center; margin-top: 80px; font-size: 0.7rem; letter-spacing: 2px; color: #333; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -72,14 +78,50 @@
     <p>You may not resell the raw audio files, use them in 'type beat' distributions, or register the works with Content ID systems as your own original creation.</p>
 
     <h2>4. Delivery & Refunds</h2>
-    <p>Upon successful payment via <strong>Authorize.net</strong>, digital files are delivered via the provided email or download link. As these are digital assets, all sales are final to protect the integrity of the work.</p>
+    <p>Upon successful payment processing verification verified directly via our secure banking pipeline framework, digital files are delivered via the provided email configuration matrix or direct download handshake token. As these are instant digital assets, all sales are final to protect the integrity of the work.</p>
 
-    <div style="text-align: center;">
-        <a href="index.html" class="back-link">← RETURN TO SHOP</a>
+    <div class="back-link-wrapper">
+        <a href="index.html" class="back-link" onclick="trackReturn(event)">← RETURN TO SHOP</a>
     </div>
 
     <div class="legal-footer">
         SOUND SHOP © 2026 | FAYETTEVILLE, NC
     </div>
+
+    <script>
+        // Production Server Tunnel Configuration context
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        };
+
+        // System telemetry connector pushing footprints straight to your Termux console shell
+        async function transmitLegalTelemetry(actionTag, activityLog) {
+            try {
+                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        item: actionTag,
+                        amount: activityLog
+                    })
+                });
+            } catch (err) {
+                console.error("⚠️ Background legal log unmounted:", err);
+            }
+        }
+
+        // Intercept return navigation for metric tracking
+        async function trackReturn(e) {
+            e.preventDefault();
+            await transmitLegalTelemetry("Legal Policy Acknowledged", "User completed legal policy review and navigated back to storefront index.");
+            window.location.href = "index.html";
+        }
+
+        // Auto log view audit event trail on load
+        window.onload = () => {
+            transmitLegalTelemetry("Legal Module Opened", "Terms of service documentation parsed and rendered on client layout view.");
+        };
+    </script>
 </body>
 </html>
