@@ -1,0 +1,351 @@
+------------------------------------------
+DATE: 5/19/2026, 1:18:21 PM
+ORDER ID: SS-7YS3YONEH
+PRODUCT: Product Detail View Interaction
+PRICE: Client rendered panel for: Black Pullover Hoodie [SKU: black-pullover]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:18:44 PM
+ORDER ID: SS-SYKJI0JAN
+PRODUCT: Product Detail View Interaction
+PRICE: Client rendered panel for: Black Pullover Hoodie [SKU: black-pullover]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:23:09 PM
+ORDER ID: SS-1YR8TKOQ6
+PRODUCT: Legal Policy Audit Matrix Rendered
+PRICE: Client opened refund.html viewport layer.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:35:57 PM
+ORDER ID: SS-ZL8TOHG45
+PRODUCT: Storefront Core Online
+PRICE: 360 Gear Vault viewport module successfully initialized.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:35:58 PM
+ORDER ID: SS-T6TWH87CW
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: -60deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:35:59 PM
+ORDER ID: SS-G2SLW324Q
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: -120deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:00 PM
+ORDER ID: SS-FNUFR4KQ4
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: -180deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:01 PM
+ORDER ID: SS-Z6Y443XDV
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: -240deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:08 PM
+ORDER ID: SS-J47569DGZ
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: 72deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:09 PM
+ORDER ID: SS-RMGHRTQ2H
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: 0deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:16 PM
+ORDER ID: SS-TTNWQ1ZFV
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -72deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:17 PM
+ORDER ID: SS-CUX2PXAJ2
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -144deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:17 PM
+ORDER ID: SS-UB6W3F3CU
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -216deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:18 PM
+ORDER ID: SS-DEUGYEI40
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -288deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:36:19 PM
+ORDER ID: SS-E51Q2OHRA
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -360deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:44 PM
+ORDER ID: SS-Z0QBLK2BF
+PRODUCT: Storefront Core Online
+PRICE: 360 Gear Vault viewport module successfully initialized and audio layers sandboxed.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:46 PM
+ORDER ID: SS-UPVJJOPQU
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: -60deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:47 PM
+ORDER ID: SS-30YCWKHRW
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: -120deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:50 PM
+ORDER ID: SS-1IGVRTOC8
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: -60deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:51 PM
+ORDER ID: SS-RAZ3M5NMQ
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: 0deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:51 PM
+ORDER ID: SS-GDULJPQLE
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: 60deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:53 PM
+ORDER ID: SS-W5OLOKVAY
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated clothing wheel carousel array [Target Sector Angle: 120deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:57 PM
+ORDER ID: SS-RZ68A4L0I
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -72deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:57 PM
+ORDER ID: SS-EO7JYGHMD
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -144deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:58 PM
+ORDER ID: SS-6K30SGND8
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -216deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:58 PM
+ORDER ID: SS-61BQYFP63
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -288deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:40:58 PM
+ORDER ID: SS-Q7147BZ67
+PRODUCT: Storefront Deck Shift
+PRICE: User rotated footwear wheel carousel array [Target Sector Angle: -360deg]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:48:52 PM
+ORDER ID: SS-AG5H04093
+PRODUCT: Services Module Mounted
+PRICE: Client entered the services.html pricing matrix layer.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:52:20 PM
+ORDER ID: SS-CJ5S7FJ8O
+PRODUCT: Services Module Mounted
+PRICE: Client entered the services.html pricing matrix layer.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:52:25 PM
+ORDER ID: SS-QMAX45ARM
+PRODUCT: Storefront Core Online
+PRICE: 360 Gear Vault viewport module successfully initialized and audio layers sandboxed.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 1:54:42 PM
+ORDER ID: SS-F6EKLVKAF
+PRODUCT: Vault Gateway Online
+PRICE: Free access portal view layer successfully established.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:00:42 PM
+ORDER ID: SS-0PE5VT6RK
+PRODUCT: Subscription View Mounted
+PRICE: Inner Circle acquisition vector online.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:04:37 PM
+ORDER ID: SS-O0U2WOTAG
+PRODUCT: Verification Landing Mounted
+PRICE: Client reached success landing terminal. Parsing incoming stack parameters [TransID Present: false] [Url Present: false]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:04:37 PM
+ORDER ID: SS-6IVH0UPCF
+PRODUCT: Null Gateway Violation
+PRICE: Client loaded success page shell without a dynamic purchase token string.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:07:58 PM
+ORDER ID: SS-5HGVRUXN5
+PRODUCT: Verification Landing Mounted
+PRICE: Client reached success landing terminal. Parsing incoming stack parameters [TransID Present: false] [Url Present: false]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:07:58 PM
+ORDER ID: SS-ANUU59H81
+PRODUCT: Null Gateway Violation
+PRICE: Client loaded success page shell without a dynamic purchase token string.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:11:36 PM
+ORDER ID: SS-9F54KIY97
+PRODUCT: Legal Module Opened
+PRICE: Terms of service documentation parsed and rendered on client layout view.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:15:54 PM
+ORDER ID: SS-O2FJ0HZT8
+PRODUCT: Thank You Gate Mounted
+PRICE: Client checking entry nodes. URL Stack data -> [ID Present: false] [Email Present: false]
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
+------------------------------------------
+DATE: 5/19/2026, 2:15:55 PM
+ORDER ID: SS-GXLXZWOK0
+PRODUCT: General Thank You View
+PRICE: User navigated to page via secondary site tunnel without order specific strings.
+PAYMENT METHOD: WESTERN UNION
+STATUS: PENDING VERIFICATION
+------------------------------------------
+
