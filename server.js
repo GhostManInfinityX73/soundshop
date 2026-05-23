@@ -1,118 +1,69 @@
 const express = require('express');
 const cors = require('cors');
-const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const { exec, spawn } = require('child_process'); 
-const nodemailer = require('nodemailer');
+const { exec, spawn } = require('child_process');
 const rateLimit = require('express-rate-limit');
+const http = require('http');
 
 const app = express();
 
-// --- 1. CORE SYSTEM & SECURITY PATHS ---
-// Updated to process.cwd() to match the directory you are running from
-const baseDir = process.cwd(); 
-const logFile = path.join(baseDir, 'vault_ledger.log');
-const chatLogPath = path.join(baseDir, 'chat_vault.json');
-const privateKeyPath = path.join(baseDir, 'ss_private.pem');
-const banRegistryPath = path.join(baseDir, 'banned_vault.json'); 
-let privateKey;
+// --- 1. UPDATED CORS & MIDDLEWARE ---
+// Using broad origin access to ensure the handshake completes via Cloudflare Tunnel
+app.use(cors()); 
 
-try {
-    if (fs.existsSync(privateKeyPath)) {
-        privateKey = fs.readFileSync(privateKeyPath, 'utf8');
-        console.log("🔒 SECURITY MODULE: RSA Keys Loaded.");
-    }
-} catch (err) {
-    console.log("❌ ERROR loading RSA keys:", err.message);
-}
-
-// --- 2. ALERT CONTACTS ---
-const myEmail = 'streetmentalityrecords1973@gmail.com';
-const myPhoneGateway = '9105499227@mms.cricketwireless.net'; 
-const gmailAppPass = 'qhvtkofowbptntsv'; 
-
-// --- 3. HARDWARE AUDIO ALARM ENGINE ---
-function triggerBunkerAlert(title, message, audioFileName = 'tgg.m4a') {
-    exec(`termux-notification -t "${title}" -c "${message}" --priority high --led-color 00FFC2`);
-    const targetAudio = path.join(baseDir, `audio/${audioFileName}`);
-    const audioProcess = spawn('mpv', ['--no-video', '--ao=opensles', targetAudio]);
-    setTimeout(() => { audioProcess.kill('SIGKILL'); exec('pkill -f mpv'); }, 5000); 
-}
-
-async function sendExternalAlert(subject, message) {
-    let transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: myEmail, pass: gmailAppPass } });
-    try { await transporter.sendMail({ from: `"The Sound Shop Bunker" <${myEmail}>`, to: `${myEmail}, ${myPhoneGateway}`, subject, text: message }); } catch (err) { console.error("❌ Dispatch Error:", err.message); }
-}
-
-// --- 4. SECURITY & BAN MATRIX ---
-function getBanRegistry() {
-    if (!fs.existsSync(banRegistryPath)) fs.writeFileSync(banRegistryPath, JSON.stringify({ emails: [], ips: [], devices: [] }, null, 4));
-    return JSON.parse(fs.readFileSync(banRegistryPath, 'utf8'));
-}
-
-// --- 5. MIDDLEWARE & ANTI-SPAM ---
 app.disable('x-powered-by');
-app.use(cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'], credentials: true }));
 app.use(express.json({ limit: '10kb' }));
-app.use(express.static(baseDir));
 
-const transmissionLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, handler: (req, res) => res.status(403).json({ error: "Rate limit breached." }) });
+// --- 2. CONFIG ---
+const baseDir = process.cwd();
+const chatLogPath = path.join(baseDir, 'chat_vault.json');
 
-// --- 6. UNIFIED BUSINESS & PORTAL ENDPOINTS ---
-app.post('/log-payment', (req, res) => {
-    const { item, amount } = req.body;
-    fs.appendFileSync(logFile, `[${new Date().toISOString()}] [TELEMETRY] ${item} | ${amount}\n`);
-    res.status(200).json({ success: true });
+// --- 3. ANTI-SPAM ---
+const transmissionLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 20, 
+    message: { error: "Rate limit reached." }
 });
 
-app.post('/verify-order', (req, res) => {
-    const { transId, email } = req.body;
-    const ledger = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : "";
-    if (ledger.includes(transId) && ledger.toLowerCase().includes(email.toLowerCase().trim())) {
-        res.json({ valid: true });
-    } else {
-        res.json({ valid: false, reason: "Mismatch in ledger." });
+// --- 4. HARDWARE ENGINE ---
+function triggerBunkerAlert(title, message) {
+    exec(`termux-notification -t "${title}" -c "${message}" --priority high --led-color 00FFC2`);
+    exec('pkill -f mpv');
+    const targetAudio = path.join(baseDir, 'audio/tgg.m4a');
+    const audioProcess = spawn('mpv', ['--no-video', '--ao=opensles', targetAudio]);
+    setTimeout(() => { audioProcess.kill('SIGKILL'); }, 6000);
+}
+
+// --- 5. ENDPOINTS ---
+app.post('/process.php', transmissionLimiter, async (req, res) => {
+    console.log("🔍 DEBUG: Incoming request received:", req.body);
+    try {
+        const { username, message, timestamp } = req.body;
+        
+        let chatData = fs.existsSync(chatLogPath) ? JSON.parse(fs.readFileSync(chatLogPath, 'utf8')) : [];
+        chatData.push({ 
+            timestamp: timestamp || new Date().toISOString(), 
+            username: username || "Guest", 
+            message: message || "..." 
+        });
+        fs.writeFileSync(chatLogPath, JSON.stringify(chatData, null, 4));
+        
+        triggerBunkerAlert("New Inquiry", `From: ${username || 'Guest'}`);
+        res.status(200).json({ status: 'success' });
+    } catch (err) {
+        console.error("DEBUG: Server Error:", err);
+        res.status(500).json({ status: 'error' });
     }
 });
 
-app.post('/request-vault-download', (req, res) => {
-    const { email, targetFile } = req.body;
-    const ledger = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : "";
-    
-    if (ledger.toLowerCase().includes(email.toLowerCase().trim())) {
-        const token = crypto.randomBytes(8).toString('hex');
-        res.json({ authorized: true, secureLink: `success.html?transId=TK-${token}&downloadUrl=downloads/${targetFile}` });
-    } else {
-        res.json({ authorized: false, reason: "No license record found." });
-    }
-});
+// --- 6. STARTUP ---
+const PORT = 3001;
+const server = http.createServer(app);
 
-app.post('/chat-inquiry', transmissionLimiter, async (req, res) => {
-    const { username, message } = req.body;
-    let chatData = fs.existsSync(chatLogPath) ? JSON.parse(fs.readFileSync(chatLogPath, 'utf8')) : [];
-    chatData.push({ timestamp: new Date().toISOString(), username, message });
-    fs.writeFileSync(chatLogPath, JSON.stringify(chatData, null, 4));
-    triggerBunkerAlert("New Inquiry", `From: ${username}`);
-    sendExternalAlert("New Bunker Inquiry", `User: ${username}\nMsg: ${message}`);
-    res.json({ success: true });
-});
-
-app.post('/api/wu-submit', async (req, res) => {
-    const { sender, amount, controlNumber } = req.body;
-    fs.appendFileSync(logFile, `[${new Date().toISOString()}] [WU-SUBMIT] Sender: ${sender} | Amt: ${amount} | MTCN: ${controlNumber}\n`);
-    triggerBunkerAlert("WU Payment Received", `Amt: ${amount}`);
-    res.json({ success: true });
-});
-
-// --- 7. FALLBACK ---
-app.use((req, res) => res.status(404).send("404 - Node Offline"));
-
-// --- 8. STARTUP ---
-const PORT = 8080;
-const HOST = '0.0.0.0';
-
-app.listen(PORT, HOST, () => {
-    console.log('🛡️ SOUND SHOP MASTER NODE ONLINE');
-    console.log(`🚀 Listening on http://${HOST}:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+    console.log('--------------------------------------------------');
+    console.log(`🛡️  SOUND SHOP BUNKER: MASTER NODE ONLINE (HTTP)`);
+    console.log(`🚀  READY FOR CLOUDFLARE TUNNEL ON PORT ${PORT}`);
+    console.log('--------------------------------------------------');
 });
