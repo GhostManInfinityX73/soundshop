@@ -313,22 +313,48 @@
         }
 
         async function processOrder() {
-            const size = document.getElementById('size-select').value;
-            const orderPayload = {
-                item: activeProduct.name,
-                price: activeProduct.price,
-                size: size
-            };
-            
-            localStorage.setItem('wu_order', JSON.stringify(orderPayload));
+    if (!activeProduct) return;
 
+    const selectedSize = document.getElementById('size-select').value;
+
+    const orderPayload = {
+        type: "SHOP_ITEM_PURCHASE",
+        item: activeProduct.name,
+        price: activeProduct.price,
+        size: selectedSize,
+        gateway: "WESTERN_UNION",
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        // 1. Handshake with Bunker backend to secure the transaction
+        const response = await fetch(`${CONFIG.TUNNEL_URL}/api/checkout/initialize`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderPayload)
+        });
+
+        const data = await response.json();
+
+        // 2. If handshake succeeds, route to vault with the secure token
+        if (response.ok && data.transactionToken) {
             await transmitStorefrontTelemetry(
                 "Storefront Transaction Redirect", 
-                `User checkout trigger committed for: ${activeProduct.name} (Size: ${size}) totaling $${activeProduct.price}.00 via Western Union.`
+                `Handshake Success: ${activeProduct.name} | Token: ${data.transactionToken}`
             );
-
-            window.location.href = 'checkout.html';
+            
+            // Redirect to secure vault for payment instructions
+            window.location.href = `vault.html?token=${data.transactionToken}`;
+        } else {
+            throw new Error('Server handshake rejected.');
         }
+
+    } catch (err) {
+        console.error("Checkout Handshake Failure:", err);
+        alert("Secure gateway unreachable. Please contact the Sound Shop office line to complete your purchase.");
+        await transmitStorefrontTelemetry("Storefront Checkout Failed", err.message);
+    }
+}
 
         // ECHO KILLER & COMPONENT INITIALIZATION MATRIX
         window.onload = () => { 
