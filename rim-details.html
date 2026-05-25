@@ -92,6 +92,8 @@
         .feature-list { list-style: none; padding: 0; font-size: 0.8rem; color: #aaa; line-height: 2; }
         .feature-list span { color: #ffd700; }
     </style>
+    <script src="config.js"></script>
+  <script src="javascript.js"></script>
 </head>
 <body>
 
@@ -144,19 +146,23 @@
 <script>
     // System Infrastructure Network Matrix
     const CONFIG = {
-        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        TUNNEL_URL: "https://bunker.soundshop.cc",
+        ENDPOINT: "/log-payment"
     };
 
-    // Central telemetry transmitter targeting the Bunker shell log
+    /**
+     * Centralized telemetry transmitter targeting the Bunker shell log
+     */
     async function transmitLabTelemetry(actionTag, logData) {
         try {
-            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+            await fetch(`${CONFIG.TUNNEL_URL}${CONFIG.ENDPOINT}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 mode: 'cors',
                 body: JSON.stringify({
                     item: actionTag,
-                    amount: logData
+                    amount: logData,
+                    timestamp: new Date().toISOString()
                 })
             });
         } catch (err) {
@@ -164,12 +170,12 @@
         }
     }
 
-    // Initialize layout options, filling out letters A-Z dynamically
+    // Initialize layout options
     function setupLabConfigurator() {
         const letterSelect = document.getElementById('letter');
-        letterSelect.innerHTML = ''; // Clear stub entries
+        if (!letterSelect) return;
         
-        // Loop through character ASCII maps to mount every letter of the alphabet
+        letterSelect.innerHTML = ''; 
         for (let i = 65; i <= 90; i++) {
             const letter = String.fromCharCode(i);
             const opt = document.createElement('option');
@@ -177,8 +183,6 @@
             opt.textContent = `Letter ${letter}`;
             letterSelect.appendChild(opt);
         }
-
-        // Send initialization pulse down the proxy tunnel pipeline
         transmitLabTelemetry("Lab Configurator Mounted", "User accessed the Initialized Series design layer.");
     }
 
@@ -187,38 +191,62 @@
         const sizeMenu = document.getElementById('size');
         const letterMenu = document.getElementById('letter');
         
-        const selectedSizeLabel = sizeMenu.options[sizeMenu.selectedIndex].text;
-        const selectedLetter = letterMenu.value;
+        if (!sizeMenu || !letterMenu) return;
 
         transmitLabTelemetry(
             "Lab Hardware Configuration Shift", 
-            `User adjusted targets to: ${selectedSizeLabel} // Design Initialized: [${selectedLetter}]`
+            `User adjusted targets to: ${sizeMenu.options[sizeMenu.selectedIndex].text} // Design Initialized: [${letterMenu.value}]`
         );
     }
 
-    // Package the selected design choices and route out to checkout
+    /**
+     * Executes a secure handshake for custom forged rim orders.
+     */
     async function executeCheckoutIntent() {
         const sizeMenu = document.getElementById('size');
         const letterMenu = document.getElementById('letter');
 
-        const finalPrice = sizeMenu.value;
-        const finalSizeLabel = sizeMenu.options[sizeMenu.selectedIndex].text;
-        const finalLetter = letterMenu.value;
-        
-        const targetSku = `RIM-${finalLetter}-${finalPrice}`;
+        // Capture selections
+        const selectedSizeValue = sizeMenu.value; 
+        const selectedSizeLabel = sizeMenu.options[sizeMenu.selectedIndex].text;
+        const selectedLetter = letterMenu.value;
 
-        // Commit telemetry packet before jumping page contexts
-        await transmitLabTelemetry(
-            "Lab Forging Intent Transmitted", 
-            `Checkout initiated for SKU: ${targetSku} (${finalSizeLabel})`
-        );
+        const checkoutPayload = {
+            type: "FORGED_RIM_PURCHASE",
+            sku: `RIM-${selectedLetter}-${selectedSizeValue}`,
+            description: `Initialized Series: ${selectedLetter} | ${selectedSizeLabel}`,
+            amount: selectedSizeValue,
+            gateway: "WESTERN_UNION",
+            timestamp: new Date().toISOString()
+        };
 
-        // Hand off tracking variables cleanly via browser address parameters to your gateway layer
-        window.location.href = `vault.html?id=${encodeURIComponent(targetSku)}&option=${encodeURIComponent(finalSizeLabel)}&gateway=WU`;
+        try {
+            // Perform the handshake with the bunker
+            const response = await fetch(`${CONFIG.TUNNEL_URL}/api/checkout/initialize`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(checkoutPayload)
+            });
+
+            const data = await response.json();
+
+            // Validate server response and redirect
+            if (response.ok && data.transactionToken) {
+                await transmitLabTelemetry("Lab Forging Intent Transmitted", data.transactionToken);
+                window.location.href = `vault.html?token=${data.transactionToken}`;
+            } else {
+                throw new Error('Server rejected the forging request.');
+            }
+
+        } catch (err) {
+            console.error("Forging intent failure:", err);
+            alert("Secure gateway currently unreachable. Please try again or contact the lab for manual order processing.");
+            await transmitLabTelemetry("Lab Checkout Failed", err.message);
+        }
     }
 
     // Execute dynamic construction routines on layout mount
-    window.onload = setupLabConfigurator;
+    window.addEventListener('load', setupLabConfigurator);
 </script>
 </body>
 </html>
