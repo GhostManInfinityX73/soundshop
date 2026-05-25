@@ -167,6 +167,8 @@
         }
         .submit-btn:hover { background: #fff; box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); }
     </style>
+    <script src="config.js"></script>
+  <script src="javascript.js"></script>
 </head>
 <body>
 
@@ -228,120 +230,124 @@
         <button class="submit-btn" id="executionBtn" onclick="processOrder()">Authorize & Secure Purchase</button>
     </div>
 
-    <script>
-        // Infrastructure Tunnel Target Context Matrix
-        const CONFIG = {
-            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+<script>
+    // Infrastructure Tunnel Target Context Matrix
+    const CONFIG = {
+        TUNNEL_URL: "https://bunker.soundshop.cc"
+    };
+
+    // Active State Holders
+    let chosenLicenseType = "Standard Lease";
+    let chosenPriceMetric = "$29.99 USD";
+
+    const canvas = document.getElementById('sig-canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    // Auto-correct layout sizing parameters
+    function scaleCanvasLayout() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        ctx.strokeStyle = '#00f3ff';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+    }
+    
+    window.addEventListener('load', scaleCanvasLayout);
+    window.addEventListener('resize', scaleCanvasLayout);
+
+    function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0)) - rect.left,
+            y: (e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0)) - rect.top
         };
+    }
 
-        // Active State Holders
-        let chosenLicenseType = "Standard Lease";
-        let chosenPriceMetric = "$29.99 USD";
+    // Draw Interceptions (Supports Mouse & Touch Inputs)
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); drawing = true; ctx.beginPath(); });
+    canvas.addEventListener('mousedown', () => { drawing = true; ctx.beginPath(); });
+    
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
 
-        const canvas = document.getElementById('sig-canvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
+    window.addEventListener('mouseup', () => drawing = false);
+    window.addEventListener('touchend', () => drawing = false);
 
-        // Auto-correct layout sizing parameters
-        function scaleCanvasLayout() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            ctx.strokeStyle = '#00f3ff';
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-        }
+    function draw(e) {
+        if (!drawing) return;
+        const pos = getMousePos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+    }
+
+    function clearSignatureCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Monitors user selection highlights across cards
+    function selectLicenseTier(tierName, priceVal, activeElementId) {
+        chosenLicenseType = tierName;
+        chosenPriceMetric = priceVal;
         
-        window.addEventListener('load', scaleCanvasLayout);
-        window.addEventListener('resize', scaleCanvasLayout);
+        document.querySelectorAll('.license-card').forEach(card => {
+            card.classList.remove('selected-tier');
+        });
+        document.getElementById(activeElementId).classList.add('selected-tier');
+    }
 
-        function getMousePos(e) {
-            const rect = canvas.getBoundingClientRect();
-            return {
-                x: (e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0)) - rect.left,
-                y: (e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0)) - rect.top
-            };
-        }
+// --- SECURE HANDSHAKE: REPLACED LOGIC ---
+async function processOrder() {
+    const name = document.getElementById('userName').value.trim();
+    const mtcn = document.getElementById('mtcnNumber').value.trim();
+    const submitBtn = document.getElementById('executionBtn');
 
-        // Draw Interceptions (Supports Mouse & Touch Inputs)
-        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); drawing = true; ctx.beginPath(); });
-        canvas.addEventListener('mousedown', () => { drawing = true; ctx.beginPath(); });
+    // 1. Validation check
+    if (!name || mtcn.length < 10) {
+        alert("CRITICAL ERROR: Complete all legal credential fields for contract execution.");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = "INITIATING SECURE HANDSHAKE...";
+
+    // 2. Prepare the secure payload
+    const payload = {
+        name: name,
+        mtcn: mtcn,
+        licenseType: chosenLicenseType,
+        price: chosenPriceMetric,
+        signature: canvas.toDataURL()
+    };
+
+    try {
+        // 3. Handshake with Backend
+        const response = await fetch(`${CONFIG.TUNNEL_URL}/initiate-license-handshake`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
         
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+        const result = await response.json();
 
-        window.addEventListener('mouseup', () => drawing = false);
-        window.addEventListener('touchend', () => drawing = false);
-
-        function draw(e) {
-            if (!drawing) return;
-            const pos = getMousePos(e);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
+        // 4. Handle Handshake Response
+        if (result.status === 'success') {
+            alert(`--- HANDSHAKE COMPLETE ---\n\nContract logged: ${result.ledgerID}.\nYour license is being processed.`);
+            clearSignatureCanvas();
+            document.getElementById('userName').value = "";
+            document.getElementById('mtcnNumber').value = "";
+        } else {
+            alert("Security firewall rejected validation parameters: " + (result.message || "Unknown Error"));
         }
-
-        function clearSignatureCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        // Monitors user selection highlights across cards
-        function selectLicenseTier(tierName, priceVal, activeElementId) {
-            chosenLicenseType = tierName;
-            chosenPriceMetric = priceVal;
-            
-            document.querySelectorAll('.license-card').forEach(card => {
-                card.classList.remove('selected-tier');
-            });
-            document.getElementById(activeElementId).classList.add('selected-tier');
-        }
-
-        // Transmits signed data block to your Terminal System
-        async function processOrder() {
-            const name = document.getElementById('userName').value.trim();
-            const mtcn = document.getElementById('mtcnNumber').value.trim();
-            const submitBtn = document.getElementById('executionBtn');
-
-            if (!name || !mtcn) {
-                alert("CRITICAL ERROR: Complete all legal credential fields for contract execution.");
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.innerText = "TRANSMITTING SIGNED CONTRACT...";
-
-            // Pack signature canvas data directly into a transportable string frame
-            const signatureDataUrl = canvas.toDataURL();
-
-            const payload = {
-                item: `Signed Contract Execution: ${chosenLicenseType}`,
-                amount: `Signee Name: ${name} | Target Matrix: ${chosenPriceMetric} | MTCN: ${mtcn} | Vault Sign-Off Asset: ${signatureDataUrl.substring(0, 80)}... [Serialized]`
-            };
-
-            try {
-                const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    mode: 'cors',
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
-
-                if (result.success) {
-                    alert(`--- CONTRACT EXECUTED SECURELY ---\n\nThank you, ${name}.\nYour digital agreement has been logged into the Bunker.\nLedger Token: ${result.orderID}\n\nSoundtrack stem downloads will unlock inside your Portal once our administrative ledger verifies your 10-digit transaction block.`);
-                    clearSignatureCanvas();
-                    document.getElementById('userName').value = "";
-                    document.getElementById('mtcnNumber').value = "";
-                } else {
-                    alert("Security firewall rejected validation parameters.");
-                }
-            } catch (err) {
-                console.error("❌ Tunnel Pipeline Failure:", err);
-                alert("Local communication interface error. Your contract signature telemetry remains local. Please notify administration.");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Authorize & Secure Purchase";
-            }
-        }
-    </script>
+    } catch (err) {
+        console.error("❌ Tunnel Pipeline Failure:", err);
+        alert("Local communication interface error. Your signature remains local. Please notify administration.");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Authorize & Secure Purchase";
+    }
+}
+// --- END OF HANDSHAKE ZONE ---
+</script>
 </body>
 </html>
