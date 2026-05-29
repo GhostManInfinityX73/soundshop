@@ -1,10 +1,11 @@
 {
   "name": "soundshop-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "**Sound Shop** is a high-end digital storefront for cinematic instrumental soundtracks. This project features a custom-built mobile-first web interface with integrated secure payment processing and digital licensing agreements.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,13 +15,26 @@
     "authorizenet": "^1.0.10",
     "axios": "^1.14.0",
     "body-parser": "^2.2.2",
+    "child_process": "^1.0.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "fs": "^0.0.1-security",
     "node-forge": "^1.4.0",
     "nodemailer": "^8.0.3",
+    "path": "^0.12.7",
+    "socket.io": "^4.8.3",
     "sql.js": "^1.14.1",
     "square": "^44.0.1",
     "steno": "^4.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GhostManInfinityX73/soundshop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GhostManInfinityX73/soundshop/issues"
+  },
+  "homepage": "https://github.com/GhostManInfinityX73/soundshop#readme"
 }
