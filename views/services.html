@@ -64,6 +64,8 @@
         .founder-text { font-size: 0.95rem; color: #888; text-align: center; max-width: 600px; margin: 0 auto; line-height: 1.8; }
         .founder-sig { margin-top: 20px; color: var(--teal); font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 4px; }
     </style>
+    <script src="config.js"></script>
+  <script src="javascript.js"></script>
 </head>
 <body>
 
@@ -133,42 +135,92 @@
 <script>
     // System Network Architecture Setup
     const CONFIG = {
-        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        TUNNEL_URL: "https://bunker.soundshop.cc",
+        ENDPOINT: "/log-payment"
     };
 
-    // Central background logging transmitter targeting Security Bunker logs
+    /**
+     * Centralized logging transmitter for Bunker telemetry
+     */
     async function transmitServiceTelemetry(actionTag, eventDetails) {
         try {
-            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+            await fetch(`${CONFIG.TUNNEL_URL}${CONFIG.ENDPOINT}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 mode: 'cors',
                 body: JSON.stringify({
                     item: actionTag,
-                    amount: eventDetails
+                    amount: eventDetails,
+                    timestamp: new Date().toISOString()
                 })
             });
         } catch (err) {
-            console.error("⚠️ Telemetry transmission bypass:", err);
+            console.error(" Telemetry transmission bypass:", err);
         }
     }
+/**
+ * Initiates the Western Union secure checkout handshake for services.
+ * @param {string} serviceName - Name of the service selected
+ * @param {number|string} price - The starting price or flat fee
+ */
+async function initiateServiceCheckout(serviceName, price) {
+    // 1. Prepare secure payload
+    const serviceRequest = {
+        type: "SERVICE_PURCHASE",
+        item: serviceName,
+        amount: price,
+        gateway: "WESTERN_UNION",
+        timestamp: new Date().toISOString()
+    };
 
-    // Capture communications links cleanly, logging intent data before firing standard phone clients
+    try {
+        // 2. Handshake with Bunker backend
+        const response = await fetch(`${CONFIG.TUNNEL_URL}/api/checkout/initialize`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(serviceRequest)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.transactionToken) {
+            // Log success and redirect to secure vault
+            await transmitServiceTelemetry("Service Checkout Handshake Success", data.transactionToken);
+            window.location.href = `vault.html?token=${data.transactionToken}`;
+        } else {
+            throw new Error('Server handshake rejected.');
+        }
+
+    } catch (err) {
+        console.error("Service Checkout Failure:", err);
+        alert("Secure gateway unreachable. Please contact the Office Line to complete this transaction.");
+        await transmitServiceTelemetry("Service Checkout Failed", err.message);
+    }
+}
+
+
+
+    /**
+     * Captures communication intent before triggering native dialer
+     */
     async function interceptCommunication(serviceName, nativeTelUri) {
-        // Execute background log asynchronously so the network drop doesn't freeze the client browser trigger
+        // Fire telemetry before redirecting
         await transmitServiceTelemetry(
             `Service Lead Captured: ${serviceName}`, 
             `Client initiated a direct dial sequence targeting: ${nativeTelUri}`
         );
 
-        // Instantly execute the localized call handler
+        // Execute the call
         window.location.href = nativeTelUri;
     }
 
     // Register active page hit baseline metrics on launch
-    window.onload = function() {
-        transmitServiceTelemetry("Services Module Mounted", "Client entered the services.html pricing matrix layer.");
-    };
+    window.addEventListener('load', () => {
+        transmitServiceTelemetry(
+            "Services Module Mounted", 
+            "Client entered the services.html pricing matrix layer."
+        );
+    });
 </script>
 </body>
 </html>

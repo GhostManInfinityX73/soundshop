@@ -172,24 +172,30 @@
         document.getElementById('productOverlay').style.display = 'block';
         document.body.style.overflow = 'hidden';
 
-        // Bind dynamic checkout routing action directly to current selection data layout
-        document.getElementById('modalCheckoutBtn').onclick = async () => {
-            try {
-                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    mode: 'cors',
-                    body: JSON.stringify({
-                        item: `Checkout Gateway Initialized: ${name}`,
-                        amount: `Target Price Vector: ${price}`
-                    })
-                });
-            } catch (err) {
-                console.error("❌ Tunnel handshaking dropped product logging parameters.", err);
-            } finally {
-                window.location.href = "checkout.html";
-            }
-        };
+   // --- START OF HANDSHAKE ZONE ---
+document.getElementById('modalCheckoutBtn').onclick = async () => {
+    // 1. Initiate handshake with backend
+    try {
+        const response = await fetch(`${CONFIG.TUNNEL_URL}/create-wu-session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ item: name, amount: price })
+        });
+
+        const data = await response.json();
+
+        // 2. Execute secure redirect upon successful handshake
+        if (data.status === 'success') {
+            window.location.href = data.redirectUrl;
+        } else {
+            alert("Handshake denied: " + data.message);
+        }
+    } catch (err) {
+        console.error("❌ Tunnel Handshake Failed:", err);
+    }
+};
+// --- END OF HANDSHAKE ZONE ---
+
 
         // Fire background alert telemetry notifying the terminal room that an item is actively being inspected
         try {

@@ -181,6 +181,8 @@
         footer { text-align: center; padding: 50px; color: #555; border-top: 1px solid #333; font-size: 0.6rem; letter-spacing: 2px; }
         footer a { color: var(--accent-gold); text-decoration: none; font-weight: bold; }
     </style>
+    <script src="config.js"></script>
+  <script src="javascript.js"></script>
 </head>
 <body>
 
@@ -282,27 +284,68 @@
 <script>
     // Infrastructure Tunnel Target Context Matrix
     const CONFIG = {
-        TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com"
+        TUNNEL_URL: "https://bunker.soundshop.cc",
+        ENDPOINT: "/log-payment"
     };
 
-    // Tracks outbound link forwarding loops or direct hardware dial tasks via server ledger
-    async function dispatchNexusIntercept(contextItem, dataAmount, targetDestinationUrl) {
+    /**
+     * Centralized tunnel transmitter for bunker telemetry
+     */
+    async function postToBunker(item, amount) {
         try {
-            await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+            const response = await fetch(`${CONFIG.TUNNEL_URL}${CONFIG.ENDPOINT}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 mode: 'cors',
-                body: JSON.stringify({ item: contextItem, amount: dataAmount })
+                body: JSON.stringify({ item, amount, timestamp: new Date().toISOString() })
             });
+            return response.ok;
         } catch (err) {
             console.error("⚠️ Security Bunker offline or network interface decoupled.", err);
-        } finally {
-            // Unpack location window redirect after safe transmission pass
-            window.open(targetDestinationUrl, targetDestinationUrl.startsWith('tel:') ? '_self' : '_blank');
+            return false;
         }
     }
+    
+   /**
+ * Executes a secure Western Union checkout handshake.
+ */
+async function initiateWUCheckout(orderItem, priceAmount) {
+    console.log("Initiating secure tunnel handshake...");
 
-    // Handles the Restricted Studio Admin registration pipeline manually
+    try {
+        // Transmit the order context to the Bunker
+        const response = await fetch(`${CONFIG.TUNNEL_URL}/create-wu-session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                item: orderItem,
+                amount: priceAmount,
+                origin: "Nexus Portal"
+            })
+        });
+
+        const data = await response.json();
+
+        // Handle the server response
+        if (data.status === 'success') {
+            window.location.href = data.redirectUrl;
+        } else {
+            alert("Handshake Error: " + (data.message || "Failed to establish secure session."));
+        }
+    } catch (err) {
+        console.error("❌ Tunnel Handshake Pipeline Failure:", err);
+        alert("Security Bunker unreachable. Please contact the Merchant Desk to complete settlement.");
+    }
+}
+ 
+    // Tracks outbound link forwarding loops or direct hardware dial tasks
+    async function dispatchNexusIntercept(contextItem, dataAmount, targetDestinationUrl) {
+        await postToBunker(contextItem, dataAmount);
+        // Unpack location window redirect after safe transmission pass
+        window.open(targetDestinationUrl, targetDestinationUrl.startsWith('tel:') ? '_self' : '_blank');
+    }
+
+    // Handles the Restricted Studio Admin registration pipeline
     async function applyForClearance() {
         const emailInput = prompt("ENTER OFFICIAL VALID EMAIL FOR VERIFICATION HANDSHAKE:");
         
@@ -311,48 +354,25 @@
             return;
         }
 
-        const payload = {
-            item: "Nexus Studio Restricted Clearance Application",
-            amount: `Applicant Identity Pool: ${emailInput} | Verification Status: PENDING_ADMIN_REVIEW`
-        };
-
-        try {
-            const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                mode: 'cors',
-                body: JSON.stringify(payload)
-            });
-            
-            if (response.ok) {
-                alert(`APPLICATION LOGGED INTO THE BUNKER.\n\nIdentity verification tokens are running background cross-checks for: ${emailInput}.\nAn administrator will manually verify compliance configurations via voice loop.`);
-            }
-        } catch (err) {
-            console.error("❌ Clearance pipeline drop event:", err);
+        const success = await postToBunker(
+            "Nexus Studio Restricted Clearance Application", 
+            `Applicant Identity Pool: ${emailInput} | Verification Status: PENDING_ADMIN_REVIEW`
+        );
+        
+        if (success) {
+            alert(`APPLICATION LOGGED INTO THE BUNKER.\n\nIdentity verification tokens are running background cross-checks for: ${emailInput}.\nAn administrator will manually verify compliance configurations via voice loop.`);
+        } else {
             alert("Transmission channel timeout. Call administrative logistics line to deliver verification data tokens manually.");
         }
     }
 
-    // Capture explicit HTML5 video layout interactions for real-time terminal telemetry updates
+    // Capture explicit HTML5 video layout interactions for real-time terminal telemetry
     const videoElement = document.getElementById('nexus-video');
     if (videoElement) {
-        videoElement.addEventListener('play', async () => {
-            try {
-                await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    mode: 'cors',
-                    body: JSON.stringify({
-                        item: "Nexus Broadcast Engagement Stream",
-                        amount: "User initialized primary video preview presentation playback loop."
-                    })
-                });
-            } catch (e) {
-                console.error("Telemetry offline.");
-            }
-        });
+        videoElement.addEventListener('play', () => {
+            postToBunker("Nexus Broadcast Engagement Stream", "User initialized primary video preview presentation playback loop.");
+        }, { once: true }); // 'once: true' ensures we only log the start of the engagement loop
     }
 </script>
-
 </body>
 </html>
