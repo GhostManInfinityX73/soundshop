@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOUND SHOP | Official Digital Infrastructure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-teal: #00FFC2;
+            --dark-bg: #000000;
+            --card-bg: #0D0D0D;
+            --orange-warning: #FF9900;
+            --netflix-red: #E50914;
+            --wu-yellow: #FFCC00;
+            --white: #FFFFFF;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--white);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            text-transform: lowercase;
+            overflow-x: hidden;
+        }
+
+        .notification-bar {
+            background: var(--neon-teal);
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 900;
+            color: #000;
+            letter-spacing: 2px;
+        }
+
+        .wu-main-cta {
+            background: var(--wu-yellow);
+            color: #000;
+            padding: 15px;
+            font-weight: 900;
+            font-size: 12px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            border: none;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        header { padding: 30px 0 10px 0; }
+        .logo { font-size: 2.5rem; letter-spacing: 10px; font-weight: 800; margin: 10px 0; text-transform: uppercase; }
+
+        nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; font-size: 10px; font-weight: 800; margin: 15px 0; }
+        nav a { color: var(--neon-teal); text-decoration: none; }
+        .soon-tag { color: var(--orange-warning); font-size: 7px; vertical-align: top; }
+
+        .contact-row { display: flex; justify-content: center; gap: 10px; margin: 20px auto; width: 90%; max-width: 450px; }
+        .btn-contact { flex: 1; background: #111; border: 1px solid #333; color: #fff; padding: 15px 5px; border-radius: 10px; font-size: 10px; font-weight: 900; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+
+        .video-container {
+            width: 90%;
+            max-width: 450px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #222;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            position: relative;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .visualizer-box { width: 90%; max-width: 450px; margin: 20px auto; background: #050505; border-radius: 15px; border: 1px solid #111; height: 120px; overflow: hidden; }
+        #viz-canvas { width: 100%; height: 100%; }
+
+        .track-list { width: 90%; max-width: 450px; margin: 0 auto; }
+        .track-card { background: var(--card-bg); border-radius: 18px; margin-bottom: 15px; padding: 25px; text-align: left; border-left: 5px solid var(--neon-teal); transition: transform 0.08s ease; }
+        .track-info h3 { margin: 0 0 15px 0; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; }
+
+        .controls { display: flex; gap: 10px; }
+        .btn-play { flex: 1; background: transparent; border: 1.5px solid var(--neon-teal); color: var(--neon-teal); padding: 12px; border-radius: 8px; font-weight: 800; font-size: 10px; cursor: pointer; }
+        .btn-stop { width: 50px; background: #222; border: none; color: #fff; border-radius: 8px; cursor: pointer; }
+        .btn-buy { flex: 1; background: var(--neon-teal); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 10px; text-decoration: none; text-align: center; }
+
+        .payment-vault { width: 90%; max-width: 450px; margin: 40px auto; text-align: left; }
+        .vault-header { font-size: 11px; font-weight: 900; color: #555; margin-bottom: 20px; letter-spacing: 2px; }
+        .payment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .payment-tile { background: #080808; border: 1px solid #151515; padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; }
+        .tile-top { display: flex; justify-content: space-between; align-items: center; }
+        .tile-top i { font-size: 20px; color: #444; }
+        .status-badge { font-size: 8px; font-weight: 900; padding: 3px 6px; border-radius: 4px; }
+        .badge-active { background: rgba(0, 255, 194, 0.1); color: var(--neon-teal); }
+        .badge-soon { background: rgba(255, 153, 0, 0.1); color: var(--orange-warning); }
+        .method-name { font-size: 9px; font-weight: 900; color: #888; }
+
+        .netflix-container { width: 90%; max-width: 450px; margin: 30px auto; background: var(--card-bg); border-radius: 18px; padding: 30px; border-top: 5px solid var(--netflix-red); box-sizing: border-box; }
+        .btn-netflix { display: block; width: 100%; background: var(--netflix-red); color: #fff; padding: 15px; border-radius: 10px; font-weight: 900; text-decoration: none; font-size: 12px; margin-top: 20px; }
+
+        /* Independent Glassmorphism Chat UI Layout */
+        #chat-bubble-trigger {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 65px;
+            height: 65px;
+            background: var(--neon-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 255, 194, 0.3);
+            z-index: 9999;
+            cursor: pointer;
+            color: #000;
+            font-size: 28px;
+            transition: transform 0.2s ease;
+        }
+        #chat-bubble-trigger:active { transform: scale(0.9); }
+
+        #chat-bunker-window {
+            position: fixed;
+            bottom: 105px;
+            right: 25px;
+            width: 340px;
+            height: 450px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 194, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9998;
+            font-family: sans-serif;
+            text-transform: none;
+        }
+        .chat-header {
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid rgba(0, 255, 194, 0.2);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-header h3 { margin: 0; color: #00FFC2; font-size: 14px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .status-dot { width: 8px; height: 8px; background: #00FFC2; border-radius: 50%; box-shadow: 0 0 8px #00FFC2; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .msg-bubble { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.4; text-align: left; }
+        .msg-user { background: rgba(0, 255, 194, 0.15); color: #ffffff; border: 1px solid rgba(0, 255, 194, 0.3); align-self: flex-end; border-bottom-right-radius: 2px; }
+        .msg-system { background: rgba(255, 255, 255, 0.05); color: #b0b0b0; border: 1px solid rgba(255, 255, 255, 0.1); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-footer { padding: 12px; background: rgba(0, 0, 0, 0.5); border-top: 1px solid rgba(0, 255, 194, 0.1); display: flex; gap: 8px; }
+        #chat-input-field { flex: 1; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 10px; color: #ffffff; font-size: 14px; outline: none; }
+        #chat-input-field:focus { border-color: #00FFC2; }
+        #chat-send-btn { background: #00FFC2; border: none; color: #000000; padding: 0 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="notification-bar">network status: secure (rsa-4096)</div>
+
+    <a href="/checkout?product=custom%20licensing%20deal&amount=$450.00" class="wu-main-cta">
+        <i class="fa-solid fa-money-bill-transfer"></i>
+        western union checkout - active live
+    </a>
+
+    <header>
+        <div class="logo">SOUND SHOP</div>
+        <nav>
+            <a href="index.html" style="border-bottom: 2px solid var(--neon-teal); padding-bottom: 2px;">HOME</a>
+            <a href="studio.html">STUDIO<span class="soon-tag">SOON</span></a>
+            <a href="shop.html">SHOP</a>
+            <a href="catalog.html">SOUNDTRACKS</a>
+            <a href="lab.html"> SHOWCASE</a>
+            <a href="nexus.html">PODCASTING</a>
+            <a href="vault.html">VAULT</a>
+            <a href="portal.html">PORTAL</a>
+            <a href="chatroom.html">CHAT<span class="soon-tag">SOON</span></a>
+        </nav>
+    </header>
+
+    <div class="contact-row">
+        <button class="btn-contact" onclick="triggerGatekeeper('call')"><i class="fa-solid fa-phone"></i> call shop</button>
+        <button class="btn-contact" onclick="triggerGatekeeper('message')"><i class="fa-solid fa-comment"></i> message</button>
+    </div>
+
+    <div class="video-container">
+        <iframe
+            src="https://www.youtube.com/embed/b4EX0kljru8?rel=0&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="visualizer-box">
+        <canvas id="viz-canvas"></canvas>
+    </div>
+
+    <div class="track-list">
+        <div class="track-card" id="card-botrix">
+            <div class="track-info">
+                <h3>BOTRIX</h3>
+                <div class="controls">
+                    <button class="btn-play" onclick="toggleAudio('./audio/botrix.m4a', 'card-botrix')">play / pause</button>
+                    <button class="btn-stop" onclick="stopAudio()"><i class="fa-solid fa-stop"></i></button>
+                    <a href="/checkout?product=botrix%20license&amount=$350.00" class="btn-buy">license</a>
+                </div>
+            </div>
+        </div>
+        <div class="track-card" id="card-tgg">
+            <div class="track-info">
+                <h3>grudge gobbler</h3>
+                <div class="controls">
+                    <button class="btn-play" onclick="toggleAudio('./audio/tgg.m4a', 'card-tgg')">play / pause</button>
+                    <button class="btn-stop" onclick="stopAudio()"><i class="fa-solid fa-stop"></i></button>
+                    <a href="/checkout?product=grudge%20gobbler%20license&amount=$350.00" class="btn-buy">license</a>
+                </div>
+            </div>
+        </div>
+        <div class="track-card" id="card-electro">
+            <div class="track-info">
+                <h3>ELECTRO VISE</h3>
+                <div class="controls">
+                    <button class="btn-play" onclick="toggleAudio('./audio/electro.m4a', 'card-electro')">PLAY / PAUSE</button>
+                    <button class="btn-stop" onclick="stopAudio()"><i class="fa-solid fa-stop"></i></button>
+                    <a href="/checkout?product=electro%20vise%20license&amount=$350.00" class="btn-buy">LICENSE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="payment-vault">
+        <div class="vault-header">accepted infrastructure</div>
+        <div class="payment-grid">
+            <a href="/checkout?product=vault%20allocation&amount=$150.00" class="payment-tile">
+                <div class="tile-top"><i class="fa-solid fa-building-columns"></i><span class="status-badge badge-active">active</span></div>
+                <div class="method-name">western union / ach</div>
+            </a>
+            <div class="payment-tile">
+                <div class="tile-top"><i class="fa-brands fa-cc-visa"></i><span class="status-badge badge-soon">soon</span></div>
+                <div class="method-name">visa / amex / disc</div>
+            </div>
+            <div class="payment-tile">
+                <div class="tile-top"><i class="fa-brands fa-paypal"></i><span class="status-badge badge-soon">soon</span></div>
+                <div class="method-name">paypal / cash app</div>
+            </div>
+            <div class="payment-tile">
+                <div class="tile-top"><i class="fa-brands fa-bitcoin"></i><span class="status-badge badge-soon">soon</span></div>
+                <div class="method-name">bitcoin / crypto</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="netflix-container">
+        <div style="font-weight: 900; font-size: 13px; color: var(--netflix-red); letter-spacing: 3px;">SOUND SHOP ENTERTAINMENT</div>
+        <p style="font-size: 10px; color: #666; margin-top: 10px; text-transform: none;">official audio engineering featured in netflix originals.</p>
+        <a href="https://www.netflix.com" class="btn-netflix">watch on netflix</a>
+    </div>
+
+    <div id="chat-bubble-trigger"><i class="fa-solid fa-comment-dots"></i></div>
+
+    <div id="chat-bunker-window">
+        <div class="chat-header">
+            <h3><span class="status-dot"></span> Sound Shop Support</h3>
+        </div>
+        <div class="chat-messages" id="chat-display-box">
+            <div class="msg-bubble msg-system">Peace. Welcome to The Sound Shop. Drop a message here and it will hit our console directly.</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input-field" placeholder="Type your message..." autocomplete="off">
+            <button id="chat-send-btn">Send</button>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 sound shop | exclusive mobile development</footer>
+
+    <script>
+        // Central Infrastructure Configuration
+        const CONFIG = {
+            TUNNEL_URL: "https://profits-briefing-estates-getting.trycloudflare.com",
+            SUPPORT_PHONE: "9105499227"
+        };
+
+        let audio = new Audio();
+        let audioCtx, analyser, source, animationId;
+        let activeCardId = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 256;
+                source = audioCtx.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                runVisualizer();
+            }
+        }
+
+        function toggleAudio(file, cardId) {
+            initAudio();
+            if (audio.src.includes(file.replace('./', ''))) {
+                if (audio.paused) { audio.play(); activeCardId = cardId; }
+                else {
+                    audio.pause();
+                    document.getElementById(cardId).style.transform = 'scale(1)';
+                    activeCardId = null;
+                }
+            } else {
+                if (activeCardId) document.getElementById(activeCardId).style.transform = 'scale(1)';
+                audio.src = file;
+                audio.play();
+                activeCardId = cardId;
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function stopAudio() {
+            audio.pause();
+            audio.currentTime = 0;
+            if (activeCardId) document.getElementById(activeCardId).style.transform = 'scale(1)';
+            activeCardId = null;
+        }
+
+        function runVisualizer() {
+            const canvas = document.getElementById('viz-canvas');
+            const ctx = canvas.getContext('2d');
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            function draw() {
+                animationId = requestAnimationFrame(draw);
+                analyser.getByteFrequencyData(dataArray);
+                ctx.fillStyle = '#050505';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                let barWidth = (canvas.width / bufferLength) * 2.5;
+                let x = 0;
+                let bassSum = dataArray[1] + dataArray[2] + dataArray[3] + dataArray[4];
+                if (activeCardId && bassSum > 700) {
+                    let scale = 1 + (bassSum / 5000);
+                    document.getElementById(activeCardId).style.transform = `scale(${scale})`;
+                } else if (activeCardId) {
+                    document.getElementById(activeCardId).style.transform = 'scale(1)';
+                }
+                for (let i = 0; i < bufferLength; i++) {
+                    let barHeight = dataArray[i] / 2;
+                    ctx.fillStyle = '#00FFC2';
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 1;
+                }
+            }
+            draw();
+        }
+
+        async function triggerGatekeeper(type) {
+            if (type === 'message') {
+                window.location.href = `sms:${CONFIG.SUPPORT_PHONE}`;
+                return;
+            }
+
+            const name = prompt("To protect our lines from spam, please enter your name:");
+            const phone = prompt("Please enter your phone number:");
+
+            if (!name || !phone) {
+                alert("Verification required to connect to support lines.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item: `Support Verification for ${name}`, amount: phone })
+                });
+                
+                if (!response.ok) throw new Error(`Gateway returned code ${response.status}`);
+                const data = await response.json();
+
+                if (data.orderID) {
+                    alert(`--- SOUND SHOP SECURE LINE ---\n\nYOUR ACCESS CODE: ${data.orderID}\n\nPlease mention this code when Zander answers to verify your inquiry.`);
+                    window.location.href = `tel:${CONFIG.SUPPORT_PHONE}`;
+                } else {
+                    alert("Handshake validation failed. Let node master inspect ledger parameters.");
+                }
+            } catch (err) {
+                console.error("❌ Gatekeeper interface alert network drop:", err);
+                alert("Secure line currently offline. Please try again shortly.");
+            }
+        }
+
+        const chatTrigger = document.getElementById('chat-bubble-trigger');
+        const chatWindow = document.getElementById('chat-bunker-window');
+        const chatInput = document.getElementById('chat-input-field');
+        const chatSendBtn = document.getElementById('chat-send-btn');
+        const chatDisplay = document.getElementById('chat-display-box');
+
+        chatTrigger.addEventListener('click', () => {
+            if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+                chatWindow.style.display = 'flex';
+                chatInput.focus();
+
+                initAudio();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                audio.src = './audio/tgg.m4a';
+                audio.play().catch(e => console.log("Bypassing mobile interface autoplay limits:", e));
+
+            } else {
+                chatWindow.style.display = 'none';
+            }
+        });
+
+        async function dispatchChatMessage() {
+            const rawText = chatInput.value.trim();
+            if (!rawText) return;
+
+            appendMessageElement(rawText, 'user');
+            chatInput.value = '';
+
+            try {
+                const response = await fetch(`${CONFIG.TUNNEL_URL}/log-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item: 'Bunker Chat: ' + rawText, amount: 'PENDING CHAT LOG' })
+                });
+
+                if (!response.ok) throw new Error(`Bunker Status: ${response.status}`);
+                const data = await response.json();
+
+                if (data.orderID) {
+                    appendMessageElement("Sent successfully. A sound pulse alert has caught the bunker's attention.", 'system');
+                } else {
+                    appendMessageElement("Message logged, but validation returned an error code.", 'system');
+                }
+            } catch (err) {
+                console.error("Network interface error:", err);
+                appendMessageElement("⚠️ Connection handshake failed. Ensure the Bunker Master Node is active.", 'system');
+            }
+        }
+
+        function appendMessageElement(text, sender) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('msg-bubble', sender === 'user' ? 'msg-user' : 'msg-system');
+            bubble.innerText = text;
+            chatDisplay.appendChild(bubble);
+            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        }
+
+        chatSendBtn.addEventListener('click', dispatchChatMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') dispatchChatMessage(); });
+    </script>
+</body>
+</html>
